@@ -1,0 +1,55 @@
+swagger: "2.0"
+info:
+  description: "Short-read sequencing tools"
+  version: "2018_11"
+  title: "ngs-bits"
+  contact:
+    email: "marc.sturm@med.uni-tuebingen.de"
+  license:
+    name: "MIT"
+    url: "https://opensource.org/licenses/MIT"
+basePath: "/v1"
+tags:
+- name: "VariantFilterAnnotations"
+  description: "Filters variants by annotation"
+schemes:
+- "http"
+- "https"
+paths:
+  /VariantFilterAnnotations:
+    post:
+      tags:
+        - "VariantFilterAnnotations"
+      produces: 
+      - "application/json"
+      parameters: 
+      - in: "body"
+        name: "body"
+        schema:
+          $ref: "#/definitions/VariantFilterRequest"
+      responses:
+        200:
+          description: "successful"
+        400:
+          description: "bad request"
+          schema:
+            type: "string"
+
+definitions:
+  VariantFilterRequest:
+    type: "object"
+    properties:
+      in:
+        type: "string"
+        format: "file"
+      out:
+        type: "string"
+        format: "file"
+      filter:
+        type: "string"
+        description: "The name of the filter(s) to apply, seperated by comma"
+
+externalDocs:
+  description: "Find out more about ngs-bits"
+  url: "http://github.com/imgag/ngs-bits"
+
