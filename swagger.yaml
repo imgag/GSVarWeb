@@ -16,6 +16,21 @@ schemes:
 - "http"
 - "https"
 paths:
+  /download/{filePath}:
+    get:
+      produces: 
+      - "text/gsvar"
+      parameters:
+      - name: "filePath"
+        in: "path"
+        description: "Path to the file"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: 'successful'
+          schema:
+            type: file
   /VariantFilterAnnotations:
     post:
       tags:
@@ -52,4 +67,3 @@ definitions:
 externalDocs:
   description: "Find out more about ngs-bits"
   url: "http://github.com/imgag/ngs-bits"
-
