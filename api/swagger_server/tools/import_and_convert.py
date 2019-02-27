@@ -61,13 +61,3 @@ def convert_dict_to_lines(dictionary):
             lines.append("")
         lines.append("#---")
     return "\n".join(lines)
-
-import os
-import json
-
-with open(os.path.join(os.getcwd(), "GSvar_filters.ini"), "r") as f:
-    content = f.readlines()
-    converted_dict = convert_lines_to_dict(content)
-    converted_lines = convert_dict_to_lines(converted_dict)
-    #print(json.dumps(converted_dict)
-    print(converted_lines)
