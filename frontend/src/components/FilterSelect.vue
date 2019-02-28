@@ -1,42 +1,52 @@
 <template>
-    <v-form>
-        <v-container>
-            <v-layout>
-                <v-flex
-                        xs12
-                        md4
-                >
-                    <v-input
-                            type="file"
-                            hint="Select file"
-                            persistent-hint
-                    >
-                        <input type="file"/>
-                    </v-input>
-                </v-flex>
+    <v-stepper v-model="step">
+        <v-stepper-header>
+            <v-stepper-step :complete="step > 1" step="1">Select GSVar file</v-stepper-step>
 
-                <v-flex
-                    xs12
-                    md4
-                >
-                    <v-select
-                        v-model="selectedFilterNames"
-                        :items="filterNames"
-                        multiple
-                        hint="Select filters"
+            <v-divider></v-divider>
+
+            <v-stepper-step :complete="step > 2" step="2">Select filters</v-stepper-step>
+        </v-stepper-header>
+
+        <v-stepper-items>
+            <v-stepper-content step="1">
+                <v-input
+                        type="file"
+                        hint="Select file"
                         persistent-hint
-                    ></v-select>
-                </v-flex>
-
-                <v-flex
-                        xs12
-                        md4
+                        class="mb-3"
                 >
-                    <v-btn disabled>Apply filter</v-btn>
-                </v-flex>
-            </v-layout>
-        </v-container>
-    </v-form>
+                    <input type="file" @change="selectedFilePath = $event.srcElement.value"/>
+                </v-input>
+
+                <v-btn
+                        color="primary"
+                        @click="updateSelectedFile"
+                >
+                    Continue
+                </v-btn>
+            </v-stepper-content>
+
+            <v-stepper-content step="2">
+                <v-select
+                        v-model="selectedFilterName"
+                        :items="filterNames"
+                        hint="Select filter"
+                        persistent-hint
+                        class="mb-3"
+                ></v-select>
+
+                <v-btn
+                        color="primary"
+                        @click="applyFilter"
+                >
+                    Apply filter
+                </v-btn>
+
+                <v-btn flat @click="step = 1">Select file</v-btn>
+            </v-stepper-content>
+        </v-stepper-items>
+    </v-stepper>
 </template>
 
 <script>
@@ -44,8 +54,18 @@ export default {
     name: "FilterSelect",
     data: function () {
         return {
-            selectedFile: null,
-            selectedFilterNames: []
+            step: 1,
+            selectedFilePath: "",
+            selectedFilterName: ""
+        }
+    },
+    methods: {
+        updateSelectedFile () {
+            this.step = 2
+            if (this.selectedFilePath) this.$emit('updateSelectedFile', this.selectedFilePath)
+        },
+        applyFilter () {
+            this.$emit('applyFilter', this.selectedFilterName)
         }
     },
     props: {
@@ -56,7 +76,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-</style>
