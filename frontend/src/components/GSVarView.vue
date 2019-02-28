@@ -1,0 +1,38 @@
+<template>
+    <v-data-table
+        :headers="headers"
+        :items="items"
+        class="elevation-1"
+    >
+        <template slot="items" slot-scope="props">
+            <td v-for="(item, index) in props.item" v-bind:key="index"> {{ item }}</td>
+        </template>
+
+    </v-data-table>
+</template>
+
+<script>
+import { produceHeaders } from "@/utils";
+
+export default {
+    name: "GSVarView",
+    data: function () {
+        return {
+        }
+    },
+    computed: {
+        headers () {
+            return produceHeaders(this.lines.slice(0, 1)[0])
+        },
+        items () {
+            return this.lines.slice(1)
+        }
+    },
+    props: {
+        lines: {
+            type: Array,
+            required: true
+        }
+    }
+}
+</script>
