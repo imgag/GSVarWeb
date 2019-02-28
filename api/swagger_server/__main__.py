@@ -5,6 +5,7 @@ import os
 import connexion
 
 from swagger_server import encoder
+from flask_cors import CORS
 
 
 def main():
@@ -13,6 +14,7 @@ def main():
     app.add_api('swagger.yaml', arguments={'title': 'ngs-bits'})
     app.app.config['UPLOAD_FOLDER'] = os.path.abspath(os.getenv('NGS_BITS_DATA', os.getcwd()))
     app.app.config['ALLOWED_EXTENSIONS'] = set(['tsv', 'gsvar'])
+    CORS(app.app) # enable CORS for all
     app.run(port=os.getenv('PORT', 8080))
 
 
