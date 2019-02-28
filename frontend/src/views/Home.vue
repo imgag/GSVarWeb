@@ -23,7 +23,8 @@ export default {
         return {
             filters: [],
             loaded: false,
-            lines: []
+            lines: [],
+            lastPath: null
         }
     },
     mounted () {
@@ -32,15 +33,18 @@ export default {
     methods: {
       loadGSVarFileFromPath (path) {
           let vm = this
-          let fileName = path.replace(/^.*[\\\/]/, '')
-          fetch(`${addr}/download/${fileName}`).then((response) => {
-              if (response.status === 200) {
-                  response.text().then((lines) => {
-                      vm.lines = parseTSV(lines)
-                      vm.loaded = true
-                  })
-              }
-          })
+          if (vm.lastPath !== path) {
+              let fileName = path.replace(/^.*[\\\/]/, '')
+              fetch(`${addr}/download/${fileName}`).then((response) => {
+                  if (response.status === 200) {
+                      response.text().then((lines) => {
+                          vm.lines = parseTSV(lines)
+                          vm.loaded = true
+                          vm.lastPath = path
+                      })
+                  }
+              })
+          }
       }
     },
     components: {
