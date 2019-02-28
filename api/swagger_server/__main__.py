@@ -13,7 +13,7 @@ def main():
     app.add_api('swagger.yaml', arguments={'title': 'ngs-bits'})
     app.app.config['UPLOAD_FOLDER'] = os.path.abspath(os.getenv('NGS_BITS_DATA', os.getcwd()))
     app.app.config['ALLOWED_EXTENSIONS'] = set(['tsv', 'gsvar'])
-    app.run(port=8080)
+    app.run(port=os.getenv('PORT', 8080))
 
 
 if __name__ == '__main__':
