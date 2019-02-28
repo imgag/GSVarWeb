@@ -3,9 +3,10 @@
         :headers="headers"
         :items="items"
         class="elevation-1"
+        :rows-per-page-items="rowsPerPage"
     >
         <template slot="items" slot-scope="props">
-            <td v-for="(item, index) in props.item" v-bind:key="index"> {{ item }}</td>
+            <td v-for="(item, index) in props.item" v-bind:key="index">{{ item }}</td>
         </template>
 
     </v-data-table>
@@ -18,6 +19,12 @@ export default {
     name: "GSVarView",
     data: function () {
         return {
+            rowsPerPage: [
+                10,
+                25,
+                50,
+                100
+            ]
         }
     },
     computed: {
@@ -36,3 +43,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+td {
+    max-width: 100ch;
+    word-wrap:break-word
+}
+</style>
