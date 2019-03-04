@@ -2,46 +2,36 @@ def convert_lines_to_dict(content):
     """
     Converts a filter definition file to a dict
     """
-    filters = {}
-    currentFilterList = []
-    currentFilter = {}
-    currentFilterName = None
-
-    for line in content:
-        line = line.rstrip()
-
-        if line.startswith("#---"):
-            filters[currentFilterName] = currentFilterList
-            currentFilterList = []
-        elif line.startswith("#"):
-            line = line.lstrip("#")
-            currentFilterList.append(currentFilter)
-            currentFilterName = line
-        elif len(line):
-            fields = line.split("\t")
-            #print(fields)
-            currentFilter[fields[0]] = fields[1:]
-        else: # ignore empty lines
-            pass
-
 
     filters = []
     currentFilterList = {}
-    currentFilter = {}
+    currentFilter = []
+    currentFilterName = ""
 
-    for line in content:
+    for index, line in enumerate(content):
         line = line.rstrip()
 
         if line.startswith("#---"):
-            filters.append(currentFilterList)
+            if len(currentFilter):
+                currentFilterList[currentFilterName] = currentFilter
+            filters += [currentFilterList]
             currentFilterList = {}
+            if len(currentFilter):
+                currentFilter = []
         elif line.startswith("#"):
             line = line.lstrip("#")
-            currentFilterList[line] = currentFilter
+            if len(currentFilter):
+                currentFilterList[currentFilterName] = currentFilter
+                currentFilter = []
+                currentFilterName = line
+            else:
+                currentFilterName = line
         elif len(line):
             fields = line.split("\t")
-            #print(fields)
-            currentFilter[fields[0]] = fields[1:]
+            currentFilter.append({ 'name': fields[0], 'content': fields[1:]})
+        elif index == (len(content) - 1):
+            currentFilterList[currentFilterName] = currentFilter
+            filters += [currentFilterList]
         else: # ingore empty lines
             pass
 
@@ -52,12 +42,14 @@ def convert_dict_to_lines(dictionary):
     Converts a JSON to a filter definition file
     """
     lines = []
+    lastPossibleIndex = len(dictionary) - 1
 
-    for filterGroups in dictionary:
+    for index, filterGroups in enumerate(dictionary):
         for filter in filterGroups.keys():
             lines.append("#{}".format(filter))
-            for property in filterGroups[filter].keys():
-                lines.append("{}\t".format(property) + "\t".join(filterGroups[filter][property]))
+            for property in filterGroups[filter]:
+                lines.append("{}\t".format(property['name']) + "\t".join(property['content']))
             lines.append("")
-        lines.append("#---")
+        if index < lastPossibleIndex:
+            lines.append("#---")
     return "\n".join(lines)
