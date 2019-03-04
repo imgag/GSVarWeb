@@ -43,12 +43,12 @@ function parseTSV (lines) {
  */
 function createFilterConfig(filterConfig, name) {
     // NOTE: Only one key is supported at a time currently
-    return filterConfig = filterConfig.map((filterGroup) => {
+    return filterConfig.map((filterGroup) => {
         let matches = Object.keys(filterGroup).filter((filter) => filter === name)
         let obj = {}
         if (matches.length) obj[name] = filterGroup[name]
         return obj
-    })
+    }).filter((filterGroup) => Object.keys(filterGroup).length)
 }
 
 export { produceHeaders, parseTSV, createFilterConfig }
