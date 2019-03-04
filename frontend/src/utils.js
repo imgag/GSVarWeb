@@ -34,4 +34,19 @@ function parseTSV (lines) {
     return lines.slice(index).map((line) => line.trim().split('\t'))
 }
 
-export { produceHeaders, parseTSV }
+/**
+ * Returns the filter config for the specified filter
+ * @function
+ * @param {Array<Object>} filterConfig
+ * @param {String} name
+ * @return {Array<Object>}
+ */
+function createFilterConfig(filterConfig, name) {
+    // NOTE: Only one key is supported at a time currently
+    return filterConfig = filterConfig.map((filterGroup) => {
+        let matches = Object.keys(filterGroup).filter((filter) => filter === name)
+        return (matches.length) ? { name: filterGroup[name] } : {}
+    })
+}
+
+export { produceHeaders, parseTSV, createFilterConfig }

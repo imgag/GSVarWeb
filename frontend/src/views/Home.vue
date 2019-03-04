@@ -1,7 +1,12 @@
 <template>
     <v-layout column>
         <v-flex xs2 class="mb-2">
-            <filter-select :filterNames="filters" v-on:updateSelectedFile="loadGSVarFileFromPath($event)"></filter-select>
+            <filter-select
+                    :filterNames="filters"
+                    v-on:updateSelectedFile="loadGSVarFileFromPath($event)"
+                    v-on:applyFilter="applyFilter($event)"
+            >
+            </filter-select>
         </v-flex>
         <v-flex v-if="loaded" xs12>
             <g-s-var-view :lines="lines"></g-s-var-view>
@@ -13,9 +18,7 @@
 import FilterSelect from '@/components/FilterSelect'
 import GSVarView from '@/components/GSVarView'
 import filterJSON from '@/assets/filters.json'
-import { parseTSV } from '@/utils'
-
-const addr = 'http://localhost:9000/v1'
+import { parseTSV, createFilterConfig } from '@/utils'
 
 export default {
     name: "Home",
@@ -31,21 +34,46 @@ export default {
         this.filters = [].concat(filterJSON.map((filterGroup) => filterGroup)).map((filterGroup) => Object.keys(filterGroup)).flat()
     },
     methods: {
-      loadGSVarFileFromPath (path) {
-          let vm = this
-          if (vm.lastPath !== path) {
-              let fileName = path.replace(/^.*[\\\/]/, '')
-              fetch(`${addr}/download/${fileName}`).then((response) => {
-                  if (response.status === 200) {
-                      response.text().then((lines) => {
-                          vm.lines = parseTSV(lines)
-                          vm.loaded = true
-                          vm.lastPath = path
-                      })
-                  }
-              })
-          }
-      }
+        fileNameFromPath(path) {
+          return path.replace(/^.*[\\\/]/, '') // eslint-disable-line
+        },
+        loadGSVarFileFromPath (path) {
+            let vm = this
+            if (vm.lastPath !== path) {
+                let fileName = vm.fileNameFromPath(path)
+                fetch(`${vm.$basePath}/download/${fileName}`).then((response) => {
+                    if (response.status === 200) {
+                        response.text().then((lines) => {
+                            vm.lines = parseTSV(lines)
+                            vm.loaded = true
+                            vm.lastPath = path
+                        })
+                    }
+                })
+            }
+        },
+        applyFilter (name) {
+            let vm = this
+            let config = createFilterConfig(filterJSON, name)
+            let dateAppend = String(Date.now())
+            let outFile = vm.lastPath.replace('.GSvar', `_${dateAppend}.GSVar`)
+
+            fetch(`${vm.$basePath}/VariantFilterAnnotations`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    in: vm.lastPath,
+                    out: outFile,
+                    filter: config
+                })
+            }).then((response) => {
+                if (response.status === 200) {
+                    vm.loadGSVarFileFromPath(outFile)
+                }
+            })
+        }
     },
     components: {
         FilterSelect,
