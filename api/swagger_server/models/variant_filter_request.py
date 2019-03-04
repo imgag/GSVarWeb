@@ -15,7 +15,7 @@ class VariantFilterRequest(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, _in: str=None, out: str=None, filter: str=None):  # noqa: E501
+    def __init__(self, _in: str=None, out: str=None, filter: List[object]=None):  # noqa: E501
         """VariantFilterRequest - a model defined in Swagger
 
         :param _in: The _in of this VariantFilterRequest.  # noqa: E501
@@ -23,12 +23,12 @@ class VariantFilterRequest(Model):
         :param out: The out of this VariantFilterRequest.  # noqa: E501
         :type out: str
         :param filter: The filter of this VariantFilterRequest.  # noqa: E501
-        :type filter: str
+        :type filter: List[object]
         """
         self.swagger_types = {
             '_in': str,
             'out': str,
-            'filter': str
+            'filter': List[object]
         }
 
         self.attribute_map = {
@@ -95,24 +95,24 @@ class VariantFilterRequest(Model):
         self._out = out
 
     @property
-    def filter(self) -> str:
+    def filter(self) -> List[object]:
         """Gets the filter of this VariantFilterRequest.
 
-        The name of the filter(s) to apply, seperated by comma  # noqa: E501
+        The filter dict to apply  # noqa: E501
 
         :return: The filter of this VariantFilterRequest.
-        :rtype: str
+        :rtype: List[object]
         """
         return self._filter
 
     @filter.setter
-    def filter(self, filter: str):
+    def filter(self, filter: List[object]):
         """Sets the filter of this VariantFilterRequest.
 
-        The name of the filter(s) to apply, seperated by comma  # noqa: E501
+        The filter dict to apply  # noqa: E501
 
         :param filter: The filter of this VariantFilterRequest.
-        :type filter: str
+        :type filter: List[object]
         """
 
         self._filter = filter

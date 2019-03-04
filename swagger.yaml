@@ -61,7 +61,9 @@ definitions:
         type: "string"
         format: "file"
       filter:
-        type: "object"
+        type: "array"
+        items:
+          type: "object"
         description: "The filter dict to apply"
 
 externalDocs:

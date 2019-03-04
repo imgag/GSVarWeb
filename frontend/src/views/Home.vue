@@ -3,7 +3,7 @@
         <v-flex xs2 class="mb-2">
             <filter-select
                     :filterNames="filters"
-                    v-on:updateSelectedFile="loadGSVarFileFromPath($event)"
+                    v-on:updateSelectedFile="updateSelectedFile($event)"
                     v-on:applyFilter="applyFilter($event)"
             >
             </filter-select>
@@ -39,16 +39,26 @@ export default {
         },
         loadGSVarFileFromPath (path) {
             let vm = this
-            if (vm.lastPath !== path) {
+            return new Promise((resolve, reject) => {
                 let fileName = vm.fileNameFromPath(path)
                 fetch(`${vm.$basePath}/download/${fileName}`).then((response) => {
                     if (response.status === 200) {
                         response.text().then((lines) => {
                             vm.lines = parseTSV(lines)
                             vm.loaded = true
-                            vm.lastPath = path
+                            resolve(response.statusText)
                         })
+                    } else {
+                        reject(response.statusText)
                     }
+                })
+            })
+        },
+        updateSelectedFile (path) {
+            let vm = this
+            if (vm.lastPath !== path) {
+                vm.loadGSVarFileFromPath(path).then(() => {
+                    vm.lastPath = path
                 })
             }
         },
@@ -64,14 +74,12 @@ export default {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    in: vm.lastPath,
-                    out: outFile,
+                    in: vm.fileNameFromPath(vm.lastPath),
+                    out: vm.fileNameFromPath(outFile),
                     filter: config
                 })
-            }).then((response) => {
-                if (response.status === 200) {
-                    vm.loadGSVarFileFromPath(outFile)
-                }
+            }).then(() => {
+                vm.loadGSVarFileFromPath(outFile)
             })
         }
     },

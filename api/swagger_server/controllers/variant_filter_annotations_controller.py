@@ -1,5 +1,4 @@
 import os
-import json
 import tempfile
 
 from flask import current_app, abort
@@ -28,16 +27,16 @@ def variant_filter_annotations_post(body=None):  # noqa: E501
     absOutPath = os.path.join(current_app.config['UPLOAD_FOLDER'], body.out)
 
     if os.path.isfile(absInPath) and not os.path.isfile(absOutPath):
-        lines = convert_dict_to_lines(json.loads(body.filter))
-        with tempfile.NamedTemporaryFile() as tmpFile: # Create filters for given JSON
+        lines = convert_dict_to_lines(body.filter)
+        with tempfile.NamedTemporaryFile(mode='w') as tmpFile: # Create filters for given JSON
             tmpFile.write(lines)
 
             # Run VariantFilterAnnotations
             binFolder = os.path.abspath(os.getenv('NGS_BITS_BIN', os.getcwd()))
-            command = "./VariantFilterAnnotations -in {} -out {} -filter {}".format(absInPath, absOutPath, tmpFile.name)
+            command = "./VariantFilterAnnotations -in {} -out {} -filters {}".format(absInPath, absOutPath, tmpFile.name)
 
             status = os.system("cd {} && {}".format(binFolder, command))
-            if status == os.WEXITED:
+            if status == 0:
                 return "successful"
             else:
                 abort(400) # TODO: Make this more detailed

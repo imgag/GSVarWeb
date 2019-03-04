@@ -22,7 +22,6 @@ paths:
       operationId: "download_file_path_get"
       produces:
       - "text/gsvar"
-      - "text/tsv"
       parameters:
       - name: "filePath"
         in: "path"
@@ -67,8 +66,11 @@ definitions:
         type: "string"
         format: "file"
       filter:
-        type: "string"
-        description: "The name of the filter(s) to apply, seperated by comma"
+        type: "array"
+        description: "The filter dict to apply"
+        items:
+          type: "object"
+          properties: {}
 externalDocs:
   description: "Find out more about ngs-bits"
   url: "http://github.com/imgag/ngs-bits"
