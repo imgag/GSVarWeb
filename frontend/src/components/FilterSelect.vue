@@ -26,6 +26,7 @@
                 <v-btn
                         color="primary"
                         @click="updateSelectedFile"
+                        :disabled="selectedFilePath === ''"
                 >
                     Continue
                 </v-btn>
