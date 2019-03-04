@@ -28,19 +28,23 @@ def variant_filter_annotations_post(body=None):  # noqa: E501
 
     if os.path.isfile(absInPath) and not os.path.isfile(absOutPath):
         lines = convert_dict_to_lines(body.filter)
-        with tempfile.NamedTemporaryFile(mode='w') as tmpFile: # Create filters for given JSON
+        tmpPath = os.path.join(tempfile.gettempdir(), tempfile._get_candidate_names().characters)
+        print(tmpPath)
+        with open(tmpPath, "w") as tmpFile:
             tmpFile.write(lines)
 
             # Run VariantFilterAnnotations
             binFolder = os.path.abspath(os.getenv('NGS_BITS_BIN', os.getcwd()))
             command = "./VariantFilterAnnotations -in {} -out {} -filters {}".format(absInPath, absOutPath, tmpFile.name)
+            fullCommand = "cd {} && {}".format(binFolder, command)
+            print(fullCommand)
 
-            status = os.system("cd {} && {}".format(binFolder, command))
+            status = os.system(fullCommand)
             if status == 0:
                 return "successful"
             else:
                 abort(400) # TODO: Make this more detailed
 
-        abort(400, message="Could not create the filter file")
+        abort(400) # message="Could not create the filter file"
     else:
-        abort(400, message="The file {} wasn't found.".format(body._in))
+        abort(400) # message="The file {} wasn't found.".format(body._in)
