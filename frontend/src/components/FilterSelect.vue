@@ -16,7 +16,11 @@
                         persistent-hint
                         class="mb-3"
                 >
-                    <input type="file" @change="selectedFilePath = $event.srcElement.value"/>
+                <input
+                        type="file"
+                        @change="selectedFilePath = $event.srcElement.value"
+                        accept=".GSvar"
+                />
                 </v-input>
 
                 <v-btn
