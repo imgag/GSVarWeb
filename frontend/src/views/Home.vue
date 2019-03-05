@@ -54,11 +54,30 @@ export default {
                 })
             })
         },
-        updateSelectedFile (path) {
+        uploadGSVarFile (file) {
             let vm = this
-            if (vm.lastPath !== path) {
-                vm.loadGSVarFileFromPath(path).then(() => {
-                    vm.lastPath = path
+            return new Promise((resolve, reject) => {
+                let formData = new FormData()
+                formData.append('uploadedFile', file.files[0])
+                let xhr = new XMLHttpRequest()
+                xhr.open('POST', `${vm.$basePath}/upload`, true)
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        resolve(xhr.statusText)
+                    } else {
+                        reject(xhr.statusText)
+                    }
+                }
+                xhr.send(formData)
+            })
+        },
+        updateSelectedFile (file) {
+            let vm = this
+            if (vm.lastPath !== file.value) {
+                vm.uploadGSVarFile(file).then(() => {
+                    vm.loadGSVarFileFromPath(file.value).then(() => {
+                        vm.lastPath = file.value
+                    })
                 })
             }
         },
