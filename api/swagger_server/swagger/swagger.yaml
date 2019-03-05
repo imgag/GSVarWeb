@@ -17,6 +17,26 @@ schemes:
 - "http"
 - "https"
 paths:
+  /upload:
+    post:
+      description: "Uploads a file to the server"
+      operationId: "upload_post"
+      consumes:
+      - "multipart/form-data"
+      parameters:
+      - name: "uploadedFile"
+        in: "formData"
+        description: "The GSVar file to upload."
+        required: false
+        type: "file"
+      responses:
+        200:
+          description: "successfull"
+        400:
+          description: "failed, e.g file can not be uploaded"
+          schema:
+            type: "string"
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
   /download/{filePath}:
     get:
       operationId: "download_file_path_get"
@@ -30,7 +50,7 @@ paths:
         type: "string"
       responses:
         200:
-          description: "successful"
+          description: "successfull"
           schema:
             type: "file"
       x-swagger-router-controller: "swagger_server.controllers.default_controller"
@@ -49,7 +69,7 @@ paths:
           $ref: "#/definitions/VariantFilterRequest"
       responses:
         200:
-          description: "successful"
+          description: "successfull"
         400:
           description: "bad request"
           schema:
