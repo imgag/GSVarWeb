@@ -26,7 +26,7 @@ import filterJSON from '@/assets/filters.json'
 import { parseTSV, createFilterConfig } from '@/utils'
 
 export default {
-    name: "Home",
+    name: "Samples",
     data: function () {
         return {
             filters: [],
