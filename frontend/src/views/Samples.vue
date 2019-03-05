@@ -48,7 +48,7 @@ export default {
             let vm = this
             return new Promise((resolve, reject) => {
                 let fileName = vm.fileNameFromPath(path)
-                fetch(`${vm.$basePath}/download/${fileName}`).then((response) => {
+                fetch(`${vm.$basePath}/download/truncated/${fileName}`).then((response) => {
                     if (response.status === 200) {
                         response.text().then((lines) => {
                             vm.lines = parseTSV(lines)

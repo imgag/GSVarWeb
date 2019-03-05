@@ -13,6 +13,27 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def download_truncated_file_path_get(filePath):  # noqa: E501
+    """download_truncated_file_path_get
+
+    Download a truncated version of the file # noqa: E501
+
+    :param filePath: Path to the file
+    :type filePath: str
+
+    :rtype: file
+    """
+    absFilePath = os.path.join(current_app.config['UPLOAD_FOLDER'], filePath)
+    truncatedFilePath = filePath.replace(".GSvar", "_truncated.GSvar")
+    truncatedAbsFilePath = os.path.join(current_app.config['UPLOAD_FOLDER'], truncatedFilePath)
+    if os.path.isfile(absFilePath): # this makes sure the upload folder is not escaped
+        if not os.path.isfile(truncatedAbsFilePath):
+            os.system("head -n 1000 {} >> {}".format(absFilePath, truncatedAbsFilePath))
+        return send_from_directory(directory=current_app.config['UPLOAD_FOLDER'], filename=truncatedFilePath)
+    else:
+        abort(404)
+
+
 def download_file_path_get(filePath):  # noqa: E501
     """download_file_path_get
 
