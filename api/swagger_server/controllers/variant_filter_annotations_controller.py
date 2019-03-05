@@ -2,6 +2,7 @@ import os
 import tempfile
 
 from flask import current_app, abort
+from werkzeug.exceptions import BadRequest
 import connexion
 import six
 
@@ -40,10 +41,10 @@ def variant_filter_annotations_post(body=None):  # noqa: E501
 
         status = os.system(fullCommand)
         if status == 0:
-            return "successful"
+            return "successfull"
         else:
-            abort(400) # TODO: Make this more detailed
+            raise BadRequest("Command exited with status {}".format(status))
 
-        abort(400) # message="Could not create the filter file"
+        raise BadRequest("Could not create the filter file")
     else:
-        abort(400) # message="The file {} wasn't found.".format(body._in)
+        raise BadRequest("The file {} wasn't found.".format(body._in))

@@ -16,6 +16,23 @@ schemes:
 - "http"
 - "https"
 paths:
+  /upload:
+    post:
+      description: "Uploads a file to the server"
+      consumes: 
+      - "multipart/form-data"
+      parameters:
+       - in: formData
+         name: uploadedFile
+         type: file
+         description: "The GSVar file to upload."
+      responses:
+        200:
+          description: 'successfull'
+        400:
+          description: 'failed, e.g file can not be uploaded'
+          schema:
+            type: 'string'
   /download/{filePath}:
     get:
       produces: 
@@ -28,7 +45,7 @@ paths:
         type: "string"
       responses:
         200:
-          description: 'successful'
+          description: 'successfull'
           schema:
             type: file
   /VariantFilterAnnotations:
@@ -44,7 +61,7 @@ paths:
           $ref: "#/definitions/VariantFilterRequest"
       responses:
         200:
-          description: "successful"
+          description: "successfull"
         400:
           description: "bad request"
           schema:
@@ -69,4 +86,3 @@ definitions:
 externalDocs:
   description: "Find out more about ngs-bits"
   url: "http://github.com/imgag/ngs-bits"
-

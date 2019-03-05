@@ -18,7 +18,7 @@
                 >
                 <input
                         type="file"
-                        @change="selectedFilePath = $event.srcElement.value"
+                        @change="selectedFile = $event.srcElement"
                         accept=".GSvar"
                 />
                 </v-input>
@@ -26,7 +26,7 @@
                 <v-btn
                         color="primary"
                         @click="updateSelectedFile"
-                        :disabled="selectedFilePath === ''"
+                        :disabled="selectedFile === null"
                 >
                     Continue
                 </v-btn>
@@ -60,14 +60,14 @@ export default {
     data: function () {
         return {
             step: 1,
-            selectedFilePath: "",
+            selectedFile: null,
             selectedFilterName: ""
         }
     },
     methods: {
         updateSelectedFile () {
             this.step = 2
-            if (this.selectedFilePath) this.$emit('updateSelectedFile', this.selectedFilePath)
+            if (this.selectedFile) this.$emit('updateSelectedFile', this.selectedFile)
         },
         applyFilter () {
             this.$emit('applyFilter', this.selectedFilterName)
