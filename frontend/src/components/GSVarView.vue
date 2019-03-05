@@ -10,6 +10,10 @@
             <td v-for="(item, index) in props.item" v-bind:key="index">{{ item }}</td>
         </template>
 
+        <template slot="actions-append">
+            <p class="mt-3 mr-3">Original variants: {{ lastTotalNumberOfVariants }}</p>
+        </template>
+
     </v-data-table>
 </template>
 
@@ -37,6 +41,10 @@ export default {
         }
     },
     props: {
+        lastTotalNumberOfVariants: {
+            type: Number,
+            default: 0
+        },
         loading: {
             type: Boolean,
             default: false

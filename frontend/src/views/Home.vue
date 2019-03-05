@@ -12,6 +12,7 @@
             <g-s-var-view
                     :lines="lines"
                     :loading="loading"
+                    :lastTotalNumberOfVariants="lastTotalNumberOfVariants"
             >
             </g-s-var-view>
         </v-flex>
@@ -32,6 +33,7 @@ export default {
             loading: false,
             loaded: false,
             lines: [],
+            lastTotalNumberOfVariants: 0,
             lastPath: null
         }
     },
@@ -82,6 +84,7 @@ export default {
                 vm.uploadGSVarFile(file).then(() => {
                     vm.loadGSVarFileFromPath(file.value).then(() => {
                         vm.lastPath = file.value
+                        vm.lastTotalNumberOfVariants = vm.lines.length
                     })
                 })
             }
