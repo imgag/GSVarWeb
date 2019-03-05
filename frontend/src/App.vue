@@ -5,7 +5,7 @@
     </v-toolbar>
     <v-content>
       <v-container fluid fill-height>
-        <home></home>
+        <samples></samples>
       </v-container>
     </v-content>
     <v-footer color="indigo" app>
@@ -15,12 +15,12 @@
 </template>
 
 <script>
-import Home from '@/views/Home'
+import Samples from '@/views/Samples'
 
 export default {
   name: 'App',
   components: {
-    Home
+    Samples
   },
   data: () => ({
   })
