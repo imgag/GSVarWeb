@@ -4,6 +4,7 @@
         :items="items"
         class="elevation-1"
         :rows-per-page-items="rowsPerPage"
+        :loading="loading"
     >
         <template slot="items" slot-scope="props">
             <td v-for="(item, index) in props.item" v-bind:key="index">{{ item }}</td>
@@ -36,6 +37,10 @@ export default {
         }
     },
     props: {
+        loading: {
+            type: Boolean,
+            default: false
+        },
         lines: {
             type: Array,
             required: true

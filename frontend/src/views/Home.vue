@@ -9,7 +9,11 @@
             </filter-select>
         </v-flex>
         <v-flex v-if="loaded" xs12>
-            <g-s-var-view :lines="lines"></g-s-var-view>
+            <g-s-var-view
+                    :lines="lines"
+                    :loading="loading"
+            >
+            </g-s-var-view>
         </v-flex>
     </v-layout>
 </template>
@@ -25,6 +29,7 @@ export default {
     data: function () {
         return {
             filters: [],
+            loading: false,
             loaded: false,
             lines: [],
             lastPath: null
@@ -86,6 +91,7 @@ export default {
             let config = createFilterConfig(filterJSON, name)
             let dateAppend = String(Date.now())
             let outFile = vm.lastPath.replace('.GSvar', `_${dateAppend}.GSVar`)
+            vm.loading = true
 
             fetch(`${vm.$basePath}/VariantFilterAnnotations`, {
                 method: 'POST',
@@ -99,6 +105,10 @@ export default {
                 })
             }).then(() => {
                 vm.loadGSVarFileFromPath(outFile)
+                vm.loading = false
+            }).catch((err) => {
+                console.error(err) // eslint-disable-line
+                vm.loading = false
             })
         }
     },
