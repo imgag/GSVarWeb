@@ -28,7 +28,7 @@ def download_truncated_file_path_get(filePath):  # noqa: E501
     truncatedAbsFilePath = os.path.join(current_app.config['UPLOAD_FOLDER'], truncatedFilePath)
     if os.path.isfile(absFilePath): # this makes sure the upload folder is not escaped
         if not os.path.isfile(truncatedAbsFilePath):
-            os.system("head -n 1000 {} >> {}".format(absFilePath, truncatedAbsFilePath))
+            os.system("head -n {} {} >> {}".format(os.getenv('TRUNCATION_LIMIT', 500), absFilePath, truncatedAbsFilePath))
         return send_from_directory(directory=current_app.config['UPLOAD_FOLDER'], filename=truncatedFilePath)
     else:
         abort(404)
