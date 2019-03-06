@@ -7,7 +7,9 @@
         :loading="loading"
     >
         <template slot="items" slot-scope="props">
-            <td v-for="(item, index) in props.item" v-bind:key="index" :bgcolor="getColor(item, index)">{{ item }}</td>
+            <td v-for="(item, index) in props.item" v-bind:key="index" :bgcolor="getColor(item, index)">
+                <tooltip-text :text="item"></tooltip-text>
+            </td>
         </template>
 
         <template slot="actions-append">
@@ -18,7 +20,8 @@
 </template>
 
 <script>
-import { produceHeaders } from "@/utils";
+import { produceHeaders } from "@/utils"
+import TooltipText from "@/components/TooltipText"
 
 /// Ported from https://github.com/imgag/ngs-bits/blob/master/src/GSvar/VariantTable.cpp#L114
 /// Since the headers are sorted this array also needs to be sorted by index!
@@ -26,6 +29,9 @@ const colorHeaders = ["gene", "coding_and_splicing", "ClinVar", "HGMD", "NGSD_ho
 
 export default {
     name: "GSVarView",
+    components: {
+        TooltipText,
+    },
     data: function () {
         return {
             rowsPerPage: [
