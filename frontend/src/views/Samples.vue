@@ -11,7 +11,7 @@
         <v-flex v-if="loaded" xs12>
             <external-links :selectedGenes="['SAMD11', 'OR4F5']"></external-links>
             <g-s-var-view
-                    :lines="lines"
+                    :lines="$store.state.lines"
                     :loading="loading"
                     :lastTotalNumberOfVariants="lastTotalNumberOfVariants"
             >
@@ -24,17 +24,15 @@
 import FilterSelect from '@/components/FilterSelect'
 import GSVarView from '@/components/GSVarView'
 import ExternalLinks from '@/components/ExternalLinks'
-import { parseTSV, createFilterConfig } from '@/utils'
+import { createFilterConfig } from '@/utils'
 import filterJSON from '@/assets/filters.json'
 
 export default {
     name: "Samples",
     data: function () {
         return {
-            filters: [],
             loading: false,
             loaded: false,
-            lines: [],
             lastTotalNumberOfVariants: 0,
             lastPath: null
         }
@@ -49,8 +47,8 @@ export default {
                 let fileName = vm.fileNameFromPath(path)
                 fetch(`${vm.$basePath}/download/truncated/${fileName}`).then((response) => {
                     if (response.status === 200) {
-                        response.text().then((lines) => {
-                            vm.lines = parseTSV(lines)
+                        response.text().then((line) => {
+                            vm.$store.dispatch('replaceLinesFromString', line)
                             vm.loaded = true
                             resolve(response.statusText)
                         })
@@ -83,7 +81,7 @@ export default {
                 vm.uploadGSVarFile(file).then(() => {
                     vm.loadGSVarFileFromPath(file.value).then(() => {
                         vm.lastPath = file.value
-                        vm.lastTotalNumberOfVariants = vm.lines.length
+                        vm.lastTotalNumberOfVariants = vm.$store.state.lines.length
                     })
                 })
             }
