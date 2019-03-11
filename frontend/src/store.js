@@ -104,7 +104,11 @@ export default new Vuex.Store({
     loadGSVarFileFromPath (context, path) {
       return new Promise((resolve, reject) => {
         let fileName = fileNameFromPath(path)
-        fetch(`${$basePath}/download/truncated/${fileName}`).then((response) => {
+        fetch(`${$basePath}/download/${fileName}`, {
+          headers: {
+            'Lines': '1-500'
+          }
+        }).then((response) => {
           if (response.status === 200) {
             response.text().then((line) => {
               context.dispatch('replaceLinesFromString', line)

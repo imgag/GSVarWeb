@@ -1,5 +1,6 @@
 import os
 import tempfile
+import uuid
 
 from flask import current_app, abort
 from werkzeug.exceptions import BadRequest
@@ -29,7 +30,7 @@ def variant_filter_annotations_post(body=None):  # noqa: E501
 
     if os.path.isfile(absInPath) and not os.path.isfile(absOutPath):
         lines = convert_dict_to_lines(body.filter)
-        tmpPath = os.path.join(tempfile.gettempdir(), tempfile._get_candidate_names().characters)
+        tmpPath = os.path.join(tempfile.gettempdir(), uuid.uuid4().hex)
         with open(tmpPath, "w") as tmpFile: # write filters file
             tmpFile.write(lines)
 

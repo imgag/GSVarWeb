@@ -33,22 +33,6 @@ paths:
           description: 'failed, e.g file can not be uploaded'
           schema:
             type: 'string'
-  /download/truncated/{filePath}:
-    get:
-      description: "Download a truncated version of the file"
-      produces: 
-      - "text/gsvar"
-      parameters:
-      - name: "filePath"
-        in: "path"
-        description: "Path to the file"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: 'successfull'
-          schema:
-            type: file
   /download/{filePath}:
     get:
       produces: 
@@ -58,6 +42,11 @@ paths:
         in: "path"
         description: "Path to the file"
         required: true
+        type: "string"
+      - name: "Lines"
+        in: "header"
+        description: "The lines to serve represented as from-to e.g 1-100 starting at 1"
+        required: false
         type: "string"
       responses:
         200:
