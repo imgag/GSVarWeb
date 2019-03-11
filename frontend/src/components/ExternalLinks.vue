@@ -2,7 +2,7 @@
     <v-toolbar flat>
         <v-spacer></v-spacer>
         <!-- See https://github.com/vuejs-templates/webpack/issues/450#issuecomment-388515010 -->
-        <v-btn v-for="item in items" v-bind:key="item.text" @click="openLinksForSelectedGenes(item)">
+        <v-btn v-for="item in items" v-bind:key="item.text" @click="openLinksForSelectedGenes(item)" :disabled="!$store.state.selectedGenes.length">
             <img v-bind:src="require(`@/assets/icons/${item.icon}`)" height="16px" width="16px" class="mr-1">{{ item.text }}
         </v-btn>
     </v-toolbar>
