@@ -9,27 +9,7 @@
             </filter-select>
         </v-flex>
         <v-flex v-if="loaded" xs12>
-            <v-toolbar flat>
-                <v-spacer></v-spacer>
-                <v-btn>
-                    <img src="@/assets/icons/OMIM.png" class="mr-1"/>OMIM
-                </v-btn>
-                <v-btn>
-                    <img src="@/assets/icons/GeneCards.png" height="16px" width="16px" class="mr-1"/>GeneCards
-                </v-btn>
-                <v-btn>
-                    <img src="@/assets/icons/UCSC.png" class="mr-1"/>UCSC Genome Browser
-                </v-btn>
-                <v-btn>
-                    <img src="@/assets/icons/LOVD.png" class="mr-1"/>LOVD
-                </v-btn>
-                <v-btn>
-                    <img src="@/assets/icons/SysID.png" class="mr-1"/>SysID
-                </v-btn>
-                <v-btn>
-                    <img src="@/assets/icons/VarSome.png" height="16px" width="16px" class="mr-1"/>VarSome
-                </v-btn>
-            </v-toolbar>
+            <external-links :selectedGenes="['SAMD11', 'OR4F5']"></external-links>
             <g-s-var-view
                     :lines="lines"
                     :loading="loading"
@@ -43,6 +23,7 @@
 <script>
 import FilterSelect from '@/components/FilterSelect'
 import GSVarView from '@/components/GSVarView'
+import ExternalLinks from '@/components/ExternalLinks'
 import filterJSON from '@/assets/filters.json'
 import { parseTSV, createFilterConfig } from '@/utils'
 
@@ -138,7 +119,8 @@ export default {
     },
     components: {
         FilterSelect,
-        GSVarView
+        GSVarView,
+        ExternalLinks
     }
 }
 </script>

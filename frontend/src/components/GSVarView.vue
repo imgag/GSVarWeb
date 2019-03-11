@@ -5,8 +5,16 @@
         class="elevation-1"
         :rows-per-page-items="rowsPerPage"
         :loading="loading"
+        select-all
     >
         <template slot="items" slot-scope="props">
+            <td>
+                <v-checkbox
+                    primary
+                    @change="updateGene(props.item, $event)"
+                    hide-details
+                ></v-checkbox>
+            </td>
             <td v-for="(item, index) in props.item" v-bind:key="index" :bgcolor="getColor(item, index)">
                 <tooltip-text :text="item"></tooltip-text>
             </td>
@@ -34,6 +42,7 @@ export default {
     },
     data: function () {
         return {
+            selectedGenes: [],
             rowsPerPage: [
                 10,
                 25,
@@ -61,6 +70,22 @@ export default {
         }
     },
     methods: {
+        /**
+         * Adds a gene to the list of selected genes if selected is true.
+         * Otherwise tries to remove this gene from the list
+         * @function
+         * @param column
+         * @param selected
+         */
+        updateGene (column, selected) {
+            let gene = column[this.colorMap["gene"]]
+            if (selected) {
+                this.selectedGenes.push(gene)
+            } else {
+                let geneIndex = this.selectedGenes.indexOf(gene)
+                if (geneIndex > -1) this.selectedGenes.splice(geneIndex, 1)
+            }
+        },
         getColor(item, index) {
             let color = ''
 
