@@ -66,10 +66,10 @@ export default {
     },
     methods: {
         updateSelectedFile () {
-            if (this.selectedFile) this.$emit('updateSelectedFile', this.selectedFile)
+            if (this.selectedFile) this.$store.dispatch('updateSelectedFile', this.selectedFile)
         },
         applyFilter () {
-            this.$emit('applyFilter', this.selectedFilterName)
+            this.$store.dispatch('applyFilter', this.selectedFilterName)
         }
     },
     props: {

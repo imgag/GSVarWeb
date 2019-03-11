@@ -86,7 +86,7 @@ export default {
                 let geneIndex = this.selectedGenes.findIndex((item) => item.start === selectedGene.start)
                 if (geneIndex > -1)
                 {
-                    this.selectedFile.splice(geneIndex, 1)
+                    this.selectedGenes.splice(geneIndex, 1)
                     this.$store.commit('updateSelectedGenes', this.selectedGenes)
                 }
             }
