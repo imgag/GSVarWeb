@@ -2,6 +2,8 @@
     <v-layout column>
         <v-flex xs2 class="mb-2">
             <filter-select
+                    :loading="$store.state.fileLoading"
+                    :step="$store.state.step"
                     :filterNames="$store.state.filterNames"
                     v-on:updateSelectedFile="updateSelectedFile($event)"
                     v-on:applyFilter="applyFilter($event)"
@@ -70,12 +72,17 @@ export default {
         updateSelectedFile (file) {
             let vm = this
             if (vm.$store.state.lastPath !== file.value) {
+                vm.$store.commit('toggleFileLoading')
                 vm.uploadGSVarFile(file).then(() => {
                     vm.loadGSVarFileFromPath(file.value).then(() => {
                         vm.$store.commit('updateLastPath', file.value)
                         vm.$store.commit('updateLastTotalNumberOfVariants', vm.$store.state.lines.length)
+                        vm.$store.commit('incrementStep')
+                        vm.$store.commit('toggleFileLoading')
                     })
                 })
+            } else {
+                vm.$store.commit('incrementStep')
             }
         },
         applyFilter (name) {

@@ -26,6 +26,7 @@
                 <v-btn
                         color="primary"
                         @click="updateSelectedFile"
+                        :loading="loading"
                         :disabled="selectedFile === null"
                 >
                     Continue
@@ -48,7 +49,7 @@
                     Apply filter
                 </v-btn>
 
-                <v-btn flat @click="step = 1">Select file</v-btn>
+                <v-btn flat @click="$store.commit('incrementStep')">Select file</v-btn>
             </v-stepper-content>
         </v-stepper-items>
     </v-stepper>
@@ -59,14 +60,12 @@ export default {
     name: "FilterSelect",
     data: function () {
         return {
-            step: 1,
             selectedFile: null,
             selectedFilterName: ""
         }
     },
     methods: {
         updateSelectedFile () {
-            this.step = 2
             if (this.selectedFile) this.$emit('updateSelectedFile', this.selectedFile)
         },
         applyFilter () {
@@ -74,6 +73,14 @@ export default {
         }
     },
     props: {
+        loading: {
+            type: Boolean,
+            required: true
+        },
+        step: {
+            type: Number,
+            required: true
+        },
         filterNames: {
             type: Array,
             required: true
