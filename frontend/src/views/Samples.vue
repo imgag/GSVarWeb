@@ -2,7 +2,7 @@
     <v-layout column>
         <v-flex xs2 class="mb-2">
             <filter-select
-                    :filterNames="filters"
+                    :filterNames="$store.state.filters"
                     v-on:updateSelectedFile="updateSelectedFile($event)"
                     v-on:applyFilter="applyFilter($event)"
             >
@@ -24,8 +24,8 @@
 import FilterSelect from '@/components/FilterSelect'
 import GSVarView from '@/components/GSVarView'
 import ExternalLinks from '@/components/ExternalLinks'
-import filterJSON from '@/assets/filters.json'
 import { parseTSV, createFilterConfig } from '@/utils'
+import filterJSON from '@/assets/filters.json'
 
 export default {
     name: "Samples",
@@ -38,9 +38,6 @@ export default {
             lastTotalNumberOfVariants: 0,
             lastPath: null
         }
-    },
-    mounted () {
-        this.filters = [].concat(filterJSON.map((filterGroup) => filterGroup)).map((filterGroup) => Object.keys(filterGroup)).flat()
     },
     methods: {
         fileNameFromPath(path) {
