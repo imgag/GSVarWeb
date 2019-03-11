@@ -51,4 +51,14 @@ function createFilterConfig(filterConfig, name) {
     }).filter((filterGroup) => Object.keys(filterGroup).length)
 }
 
-export { produceHeaders, parseTSV, createFilterConfig }
+/**
+ * Returns the file name for a given path
+ * @function
+ * @param path
+ * @return {*}
+ */
+function fileNameFromPath(path) {
+    return path.replace(/^.*[\\\/]/, '') // eslint-disable-line
+}
+
+export { produceHeaders, parseTSV, createFilterConfig, fileNameFromPath }

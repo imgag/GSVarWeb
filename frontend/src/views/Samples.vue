@@ -8,11 +8,13 @@
             >
             </filter-select>
         </v-flex>
-        <v-flex v-if="loaded" xs12>
+        <v-flex v-if="$store.state.fileLoaded" xs12>
             <external-links :selectedGenes="['SAMD11', 'OR4F5']"></external-links>
             <g-s-var-view
-                    :loading="loading"
-                    :lastTotalNumberOfVariants="lastTotalNumberOfVariants"
+                    :headers="$store.getters.headers"
+                    :items="$store.getters.items"
+                    :loading="$store.state.filterFileLoading"
+                    :lastTotalNumberOfVariants="$store.state.lastTotalNumberOfVariants"
             >
             </g-s-var-view>
         </v-flex>
@@ -23,32 +25,21 @@
 import FilterSelect from '@/components/FilterSelect'
 import GSVarView from '@/components/GSVarView'
 import ExternalLinks from '@/components/ExternalLinks'
-import { createFilterConfig } from '@/utils'
+import { createFilterConfig, fileNameFromPath } from '@/utils'
 import filterJSON from '@/assets/filters.json'
 
 export default {
     name: "Samples",
-    data: function () {
-        return {
-            loading: false,
-            loaded: false,
-            lastTotalNumberOfVariants: 0,
-            lastPath: null
-        }
-    },
     methods: {
-        fileNameFromPath(path) {
-          return path.replace(/^.*[\\\/]/, '') // eslint-disable-line
-        },
         loadGSVarFileFromPath (path) {
             let vm = this
             return new Promise((resolve, reject) => {
-                let fileName = vm.fileNameFromPath(path)
+                let fileName = fileNameFromPath(path)
                 fetch(`${vm.$basePath}/download/truncated/${fileName}`).then((response) => {
                     if (response.status === 200) {
                         response.text().then((line) => {
                             vm.$store.dispatch('replaceLinesFromString', line)
-                            vm.loaded = true
+                            vm.$store.commit('setFileLoaded')
                             resolve(response.statusText)
                         })
                     } else {
@@ -76,11 +67,11 @@ export default {
         },
         updateSelectedFile (file) {
             let vm = this
-            if (vm.lastPath !== file.value) {
+            if (vm.$store.state.lastPath !== file.value) {
                 vm.uploadGSVarFile(file).then(() => {
                     vm.loadGSVarFileFromPath(file.value).then(() => {
-                        vm.lastPath = file.value
-                        vm.lastTotalNumberOfVariants = vm.$store.state.lines.length
+                        vm.$store.commit('updateLastPath', file.value)
+                        vm.$store.commit('updateLastTotalNumberOfVariants', vm.$store.state.lines.length)
                     })
                 })
             }
@@ -89,8 +80,8 @@ export default {
             let vm = this
             let config = createFilterConfig(filterJSON, name)
             let dateAppend = String(Date.now())
-            let outFile = vm.lastPath.replace('.GSvar', `_${dateAppend}.GSVar`)
-            vm.loading = true
+            let outFile = vm.$store.state.lastPath.replace('.GSvar', `_${dateAppend}.GSVar`)
+            vm.$store.commit('toggleFilterFileLoading')
 
             fetch(`${vm.$basePath}/VariantFilterAnnotations`, {
                 method: 'POST',
@@ -98,16 +89,16 @@ export default {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    in: vm.fileNameFromPath(vm.lastPath),
-                    out: vm.fileNameFromPath(outFile),
+                    in: fileNameFromPath(vm.$store.state.lastPath),
+                    out: fileNameFromPath(outFile),
                     filter: config
                 })
             }).then(() => {
                 vm.loadGSVarFileFromPath(outFile)
-                vm.loading = false
+                vm.$store.commit('toggleFilterFileLoading')
             }).catch((err) => {
                 console.error(err) // eslint-disable-line
-                vm.loading = false
+                vm.$store.commit('toggleFilterFileLoading')
             })
         }
     },

@@ -1,7 +1,7 @@
 <template>
     <v-data-table
-        :headers="$store.getters.headers"
-        :items="$store.getters.items"
+        :headers="headers"
+        :items="items"
         class="elevation-1"
         :rows-per-page-items="rowsPerPage"
         :loading="loading"
@@ -118,6 +118,14 @@ export default {
         }
     },
     props: {
+        headers: {
+            type: Array,
+            required: true
+        },
+        items: {
+            type: Array,
+            required: true
+        },
         lastTotalNumberOfVariants: {
             type: Number,
             default: 0

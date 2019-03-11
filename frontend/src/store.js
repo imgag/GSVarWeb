@@ -9,7 +9,11 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     filterNames: [].concat(filterJSON.map((filterGroup) => filterGroup)).map((filterGroup) => Object.keys(filterGroup)).flat(),
-    lines: []
+    lines: [],
+    filterFileLoading: false,
+    fileLoaded: false,
+    lastTotalNumberOfVariants: 0,
+    lastPath: 0
   },
   getters: {
     headers (state) {
@@ -20,6 +24,18 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    updateLastPath(state, path) {
+      state.lastPath = path
+    },
+    updateLastTotalNumberOfVariants (state, numberOfVariants) {
+      state.lastTotalNumberOfVariants = numberOfVariants
+    },
+    toggleFilterFileLoading(state) {
+      state.filterFileLoading = !state.filterFileLoading
+    },
+    setFileLoaded(state) {
+      state.fileLoaded = true
+    },
     replaceLines(state, lines) {
       state.lines = lines
     }
