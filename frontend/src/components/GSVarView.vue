@@ -32,7 +32,7 @@ import TooltipText from "@/components/TooltipText"
 
 /// Ported from https://github.com/imgag/ngs-bits/blob/master/src/GSvar/VariantTable.cpp#L114
 /// Since the headers are sorted this array also needs to be sorted by index!
-const colorHeaders = ["gene", "coding_and_splicing", "ClinVar", "HGMD", "NGSD_hom", "NGSD_het", "classification", "validation", "comment"]
+const colorHeaders = ["chr", "start", "end", "ref", "obs", "gene", "coding_and_splicing", "ClinVar", "HGMD", "NGSD_hom", "NGSD_het", "classification", "validation", "comment"]
 
 export default {
     name: "GSVarView",
@@ -71,12 +71,25 @@ export default {
          * @param selected
          */
         updateGene (column, selected) {
-            let gene = column[this.colorMap["gene"]]
+            let gene = {
+                chr: column[this.colorMap["chr"]],
+                start: column[this.colorMap["start"]],
+                end: column[this.colorMap["end"]],
+                ref: column[this.colorMap["ref"]],
+                obs: column[this.colorMap["obs"]],
+                gene: column[this.colorMap["gene"]]
+            }
+
             if (selected) {
                 this.selectedGenes.push(gene)
+                this.$store.commit('updateSelectedGenes', this.selectedGenes)
             } else {
-                let geneIndex = this.selectedGenes.indexOf(gene)
-                if (geneIndex > -1) this.selectedGenes.splice(geneIndex, 1)
+                let geneIndex = this.selectedGenes.findIndex((item) => item.start === gene.start)
+                if (geneIndex > -1)
+                {
+                    this.selectedFile.splice(geneIndex, 1)
+                    this.$store.commit('updateSelectedGenes', this.selectedGenes)
+                }
             }
         },
         getColor(item, index) {

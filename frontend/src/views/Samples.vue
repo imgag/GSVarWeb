@@ -9,7 +9,9 @@
             </filter-select>
         </v-flex>
         <v-flex v-if="$store.state.fileLoaded" xs12>
-            <external-links :selectedGenes="['SAMD11', 'OR4F5']"></external-links>
+            <external-links
+                    :selectedGenes="$store.state.selectedGenes"
+            ></external-links>
             <g-s-var-view
                     :headers="$store.getters.headers"
                     :items="$store.getters.items"

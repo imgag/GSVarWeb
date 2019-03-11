@@ -13,7 +13,8 @@ export default new Vuex.Store({
     filterFileLoading: false,
     fileLoaded: false,
     lastTotalNumberOfVariants: 0,
-    lastPath: 0
+    lastPath: 0,
+    selectedGenes: []
   },
   getters: {
     headers (state) {
@@ -24,6 +25,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    updateSelectedGenes(state, selectedGenes) {
+      state.selectedGenes = selectedGenes
+    },
     updateLastPath(state, path) {
       state.lastPath = path
     },
