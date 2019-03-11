@@ -1,7 +1,7 @@
 <template>
     <v-data-table
-        :headers="headers"
-        :items="items"
+        :headers="$store.getters.headers"
+        :items="$store.getters.items"
         class="elevation-1"
         :rows-per-page-items="rowsPerPage"
         :loading="loading"
@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { produceHeaders } from "@/utils"
 import TooltipText from "@/components/TooltipText"
 
 /// Ported from https://github.com/imgag/ngs-bits/blob/master/src/GSvar/VariantTable.cpp#L114
@@ -52,14 +51,8 @@ export default {
         }
     },
     computed: {
-        headers () {
-            return produceHeaders(this.lines.slice(0, 1)[0])
-        },
-        items () {
-            return this.lines.slice(1)
-        },
         colorIndexes () {
-            let headers = this.headers.map((header) => header.value)
+            let headers = this.$store.getters.headers.map((header) => header.value)
             return headers.filter((header) => colorHeaders.includes(header)).map((header) => headers.indexOf(header))
         },
         colorMap () {
@@ -132,10 +125,6 @@ export default {
         loading: {
             type: Boolean,
             default: false
-        },
-        lines: {
-            type: Array,
-            required: true
         }
     }
 }

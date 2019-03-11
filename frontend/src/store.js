@@ -2,14 +2,22 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import filterJSON from '@/assets/filters.json'
-import { parseTSV } from '@/utils'
+import { parseTSV, produceHeaders } from '@/utils'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    filters: [].concat(filterJSON.map((filterGroup) => filterGroup)).map((filterGroup) => Object.keys(filterGroup)).flat(),
+    filterNames: [].concat(filterJSON.map((filterGroup) => filterGroup)).map((filterGroup) => Object.keys(filterGroup)).flat(),
     lines: []
+  },
+  getters: {
+    headers (state) {
+      return produceHeaders(state.lines.slice(0, 1)[0])
+    },
+    items (state) {
+      return state.lines.slice(1)
+    }
   },
   mutations: {
     replaceLines(state, lines) {

@@ -2,7 +2,7 @@
     <v-layout column>
         <v-flex xs2 class="mb-2">
             <filter-select
-                    :filterNames="$store.state.filters"
+                    :filterNames="$store.state.filterNames"
                     v-on:updateSelectedFile="updateSelectedFile($event)"
                     v-on:applyFilter="applyFilter($event)"
             >
@@ -11,7 +11,6 @@
         <v-flex v-if="loaded" xs12>
             <external-links :selectedGenes="['SAMD11', 'OR4F5']"></external-links>
             <g-s-var-view
-                    :lines="$store.state.lines"
                     :loading="loading"
                     :lastTotalNumberOfVariants="lastTotalNumberOfVariants"
             >
