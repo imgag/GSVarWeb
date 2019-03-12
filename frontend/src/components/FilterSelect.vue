@@ -45,6 +45,7 @@
                 <v-btn
                         color="primary"
                         @click="applyFilter"
+                        :disabled="(selectedFilterName === $store.state.lastSelectedFilterName) || $store.state.filterFileLoading"
                 >
                     Apply filter
                 </v-btn>

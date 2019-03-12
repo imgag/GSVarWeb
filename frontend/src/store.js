@@ -21,6 +21,7 @@ export default new Vuex.Store({
 
     // Current file and stage
     lastTotalNumberOfVariants: 0,
+    lastSelectedFilterName: "",
     step: 1,
 
     // Selection
@@ -56,6 +57,9 @@ export default new Vuex.Store({
     },
     updateSelectedGenes(state, selectedGenes) {
       state.selectedGenes = selectedGenes
+    },
+    updateLastSelectedFilterName(state, name) {
+      state.lastSelectedFilterName = name
     }
   },
   actions: {
@@ -173,6 +177,7 @@ export default new Vuex.Store({
           filter: config
         })
       }).then(() => {
+        context.commit('updateLastSelectedFilterName', name)
         context.dispatch('loadGSVarFileFromPath', outFile)
         context.commit('toggleFilterFileLoading')
       }).catch((err) => {
@@ -185,7 +190,7 @@ export default new Vuex.Store({
       fetch(`${$basePath}/count/${fileName}`).then((response) => {
         if (response.status === 200) {
           response.json().then((count) => {
-            context.commit('updateLastTotalNumberOfVariants', count)
+            context.commit('updateLastTotalNumberOfVariants', Number(count))
           })
         } else {
           console.error(response.statusText) // eslint-disable-line no-console
