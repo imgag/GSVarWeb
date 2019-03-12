@@ -5,8 +5,18 @@
         class="elevation-1"
         :rows-per-page-items="rowsPerPage"
         :loading="loading"
-        select-all
     >
+        <template slot="headers" slot-scope="props">
+            <tr>
+                <th></th> <!-- insert empty th for selectable behaviour -->
+                <th
+                    v-for="header in props.headers"
+                    :key="header.text"
+                >
+                    {{ header.text }}
+                </th>
+            </tr>
+        </template>
         <template slot="items" slot-scope="props">
             <td>
                 <v-checkbox
