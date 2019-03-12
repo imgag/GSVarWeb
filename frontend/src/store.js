@@ -21,11 +21,11 @@ export default new Vuex.Store({
 
     // Current file and stage
     lastTotalNumberOfVariants: 0,
-    lastPath: 0,
     step: 1,
 
     // Selection
-    selectedGenes: []
+    selectedGenes: [],
+    selectedFilePath: null
   },
   getters: {
   },
@@ -45,8 +45,8 @@ export default new Vuex.Store({
     setFileLoaded(state) {
       state.fileLoaded = true
     },
-    updateLastPath(state, path) {
-      state.lastPath = path
+    updateSelectedFilePath(state, path) {
+      state.selectedFilePath = path
     },
     updateLastTotalNumberOfVariants (state, numberOfVariants) {
       state.lastTotalNumberOfVariants = numberOfVariants
@@ -130,29 +130,36 @@ export default new Vuex.Store({
       })
     },
     /**
-     *
+     * Updates selected file
+     * @function
      * @param context
      * @param file
      */
     updateSelectedFile(context, file) {
-      if (context.state.lastPath !== file.value) {
+      if (context.state.selectedFilePath !== file.value) {
         context.commit('toggleFileLoading')
         context.dispatch('uploadGSVarFile', file).then(() => {
           context.dispatch('loadGSVarFileFromPath', file.value).then(() => {
-            context.commit('updateLastPath', file.value)
-            context.commit('updateLastTotalNumberOfVariants', context.state.lines.length)
-            context.commit('incrementStep')
+            context.commit('updateSelectedFilePath', file.value)
+            context.dispatch('updateLastTotalNumberOfVariants')
             context.commit('toggleFileLoading')
+            context.commit('incrementStep')
           })
         })
       } else {
         context.commit('incrementStep')
       }
     },
+    /**
+     * Applies filter with new file path
+     * @function
+     * @param context
+     * @param name
+     */
     applyFilter (context, name) {
       let config = createFilterConfig(filterJSON, name)
       let dateAppend = String(Date.now())
-      let outFile = context.state.lastPath.replace('.GSvar', `_${dateAppend}.GSVar`)
+      let outFile = context.state.selectedFilePath.replace('.GSvar', `_${dateAppend}.GSVar`)
       context.commit('toggleFilterFileLoading')
 
       fetch(`${$basePath}/VariantFilterAnnotations`, {
@@ -161,7 +168,7 @@ export default new Vuex.Store({
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          in: fileNameFromPath(context.state.lastPath),
+          in: fileNameFromPath(context.state.selectedFilePath),
           out: fileNameFromPath(outFile),
           filter: config
         })
@@ -169,8 +176,20 @@ export default new Vuex.Store({
         context.dispatch('loadGSVarFileFromPath', outFile)
         context.commit('toggleFilterFileLoading')
       }).catch((err) => {
-        console.error(err) // eslint-disable-line
+        console.error(err) // eslint-disable-line no-console
         context.commit('toggleFilterFileLoading')
+      })
+    },
+    updateLastTotalNumberOfVariants(context) {
+      let fileName = fileNameFromPath(context.state.selectedFilePath)
+      fetch(`${$basePath}/count/${fileName}`).then((response) => {
+        if (response.status === 200) {
+          response.json().then((count) => {
+            context.commit('updateLastTotalNumberOfVariants', count)
+          })
+        } else {
+          console.error(response.statusText) // eslint-disable-line no-console
+        }
       })
     }
   }
