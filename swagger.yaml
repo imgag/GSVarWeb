@@ -33,8 +33,25 @@ paths:
           description: 'failed, e.g file can not be uploaded'
           schema:
             type: 'string'
+  /count/{filePath}:
+    get:
+      description: "Count items in a file"
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "filePath"
+        in: "path"
+        description: "Path to the file"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: 'successfull'
+          schema:
+            type: "number"
   /download/{filePath}:
     get:
+      description: "Download a file from given path eventually cutting it with Lines header"
       produces: 
       - "text/gsvar"
       parameters:

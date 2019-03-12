@@ -1,6 +1,8 @@
 import os
 import tempfile
 import uuid
+import subprocess
+import sys
 
 from flask import current_app, send_from_directory, abort
 from werkzeug.utils import secure_filename
@@ -11,6 +13,25 @@ import six
 from swagger_server import util
 
 ALLOWED_EXTENSIONS = set(['GSvar'])
+
+def count_file_path_get(filePath):  # noqa: E501
+    """count_file_path_get
+
+    Count items in a file # noqa: E501
+
+    :param filePath: Path to the file
+    :type filePath: str
+
+    :rtype: float
+    """
+    absFilePath = os.path.join(current_app.config['UPLOAD_FOLDER'], filePath)
+    if os.path.isfile(absFilePath):
+        command = "cat {} | grep -v '#' | wc -l".format(absFilePath)
+        count = subprocess.check_output(command, shell=True)
+        count = str(count, sys.stdout.encoding).strip()
+        return count
+    else:
+        abort(404)
 
 def download_file_path_get(filePath):  # noqa: E501
     """download_file_path_get

@@ -37,8 +37,28 @@ paths:
           schema:
             type: "string"
       x-swagger-router-controller: "swagger_server.controllers.default_controller"
+  /count/{filePath}:
+    get:
+      description: "Count items in a file"
+      operationId: "count_file_path_get"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "filePath"
+        in: "path"
+        description: "Path to the file"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successfull"
+          schema:
+            type: "number"
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
   /download/{filePath}:
     get:
+      description: "Download a file from given path eventually cutting it with Lines\
+        \ header"
       operationId: "download_file_path_get"
       produces:
       - "text/gsvar"
