@@ -6,7 +6,7 @@ import { parseTSV, produceHeaders, fileNameFromPath, createFilterConfig } from '
 
 Vue.use(Vuex)
 
-const $basePath = 'http://localhost:9000/v1'
+const $basePath = (process.env.VUE_APP_BASEPATH) ? process.env.VUE_APP_BASEPATH : 'http://localhost:9000/v1'
 
 export default new Vuex.Store({
   state: {
