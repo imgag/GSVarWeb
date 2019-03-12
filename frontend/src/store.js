@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import filterJSON from '@/assets/filters.json'
 import { parseTSV, produceHeaders, fileNameFromPath, createFilterConfig } from '@/utils'
+const flat = require('array.prototype.flat');
 
 Vue.use(Vuex)
 
@@ -10,7 +11,7 @@ const $basePath = (process.env.VUE_APP_BASEPATH) ? process.env.VUE_APP_BASEPATH 
 
 export default new Vuex.Store({
   state: {
-    filterNames: [].concat(filterJSON.map((filterGroup) => filterGroup)).map((filterGroup) => Object.keys(filterGroup)).flat(),
+    filterNames: flat([].concat(filterJSON.map((filterGroup) => filterGroup)).map((filterGroup) => Object.keys(filterGroup))),
     lines: [],
     headers: [],
 
