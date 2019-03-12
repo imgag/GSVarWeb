@@ -51,7 +51,7 @@ export default {
     },
     computed: {
         colorIndexes () {
-            let headers = this.$store.getters.headers.map((header) => header.value)
+            let headers = this.$store.state.headers.map((header) => header.value)
             return headers.filter((header) => columnHeaders.includes(header)).map((header) => headers.indexOf(header))
         },
         columnMap () {

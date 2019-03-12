@@ -13,8 +13,8 @@
                     :selectedGenes="$store.state.selectedGenes"
             ></external-links>
             <g-s-var-view
-                    :headers="$store.getters.headers"
-                    :items="$store.getters.items"
+                    :headers="$store.state.headers"
+                    :items="$store.state.lines"
                     :loading="$store.state.filterFileLoading"
                     :lastTotalNumberOfVariants="$store.state.lastTotalNumberOfVariants"
             >

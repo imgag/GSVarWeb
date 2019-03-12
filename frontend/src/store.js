@@ -12,6 +12,7 @@ export default new Vuex.Store({
   state: {
     filterNames: [].concat(filterJSON.map((filterGroup) => filterGroup)).map((filterGroup) => Object.keys(filterGroup)).flat(),
     lines: [],
+    headers: [],
 
     // Loading states
     filterFileLoading: false,
@@ -27,16 +28,13 @@ export default new Vuex.Store({
     selectedGenes: []
   },
   getters: {
-    headers (state) {
-      return (state.lines.length) ? produceHeaders(state.lines.slice(0, 1)[0]) : []
-    },
-    items (state) {
-      return state.lines.slice(1)
-    }
   },
   mutations: {
     replaceLines(state, lines) {
       state.lines = lines
+    },
+    updateHeaders(state, headers) {
+      state.headers = produceHeaders(headers)
     },
     toggleFilterFileLoading(state) {
       state.filterFileLoading = !state.filterFileLoading
@@ -61,6 +59,12 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    updateHeaders (context) {
+      let lines = context.state.lines
+      let header = lines.splice(0, 1)
+      context.commit('replaceLines', lines)
+      context.commit('updateHeaders', header[0])
+    },
     /**
      * Parses lines
      * @function
@@ -69,6 +73,10 @@ export default new Vuex.Store({
      */
     replaceLinesFromString(context, line) {
       let lines = parseTSV(line)
+      if (lines[0][0].startsWith("#")) {
+        let header = lines.splice(0, 1)
+        context.commit('updateHeaders', header[0])
+      }
       context.commit('replaceLines', lines)
     },
     /**
