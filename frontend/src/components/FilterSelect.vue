@@ -18,7 +18,7 @@
                 >
                 <input
                         type="file"
-                        @change="selectedFile = $event.srcElement"
+                        @change="selectedFile = $event.target"
                         accept=".GSvar"
                 />
                 </v-input>
