@@ -9,7 +9,7 @@ Currently it is capable of displaying and processing `.GSvar` files
 
 ## Architecture
 
-`ngs-remote` consists of server API [specified as](./swagger.yaml) [OpenAPI](https://www.openapis.org/) and implemented with [flask](http://flask.pocoo.org). 
+`ngs-remote` consists of server API which is [specified](./swagger.yaml) and implemented with [flask](http://flask.pocoo.org) using [OpenAPI](https://www.openapis.org/). 
 
 Installation instructions can be found in the [API folder](./api/README.md).
 
@@ -36,7 +36,7 @@ The API works by invoking shell pipelines and the command line interface of `ngs
 
 ### Frontend
 
-The frontend is a single page application built with Vue and Vuetify. Build instructions can be found in [frontend folder](./frontend/README.md).
+The frontend is a single page application built with [Vue](https://vuejs.org/) and [Vuetify](https://vuetifyjs.com/en/). Build instructions can be found in [frontend folder](./frontend/README.md).
 
 The following environment variables can be set:
 
