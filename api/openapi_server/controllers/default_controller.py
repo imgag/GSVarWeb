@@ -10,11 +10,20 @@ from werkzeug.exceptions import BadRequest
 import connexion
 import six
 
-from swagger_server import util
+from openapi_server import util
 
 ALLOWED_EXTENSIONS = set(['GSvar'])
 
 def count_file_path_get(filePath):  # noqa: E501
+    """count_file_path_get
+
+    Count items in a file # noqa: E501
+
+    :param file_path: Path to the file
+    :type file_path: str
+
+    :rtype: float
+    """
     """count_file_path_get
 
     Count items in a file # noqa: E501
@@ -33,24 +42,29 @@ def count_file_path_get(filePath):  # noqa: E501
     else:
         abort(404)
 
-def download_file_path_get(filePath):  # noqa: E501
+
+def download_file_path_get(filePath, lines=None):  # noqa: E501
     """download_file_path_get
 
-     # noqa: E501
+    Download a file from given path eventually cutting it with Lines header # noqa: E501
 
     :param filePath: Path to the file
     :type filePath: str
+    :param lines: The lines to serve represented as from-to e.g 1-100 starting at 1
+    :type lines: str
 
     :rtype: file
     """
     absFilePath = os.path.join(current_app.config['UPLOAD_FOLDER'], filePath)
     if os.path.isfile(absFilePath): # this makes sure the upload folder is not escaped
         lines = connexion.request.headers['Lines'] if 'lines' in connexion.request.headers else None
-        lines = lines.split('-')
 
         if lines:
+            lines = lines.split('-')
             if len(lines) != 2:
                 raise BadRequest("Lines should contain two elements, not {}".format(len(lines)))
+            elif not len(lines[0]):
+                raise BadRequest("You cannot specify a negative number here..")
             elif lines[0] > lines[1]:
                 raise BadRequest("Lines should be formatted like start-end")
             elif int(lines[0]) < 1:
@@ -68,6 +82,7 @@ def download_file_path_get(filePath):  # noqa: E501
             return send_from_directory(directory=current_app.config['UPLOAD_FOLDER'], filename=filePath)
     else:
         abort(404)
+    return 'do some magic!'
 
 def upload_post(uploadedFile=None):  # noqa: E501
     """upload_post
@@ -87,3 +102,4 @@ def upload_post(uploadedFile=None):  # noqa: E501
         uploadedFile.save(absFilePath) # this will raise a IOError if something goes wrong
 
     return "successfull"
+

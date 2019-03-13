@@ -4,15 +4,14 @@ import os
 
 import connexion
 
-from swagger_server import encoder
+from openapi_server import encoder
 from flask import send_from_directory
 from flask_cors import CORS
 
-
 def main():
-    app = connexion.App(__name__, specification_dir='./swagger/')
+    app = connexion.App(__name__, specification_dir='./openapi/')
     app.app.json_encoder = encoder.JSONEncoder
-    app.add_api('swagger.yaml', arguments={'title': 'ngs-bits'})
+    app.add_api('openapi.yaml', arguments={'title': 'ngs-bits'})
     app.app.config['UPLOAD_FOLDER'] = os.path.abspath(os.getenv('NGS_BITS_DATA', os.getcwd()))
     app.app.config['ALLOWED_EXTENSIONS'] = set(['tsv', 'gsvar'])
     CORS(app.app) # enable CORS for all
@@ -26,7 +25,6 @@ def main():
             return send_from_directory(directory=os.path.join(os.getcwd(), 'dist'), filename=path)
     
     app.run(port=os.getenv('PORT', 8080))
-
 
 if __name__ == '__main__':
     main()

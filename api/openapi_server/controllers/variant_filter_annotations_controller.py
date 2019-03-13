@@ -7,29 +7,28 @@ from werkzeug.exceptions import BadRequest
 import connexion
 import six
 
-from swagger_server.models.variant_filter_request import VariantFilterRequest  # noqa: E501
-from swagger_server import util
-from swagger_server.tools.import_and_convert import convert_dict_to_lines
+from openapi_server.models.variant_filter_request import VariantFilterRequest  # noqa: E501
+from openapi_server import util
+from openapi_server.tools.import_and_convert import convert_dict_to_lines
 
-
-def variant_filter_annotations_post(body=None):  # noqa: E501
+def variant_filter_annotations_post(variant_filter_request=None):  # noqa: E501
     """variant_filter_annotations_post
 
      # noqa: E501
 
-    :param body: 
-    :type body: dict | bytes
+    :param variant_filter_request: 
+    :type variant_filter_request: dict | bytes
 
     :rtype: None
     """
     if connexion.request.is_json:
-        body = VariantFilterRequest.from_dict(connexion.request.get_json())  # noqa: E501
-    
-    absInPath = os.path.join(current_app.config['UPLOAD_FOLDER'], body._in)
-    absOutPath = os.path.join(current_app.config['UPLOAD_FOLDER'], body.out)
+        variant_filter_request = VariantFilterRequest.from_dict(connexion.request.get_json())  # noqa: E501
+
+    absInPath = os.path.join(current_app.config['UPLOAD_FOLDER'], variant_filter_request._in)
+    absOutPath = os.path.join(current_app.config['UPLOAD_FOLDER'], variant_filter_request.out)
 
     if os.path.isfile(absInPath) and not os.path.isfile(absOutPath):
-        lines = convert_dict_to_lines(body.filter)
+        lines = convert_dict_to_lines(variant_filter_request.filter)
         tmpPath = os.path.join(tempfile.gettempdir(), uuid.uuid4().hex)
         with open(tmpPath, "w") as tmpFile: # write filters file
             tmpFile.write(lines)

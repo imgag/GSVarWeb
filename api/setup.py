@@ -3,7 +3,7 @@
 import sys
 from setuptools import setup, find_packages
 
-NAME = "swagger_server"
+NAME = "openapi_server"
 VERSION = "1.0.0"
 
 # To install the library, run the following
@@ -13,7 +13,12 @@ VERSION = "1.0.0"
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
 
-REQUIRES = ["connexion"]
+REQUIRES = [
+    "connexion==2.0.0",
+    "swagger-ui-bundle==0.0.2",
+    "python_dateutil==2.6.0",
+    "flask-cors == 3.0.7"
+]
 
 setup(
     name=NAME,
@@ -21,13 +26,13 @@ setup(
     description="ngs-bits",
     author_email="marc.sturm@med.uni-tuebingen.de",
     url="",
-    keywords=["Swagger", "ngs-bits"],
+    keywords=["OpenAPI", "ngs-bits"],
     install_requires=REQUIRES,
     packages=find_packages(),
-    package_data={'': ['swagger/swagger.yaml']},
+    package_data={'': ['openapi/openapi.yaml']},
     include_package_data=True,
     entry_points={
-        'console_scripts': ['swagger_server=swagger_server.__main__:main']},
+        'console_scripts': ['openapi_server=openapi_server.__main__:main']},
     long_description="""\
     Short-read sequencing tools
     """

@@ -9,7 +9,7 @@ Currently it is capable of displaying and processing `.GSvar` files
 
 ## Architecture
 
-`ngs-remote` consists of server API which is [specified](./swagger.yaml) and implemented with [flask](http://flask.pocoo.org) using [OpenAPI](https://www.openapis.org/). 
+`ngs-remote` consists of server API which is [specified](./openapi.yaml) and implemented with [flask](http://flask.pocoo.org) using [OpenAPI](https://www.openapis.org/). 
 
 Installation instructions can be found in the [API folder](./api/README.md).
 
@@ -25,10 +25,10 @@ The following environment variables can be set during startup:
 You can start the server using above variables like so:
 
 ```
-PORT=9000 NGS_BITS_DATA=$PWD/data NGS_BITS_BIN=/some/path/to/ngs-bits/bin SERVE_DIST=True python3 -m swagger_server
+PORT=9000 NGS_BITS_DATA=$PWD/data NGS_BITS_BIN=/some/path/to/ngs-bits/bin SERVE_DIST=True python3 -m openapi_server
 ```
 
-You can find the Swagger UI under `/v1/ui` for testing and experiment purposes.
+You can find the OpenAPI UI under `/v1/ui` for testing and experiment purposes.
 
 For convenience reasons the server also can serve files from the `dist` folder, allowing it to serve the frontend.
 

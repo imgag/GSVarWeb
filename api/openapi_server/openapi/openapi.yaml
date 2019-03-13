@@ -1,0 +1,150 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: marc.sturm@med.uni-tuebingen.de
+  description: Short-read sequencing tools
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: ngs-bits
+  version: "2018_11"
+externalDocs:
+  description: Find out more about ngs-bits
+  url: http://github.com/imgag/ngs-bits
+servers:
+- url: /v1
+tags:
+- description: Filters variants by annotation
+  name: VariantFilterAnnotations
+paths:
+  /upload:
+    post:
+      description: Uploads a file to the server
+      operationId: upload_post
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object'
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                uploadedFile:
+                  description: The GSVar file to upload.
+                  format: binary
+                  type: string
+              type: object
+      responses:
+        200:
+          description: successfull
+        400:
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: failed, e.g file can not be uploaded
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /count/{filePath}:
+    get:
+      description: Count items in a file
+      operationId: count_file_path_get
+      parameters:
+      - description: Path to the file
+        explode: false
+        in: path
+        name: filePath
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: number
+          description: successfull
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /download/{filePath}:
+    get:
+      description: Download a file from given path eventually cutting it with Lines header
+      operationId: download_file_path_get
+      parameters:
+      - description: Path to the file
+        explode: false
+        in: path
+        name: filePath
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The lines to serve represented as from-to e.g 1-100 starting at 1
+        explode: false
+        in: header
+        name: Lines
+        required: false
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            text/gsvar:
+              schema:
+                format: binary
+                type: string
+          description: successfull
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /VariantFilterAnnotations:
+    post:
+      operationId: variant_filter_annotations_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VariantFilterRequest'
+      responses:
+        200:
+          description: successfull
+        400:
+          content:
+            application/json:
+              schema:
+                type: string
+          description: bad request
+      tags:
+      - VariantFilterAnnotations
+      x-openapi-router-controller: openapi_server.controllers.variant_filter_annotations_controller
+components:
+  requestBodies:
+    inline_object:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/inline_object'
+  schemas:
+    VariantFilterRequest:
+      example:
+        filter:
+        - '{}'
+        - '{}'
+        in: in
+        out: out
+      properties:
+        in:
+          format: file
+          type: string
+        out:
+          format: file
+          type: string
+        filter:
+          description: The filter dict to apply
+          items:
+            type: object
+          type: array
+      type: object
+    inline_object:
+      properties:
+        uploadedFile:
+          description: The GSVar file to upload.
+          format: binary
+          type: string
+      type: object

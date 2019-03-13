@@ -5,8 +5,8 @@ from __future__ import absolute_import
 from flask import json
 from six import BytesIO
 
-from swagger_server.models.variant_filter_request import VariantFilterRequest  # noqa: E501
-from swagger_server.test import BaseTestCase
+from openapi_server.models.variant_filter_request import VariantFilterRequest  # noqa: E501
+from openapi_server.test import BaseTestCase
 
 
 class TestVariantFilterAnnotationsController(BaseTestCase):
@@ -17,11 +17,11 @@ class TestVariantFilterAnnotationsController(BaseTestCase):
 
         
         """
-        body = VariantFilterRequest()
+        variant_filter_request = VariantFilterRequest()
         response = self.client.open(
             '/v1/VariantFilterAnnotations',
             method='POST',
-            data=json.dumps(body),
+            data=json.dumps(variant_filter_request),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))

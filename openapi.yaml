@@ -1,0 +1,117 @@
+openapi: 3.0.0
+info:
+  description: Short-read sequencing tools
+  version: "2018_11"
+  title: ngs-bits
+  contact:
+    email: marc.sturm@med.uni-tuebingen.de
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+tags:
+  - name: VariantFilterAnnotations
+    description: Filters variants by annotation
+paths:
+  /upload:
+    post:
+      description: Uploads a file to the server
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                uploadedFile:
+                  description: The GSVar file to upload.
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: successfull
+        "400":
+          description: failed, e.g file can not be uploaded
+          content:
+            "*/*":
+              schema:
+                type: string
+  "/count/{filePath}":
+    get:
+      description: Count items in a file
+      parameters:
+        - name: filePath
+          in: path
+          description: Path to the file
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successfull
+          content:
+            application/json:
+              schema:
+                type: number
+  "/download/{filePath}":
+    get:
+      description: Download a file from given path eventually cutting it with Lines header
+      parameters:
+        - name: filePath
+          in: path
+          description: Path to the file
+          required: true
+          schema:
+            type: string
+        - name: Lines
+          in: header
+          description: The lines to serve represented as from-to e.g 1-100 starting at 1
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successfull
+          content:
+            text/gsvar:
+              schema:
+                type: string
+                format: binary
+  /VariantFilterAnnotations:
+    post:
+      tags:
+        - VariantFilterAnnotations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VariantFilterRequest"
+      responses:
+        "200":
+          description: successfull
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: string
+externalDocs:
+  description: Find out more about ngs-bits
+  url: http://github.com/imgag/ngs-bits
+servers:
+  - url: /v1
+components:
+  schemas:
+    VariantFilterRequest:
+      type: object
+      properties:
+        in:
+          type: string
+          format: file
+        out:
+          type: string
+          format: file
+        filter:
+          type: array
+          items:
+            type: object
+          description: The filter dict to apply
+
