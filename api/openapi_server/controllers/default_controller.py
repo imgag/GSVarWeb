@@ -66,8 +66,8 @@ def vcf2gsvar_file_path_get(filePath):  # noqa: E501
                 raise BadRequest("Command exited with status while checking the VCF {}".format(status))
 
             megSAP = os.path.abspath(os.getenv('MEGSAP_DIR'))
-            command = "php {}/src/NGS/vcf2gsvar.php -in {} -out {}".format(megSAP, absFilePath, absGSvarPath)
-            status = os.system(fullCommand)
+            megSAPcommand = "php {}/src/NGS/vcf2gsvar.php -in {} -out {}".format(megSAP, absFilePath, absGSvarPath)
+            status = os.system(megSAPcommand)
             if status == 0:
                 return os.path.basename(absGSvarPath)
             else:
