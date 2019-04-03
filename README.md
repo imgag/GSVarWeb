@@ -20,6 +20,7 @@ The following environment variables can be set during startup:
 | PORT          | Which port the server should listen on   | 8080    |
 | NGS_BITS_DATA | Where to put uploaded files              | $PWD    |
 | NGS_BITS_BIN  | Where to find ngs bits binaries          | $PWD    |
+| MEGSAP_DIR    | Where to find the megSAP directory       | None    |
 | SERVE_DIST    | Whether the dist folder should be served | False   |
 
 You can start the server using above variables like so:

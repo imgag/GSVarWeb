@@ -42,6 +42,33 @@ paths:
                 type: string
           description: failed, e.g file can not be uploaded
       x-openapi-router-controller: openapi_server.controllers.default_controller
+  /vcf2gsvar/{filePath}:
+    get:
+      description: Converts a VCF file to a GSvar
+      operationId: vcf2gsvar_file_path_get
+      parameters:
+      - description: The GSvar file to convert
+        explode: false
+        in: path
+        name: filePath
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: number
+          description: successfull
+        400:
+          content:
+            application/json:
+              schema:
+                type: string
+          description: error
+      x-openapi-router-controller: openapi_server.controllers.default_controller
   /count/{filePath}:
     get:
       description: Count items in a file

@@ -34,6 +34,29 @@ paths:
             "*/*":
               schema:
                 type: string
+  "/vcf2gsvar/{filePath}":
+    get:
+      description: "Converts a VCF file to a GSvar"
+      parameters: 
+        - name: filePath
+          in: path
+          description: The GSvar file to convert
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successfull
+          content:
+            application/json:
+              schema:
+                type: number
+        "400":
+          description: error
+          content:
+            application/json:
+              schema:
+                type: string
   "/count/{filePath}":
     get:
       description: Count items in a file
