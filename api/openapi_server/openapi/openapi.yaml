@@ -16,6 +16,8 @@ servers:
 tags:
 - description: Filters variants by annotation
   name: VariantFilterAnnotations
+- description: Various tools depending on megSAP
+  name: megSAP
 paths:
   /upload:
     post:
@@ -68,7 +70,9 @@ paths:
               schema:
                 type: string
           description: error
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      tags:
+      - megSAP
+      x-openapi-router-controller: openapi_server.controllers.meg_sap_controller
   /count/{filePath}:
     get:
       description: Count items in a file

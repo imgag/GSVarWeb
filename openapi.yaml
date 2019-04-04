@@ -11,6 +11,8 @@ info:
 tags:
   - name: VariantFilterAnnotations
     description: Filters variants by annotation
+  - name: megSAP
+    description: Various tools depending on megSAP
 paths:
   /upload:
     post:
@@ -37,6 +39,8 @@ paths:
   "/vcf2gsvar/{filePath}":
     get:
       description: "Converts a VCF file to a GSvar"
+      tags:
+        - megSAP
       parameters: 
         - name: filePath
           in: path
