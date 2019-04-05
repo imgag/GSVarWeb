@@ -73,6 +73,35 @@ paths:
       tags:
       - megSAP
       x-openapi-router-controller: openapi_server.controllers.meg_sap_controller
+  /an_vep/{filePath}:
+    get:
+      description: Annotates a VCF using VEP
+      operationId: an_vep_file_path_get
+      parameters:
+      - description: The VCF file to annotate
+        explode: false
+        in: path
+        name: filePath
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: number
+          description: successfull
+        400:
+          content:
+            application/json:
+              schema:
+                type: string
+          description: error
+      tags:
+      - megSAP
+      x-openapi-router-controller: openapi_server.controllers.meg_sap_controller
   /count/{filePath}:
     get:
       description: Count items in a file
@@ -179,3 +208,8 @@ components:
           format: binary
           type: string
       type: object
+  securitySchemes:
+    jwt:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http

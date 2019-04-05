@@ -61,6 +61,31 @@ paths:
             application/json:
               schema:
                 type: string
+  "/an_vep/{filePath}":
+    get:
+      description: "Annotates a VCF using VEP"
+      tags:
+        - megSAP
+      parameters: 
+        - name: filePath
+          in: path
+          description: The VCF file to annotate
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successfull
+          content:
+            application/json:
+              schema:
+                type: number
+        "400":
+          description: error
+          content:
+            application/json:
+              schema:
+                type: string
   "/count/{filePath}":
     get:
       description: Count items in a file
@@ -126,6 +151,11 @@ externalDocs:
 servers:
   - url: /v1
 components:
+  securitySchemes:
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     VariantFilterRequest:
       type: object

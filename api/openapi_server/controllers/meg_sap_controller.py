@@ -7,6 +7,32 @@ from werkzeug.exceptions import BadRequest
 
 from openapi_server import util
 
+def an_vep_file_path_get(filePath):  # noqa: E501
+    """an_vep_file_path_get
+
+    Annotates a VCF using VEP # noqa: E501
+
+    :param file_path: The VCF file to annotate
+    :type file_path: str
+
+    :rtype: string
+    """
+    absFilePath = os.path.join(current_app.config['UPLOAD_FOLDER'], filePath)
+    if os.path.isfile(absFilePath):
+        absOutPath = absFilePath.replace(".vcf", "_annotated.vcf")
+        if not os.path.isfile(absOutPath):
+            megSAP = os.path.abspath(os.getenv('MEGSAP_DIR'))
+            megSAPcommand = "php {}/src/NGS/an_vep.php -in {} -out {}".format(megSAP, absFilePath, absOutPath)
+            status = os.system(megSAPcommand)
+            if status == 0:
+                return os.path.basename(absOutPath)
+            else:
+                raise BadRequest("Command exited with status {}".format(status))
+        else:
+            return os.path.basename(absOutPath)
+    else:
+        abort(404)
+
 def vcf2gsvar_file_path_get(filePath):  # noqa: E501
     """vcf2gsvar_file_path_get
 
@@ -15,7 +41,7 @@ def vcf2gsvar_file_path_get(filePath):  # noqa: E501
     :param file_path: The GSvar file to convert
     :type file_path: str
 
-    :rtype: None
+    :rtype: string
     """
 
     absFilePath = os.path.join(current_app.config['UPLOAD_FOLDER'], filePath)
@@ -28,7 +54,7 @@ def vcf2gsvar_file_path_get(filePath):  # noqa: E501
 
             status = os.system(fullCommand)
             if status != 0:
-                raise BadRequest("Command exited with status while checking the VCF {}".format(status))
+                raise BadRequest("Command exited with status {} while checking the VCF".format(status))
 
             megSAP = os.path.abspath(os.getenv('MEGSAP_DIR'))
             megSAPcommand = "php {}/src/NGS/vcf2gsvar.php -in {} -out {}".format(megSAP, absFilePath, absGSvarPath)
@@ -40,4 +66,4 @@ def vcf2gsvar_file_path_get(filePath):  # noqa: E501
         else:
             return os.path.basename(absGSvarPath)
     else:
-        abort(400)
+        abort(404)
