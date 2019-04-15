@@ -2,21 +2,25 @@ openapi: 3.0.0
 info:
   description: Short-read sequencing tools
   version: "2018_11"
-  title: ngs-bits
+  title: ngs-remote
   contact:
     email: marc.sturm@med.uni-tuebingen.de
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
 tags:
-  - name: VariantFilterAnnotations
-    description: Filters variants by annotation
+  - name: ngs-bits
+    description: Various tools depending on ngs-bits
   - name: megSAP
     description: Various tools depending on megSAP
+  - name: files
+    description: Controller dealing with file related issues
 paths:
   /upload:
     post:
       description: Uploads a file to the server
+      tags: 
+        - files
       requestBody:
         content:
           multipart/form-data:
@@ -89,6 +93,8 @@ paths:
   "/count/{filePath}":
     get:
       description: Count items in a file
+      tags:
+        - files
       parameters:
         - name: filePath
           in: path
@@ -106,6 +112,8 @@ paths:
   "/download/{filePath}":
     get:
       description: Download a file from given path eventually cutting it with Lines header
+      tags: 
+        - files
       parameters:
         - name: filePath
           in: path
@@ -130,7 +138,7 @@ paths:
   /VariantFilterAnnotations:
     post:
       tags:
-        - VariantFilterAnnotations
+        - ngs-bits
       requestBody:
         content:
           application/json:

@@ -6,7 +6,7 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  title: ngs-bits
+  title: ngs-remote
   version: "2018_11"
 externalDocs:
   description: Find out more about ngs-bits
@@ -14,65 +14,33 @@ externalDocs:
 servers:
 - url: /v1
 tags:
-- description: Filters variants by annotation
-  name: VariantFilterAnnotations
+- description: Various tools depending on ngs-bits
+  name: ngs-bits
 - description: Various tools depending on megSAP
   name: megSAP
+- description: Controller dealing with file related issues
+  name: files
 paths:
-  /upload:
+  /VariantFilterAnnotations:
     post:
-      description: Uploads a file to the server
-      operationId: upload_post
+      operationId: variant_filter_annotations_post
       requestBody:
-        $ref: '#/components/requestBodies/inline_object'
         content:
-          multipart/form-data:
+          application/json:
             schema:
-              properties:
-                uploadedFile:
-                  description: The GSVar file to upload.
-                  format: binary
-                  type: string
-              type: object
+              $ref: '#/components/schemas/VariantFilterRequest'
       responses:
         200:
-          description: successfull
-        400:
-          content:
-            '*/*':
-              schema:
-                type: string
-          description: failed, e.g file can not be uploaded
-      x-openapi-router-controller: openapi_server.controllers.default_controller
-  /vcf2gsvar/{filePath}:
-    get:
-      description: Converts a VCF file to a GSvar
-      operationId: vcf2gsvar_file_path_get
-      parameters:
-      - description: The GSvar file to convert
-        explode: false
-        in: path
-        name: filePath
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        200:
-          content:
-            application/json:
-              schema:
-                type: number
           description: successfull
         400:
           content:
             application/json:
               schema:
                 type: string
-          description: error
+          description: bad request
       tags:
-      - megSAP
-      x-openapi-router-controller: openapi_server.controllers.meg_sap_controller
+      - ngs-bits
+      x-openapi-router-controller: openapi_server.controllers.ngs_bits_controller
   /an_vep/{filePath}:
     get:
       description: Annotates a VCF using VEP
@@ -122,10 +90,13 @@ paths:
               schema:
                 type: number
           description: successfull
-      x-openapi-router-controller: openapi_server.controllers.default_controller
+      tags:
+      - files
+      x-openapi-router-controller: openapi_server.controllers.files_controller
   /download/{filePath}:
     get:
-      description: Download a file from given path eventually cutting it with Lines header
+      description: Download a file from given path eventually cutting it with Lines
+        header
       operationId: download_file_path_get
       parameters:
       - description: Path to the file
@@ -136,7 +107,8 @@ paths:
         schema:
           type: string
         style: simple
-      - description: The lines to serve represented as from-to e.g 1-100 starting at 1
+      - description: The lines to serve represented as from-to e.g 1-100 starting
+          at 1
         explode: false
         in: header
         name: Lines
@@ -152,27 +124,65 @@ paths:
                 format: binary
                 type: string
           description: successfull
-      x-openapi-router-controller: openapi_server.controllers.default_controller
-  /VariantFilterAnnotations:
+      tags:
+      - files
+      x-openapi-router-controller: openapi_server.controllers.files_controller
+  /upload:
     post:
-      operationId: variant_filter_annotations_post
+      description: Uploads a file to the server
+      operationId: upload_post
       requestBody:
+        $ref: '#/components/requestBodies/inline_object'
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: '#/components/schemas/VariantFilterRequest'
+              properties:
+                uploadedFile:
+                  description: The GSVar file to upload.
+                  format: binary
+                  type: string
+              type: object
       responses:
         200:
+          description: successfull
+        400:
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: failed, e.g file can not be uploaded
+      tags:
+      - files
+      x-openapi-router-controller: openapi_server.controllers.files_controller
+  /vcf2gsvar/{filePath}:
+    get:
+      description: Converts a VCF file to a GSvar
+      operationId: vcf2gsvar_file_path_get
+      parameters:
+      - description: The GSvar file to convert
+        explode: false
+        in: path
+        name: filePath
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: number
           description: successfull
         400:
           content:
             application/json:
               schema:
                 type: string
-          description: bad request
+          description: error
       tags:
-      - VariantFilterAnnotations
-      x-openapi-router-controller: openapi_server.controllers.variant_filter_annotations_controller
+      - megSAP
+      x-openapi-router-controller: openapi_server.controllers.meg_sap_controller
 components:
   requestBodies:
     inline_object:
@@ -213,3 +223,4 @@ components:
       bearerFormat: JWT
       scheme: bearer
       type: http
+      x-bearerInfoFunc: openapi_server.controllers.security_controller_.info_from_jwt
