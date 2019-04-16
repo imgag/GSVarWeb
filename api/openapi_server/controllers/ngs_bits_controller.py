@@ -47,4 +47,4 @@ def variant_filter_annotations_post(variant_filter_request=None):  # noqa: E501
 
         raise BadRequest("Could not create the filter file")
     else:
-        raise BadRequest("The file {} wasn't found.".format(body._in))
+        raise BadRequest("The file {} wasn't found.".format(variant_filter_request._in))
