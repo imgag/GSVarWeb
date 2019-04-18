@@ -1,0 +1,6 @@
+dist: xenial
+
+matrix: 
+  include: 
+    - language: node_js
+      script: "cd frontend && npm audit"
