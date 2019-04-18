@@ -16,15 +16,16 @@ def main():
     app.app.config['ALLOWED_EXTENSIONS'] = set(['tsv', 'gsvar'])
     CORS(app.app) # enable CORS for all
 
-    if os.getenv('SERVE_DIST', False): # RTFM. Never deploy this in production
+    production = os.getenv('PRODUCTION', False)    
+    if not production:
         @app.app.route('/')
         def serve_index():
             return send_from_directory(directory=os.path.join(os.getcwd(), 'dist'), filename='index.html')
         @app.app.route('/<path:path>')
         def serve_dist(path):
             return send_from_directory(directory=os.path.join(os.getcwd(), 'dist'), filename=path)
-    
-    app.run(port=os.getenv('PORT', 8080))
+
+    app.run(port=os.getenv('PORT', 8080), debug=not production, use_debugger=not production, use_reloader=not production, passthrough_errors=not production)
 
 if __name__ == '__main__':
     main()
