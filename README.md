@@ -1,5 +1,6 @@
 ngs-remote
 ----------
+[![Build Status](https://travis-ci.org/imgag/ngs-remote.svg?branch=master)](https://travis-ci.org/imgag/ngs-remote)
 
 `ngs-remote` is a remote API and browser application for [ngs-bits](https://github.com/imgag/ngs-bits).
 
