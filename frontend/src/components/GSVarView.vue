@@ -38,126 +38,125 @@
 </template>
 
 <script>
-import TooltipText from "@/components/TooltipText"
+import TooltipText from '@/components/TooltipText'
 
 /// NOTE: Since the headers are sorted this array also needs to be sorted by index
-const columnHeaders = ["chr", "start", "end", "ref", "obs", "gene", "coding_and_splicing", "ClinVar", "HGMD", "NGSD_hom", "NGSD_het", "classification", "validation", "comment"]
+const columnHeaders = ['chr', 'start', 'end', 'ref', 'obs', 'gene', 'coding_and_splicing', 'ClinVar', 'HGMD', 'NGSD_hom', 'NGSD_het', 'classification', 'validation', 'comment']
 
 export default {
-    name: "GSVarView",
-    components: {
-        TooltipText,
+  name: 'GSVarView',
+  components: {
+    TooltipText
+  },
+  data: function () {
+    return {
+      selectedGenes: [],
+      rowsPerPage: [
+        10,
+        25,
+        50,
+        100
+      ]
+    }
+  },
+  computed: {
+    colorIndexes () {
+      let headers = this.$store.state.headers.map((header) => header.value)
+      return headers.filter((header) => columnHeaders.includes(header)).map((header) => headers.indexOf(header))
     },
-    data: function () {
-        return {
-            selectedGenes: [],
-            rowsPerPage: [
-                10,
-                25,
-                50,
-                100
-            ]
-        }
-    },
-    computed: {
-        colorIndexes () {
-            let headers = this.$store.state.headers.map((header) => header.value)
-            return headers.filter((header) => columnHeaders.includes(header)).map((header) => headers.indexOf(header))
-        },
-        columnMap () {
-            return this.colorIndexes.reduce((result, item, index) => {
-                result[columnHeaders[index]] = item
-                return result
-            }, {})
-        }
-    },
-    methods: {
-        /**
+    columnMap () {
+      return this.colorIndexes.reduce((result, item, index) => {
+        result[columnHeaders[index]] = item
+        return result
+      }, {})
+    }
+  },
+  methods: {
+    /**
          * Adds a gene to the list of selected genes if selected is true.
          * Otherwise tries to remove this gene from the list
          * @function
          * @param column
          * @param selected
          */
-        updateSelectedGenes (column, selected) {
-            let selectedGene = {
-                chr: column[this.columnMap["chr"]],
-                start: column[this.columnMap["start"]],
-                end: column[this.columnMap["end"]],
-                ref: column[this.columnMap["ref"]],
-                obs: column[this.columnMap["obs"]],
-                gene: column[this.columnMap["gene"]]
-            }
+    updateSelectedGenes (column, selected) {
+      let selectedGene = {
+        chr: column[this.columnMap['chr']],
+        start: column[this.columnMap['start']],
+        end: column[this.columnMap['end']],
+        ref: column[this.columnMap['ref']],
+        obs: column[this.columnMap['obs']],
+        gene: column[this.columnMap['gene']]
+      }
 
-            if (selected) {
-                this.selectedGenes.push(selectedGene)
-                this.$store.commit('updateSelectedGenes', this.selectedGenes)
-            } else {
-                let geneIndex = this.selectedGenes.findIndex((item) => item.start === selectedGene.start)
-                if (geneIndex > -1)
-                {
-                    this.selectedGenes.splice(geneIndex, 1)
-                    this.$store.commit('updateSelectedGenes', this.selectedGenes)
-                }
-            }
-        },
-        /// Ported from https://github.com/imgag/ngs-bits/blob/master/src/GSvar/VariantTable.cpp#L114
-        getColor(item, index) {
-            let color = ''
-
-            // warning
-            if (index === this.columnMap["coding_and_splicing"] && item.includes(':HIGH:')) {
-                color = 'red'
-            }
-
-            if (index === this.columnMap["classification"] && (item === "3" || item === "M")) {
-                color = 'orange'
-            } else if (index === this.columnMap["classification"] && (item === "4" || item === "5")) {
-                color = 'red'
-            } else if (index === this.columnMap["classification"] && item.includes("pathogenic")) {
-                color = 'red'
-            } else if (index === this.columnMap["classification"] && item.includes("CLASS=DM")) {
-                color = 'red'
-            }
-
-            if (index === this.columnMap["classification"] && (item === "0" || item === "1" || item === "2")) {   // non-pathogenic
-                color = 'green'
-            }
-
-            // highlighted
-            if (index === this.columnMap["validation"] && item.includes("TP")) {
-                color = 'yellow'
-            } else if (index === this.columnMap["comment"] && item !== "") {
-                color = 'yellow'
-            } else if (index === this.columnMap["NGSD_hom"] && item === "0") {
-                color = 'yellow'
-            } else if (index === this.columnMap["NGSD_het"] && item === "1") {
-                color = 'yellow'
-            } else if (index === this.columnMap["ClinVar"] && item.includes("confirmed")) {
-                color = 'yellow'
-            } //else if (index === this.columnMap["genes"]) /// TODO: Deal with imprinting genes
-
-            return color
+      if (selected) {
+        this.selectedGenes.push(selectedGene)
+        this.$store.commit('updateSelectedGenes', this.selectedGenes)
+      } else {
+        let geneIndex = this.selectedGenes.findIndex((item) => item.start === selectedGene.start)
+        if (geneIndex > -1) {
+          this.selectedGenes.splice(geneIndex, 1)
+          this.$store.commit('updateSelectedGenes', this.selectedGenes)
         }
+      }
     },
-    props: {
-        headers: {
-            type: Array,
-            required: true
-        },
-        items: {
-            type: Array,
-            required: true
-        },
-        lastTotalNumberOfVariants: {
-            type: Number,
-            default: 0
-        },
-        loading: {
-            type: Boolean,
-            default: false
-        }
+    /// Ported from https://github.com/imgag/ngs-bits/blob/master/src/GSvar/VariantTable.cpp#L114
+    getColor (item, index) {
+      let color = ''
+
+      // warning
+      if (index === this.columnMap['coding_and_splicing'] && item.includes(':HIGH:')) {
+        color = 'red'
+      }
+
+      if (index === this.columnMap['classification'] && (item === '3' || item === 'M')) {
+        color = 'orange'
+      } else if (index === this.columnMap['classification'] && (item === '4' || item === '5')) {
+        color = 'red'
+      } else if (index === this.columnMap['classification'] && item.includes('pathogenic')) {
+        color = 'red'
+      } else if (index === this.columnMap['classification'] && item.includes('CLASS=DM')) {
+        color = 'red'
+      }
+
+      if (index === this.columnMap['classification'] && (item === '0' || item === '1' || item === '2')) { // non-pathogenic
+        color = 'green'
+      }
+
+      // highlighted
+      if (index === this.columnMap['validation'] && item.includes('TP')) {
+        color = 'yellow'
+      } else if (index === this.columnMap['comment'] && item !== '') {
+        color = 'yellow'
+      } else if (index === this.columnMap['NGSD_hom'] && item === '0') {
+        color = 'yellow'
+      } else if (index === this.columnMap['NGSD_het'] && item === '1') {
+        color = 'yellow'
+      } else if (index === this.columnMap['ClinVar'] && item.includes('confirmed')) {
+        color = 'yellow'
+      } // else if (index === this.columnMap["genes"]) /// TODO: Deal with imprinting genes
+
+      return color
     }
+  },
+  props: {
+    headers: {
+      type: Array,
+      required: true
+    },
+    items: {
+      type: Array,
+      required: true
+    },
+    lastTotalNumberOfVariants: {
+      type: Number,
+      default: 0
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  }
 }
 </script>
 

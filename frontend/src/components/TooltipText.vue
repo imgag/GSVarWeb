@@ -16,12 +16,12 @@
 
 <script>
 export default {
-    name: "TooltipText",
-    props: {
-        text: {
-            type: String,
-            required: true
-        }
+  name: 'TooltipText',
+  props: {
+    text: {
+      type: String,
+      required: true
     }
+  }
 }
 </script>

@@ -13,8 +13,9 @@ def main():
     app.app.json_encoder = encoder.JSONEncoder
     app.add_api('openapi.yaml', arguments={'title': 'ngs-bits'})
     app.app.config['UPLOAD_FOLDER'] = os.path.abspath(os.getenv('NGS_BITS_DATA', os.getcwd()))
-    app.app.config['ALLOWED_EXTENSIONS'] = set(['tsv', 'gsvar'])
-    CORS(app.app) # enable CORS for all
+    app.app.config['ALLOWED_EXTENSIONS'] = {'tsv', 'gsvar'}
+    origins = os.getenv('CORS_ORIGINS', os.getenv('ORIGINS', ['http://localhost:8080']))
+    CORS(app.app, origins=origins, supports_credentials=True) # enable CORS for all
 
     production = os.getenv('PRODUCTION', False)    
     if not production:
@@ -25,7 +26,8 @@ def main():
         def serve_dist(path):
             return send_from_directory(directory=os.path.join(os.getcwd(), 'dist'), filename=path)
 
-    app.run(port=os.getenv('PORT', 8080), debug=not production, use_debugger=not production, use_reloader=not production, passthrough_errors=not production)
+    app.run(port=os.getenv('PORT', 9000), debug=not production, use_debugger=not production, use_reloader=not production, passthrough_errors=not production)
+
 
 if __name__ == '__main__':
     main()

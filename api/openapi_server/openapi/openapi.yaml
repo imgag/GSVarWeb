@@ -13,6 +13,9 @@ externalDocs:
   url: http://github.com/imgag/ngs-bits
 servers:
 - url: /v1
+security:
+- jwt:
+  - secret
 tags:
 - description: Various tools depending on ngs-bits
   name: ngs-bits

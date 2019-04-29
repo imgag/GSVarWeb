@@ -29,12 +29,12 @@ import GSVarView from '@/components/GSVarView'
 import ExternalLinks from '@/components/ExternalLinks'
 
 export default {
-    name: "Samples",
-    components: {
-        FilterSelect,
-        GSVarView,
-        ExternalLinks
-    }
+  name: 'Samples',
+  components: {
+    FilterSelect,
+    GSVarView,
+    ExternalLinks
+  }
 }
 </script>
 

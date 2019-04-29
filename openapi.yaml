@@ -179,4 +179,6 @@ components:
           items:
             type: object
           description: The filter dict to apply
+security: 
+  - jwt: ['secret']
 

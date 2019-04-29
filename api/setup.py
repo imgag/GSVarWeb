@@ -14,10 +14,11 @@ VERSION = "1.0.0"
 # http://pypi.python.org/pypi/setuptools
 
 REQUIRES = [
-    "connexion==2.0.0",
-    "swagger-ui-bundle==0.0.2",
-    "python_dateutil==2.6.0",
-    "flask-cors == 3.0.7"
+    "connexion==2.2.0",
+    "swagger-ui-bundle==0.0.3",
+    "python_dateutil==2.8.0",
+    "flask-cors == 3.0.7",
+    "python-jose[cryptography]"
 ]
 
 setup(

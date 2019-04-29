@@ -16,18 +16,21 @@ Installation instructions can be found in the [API folder](./api/README.md).
 
 The following environment variables can be set during startup:
 
-| Variable      | Meaning                                    | Default |
-| ------------- |:------------------------------------------:|:-------:|
-| PORT          | Which port the server should listen on     | 8080    |
-| NGS_BITS_DATA | Where to put uploaded files                | $PWD    |
-| NGS_BITS_BIN  | Where to find ngs bits binaries            | $PWD    |
-| MEGSAP_DIR    | Where to find the megSAP directory         | None    |
-| PRODUCTION    | Whether or not the server is in production | False   |
+| Variable        | Meaning                                    | Default |
+| --------------- |:------------------------------------------:|:-------:|
+| PORT            | Which port the server should listen on     | 8080    |
+| NGS_BITS_DATA   | Where to put uploaded files                | $PWD    |
+| NGS_BITS_BIN    | Where to find ngs bits binaries            | $PWD    |
+| MEGSAP_DIR      | Where to find the megSAP directory         | None    |
+| PRODUCTION      | Whether or not the server is in production | False   |
+| AUTH_DOMAIN     | The domain to authenticate against  | auth.imgag.de  |
+| REALM           | The authentication realm                   | master  |
+| ORIGINS         | Which origins to allow   | [ http://localhost:8080 ] |
 
 You can start the server using above variables like so:
 
 ```
-PORT=9000 NGS_BITS_DATA=$PWD/data NGS_BITS_BIN=/some/path/to/ngs-bits/bin SERVE_DIST=True python3 -m openapi_server
+PORT=9000 NGS_BITS_DATA=$PWD/data NGS_BITS_BIN=/some/path/to/ngs-bits/bin python3 -m openapi_server
 ```
 
 You can find the OpenAPI UI under `/v1/ui` for testing and experiment purposes.
@@ -42,9 +45,10 @@ The frontend is a single page application built with [Vue](https://vuejs.org/) a
 
 The following environment variables can be set:
 
-| Variable         | Meaning                           | Default                   |
-| ---------------- | --------------------------------- | ------------------------- |
-| VUE_APP_BASEPATH | Which URL to use for API requests | http://localhost:9000/v1/ |
+| Variable          | Meaning                                                  | Default                  | 
+| ----------------- | -------------------------------------------------------- | ------------------------ |
+| VUE_APP_BASEPATH  | Which URL to use for API requests                        | http://localhost:9000/v1 |
+| VUE_APP_AUTHORIZATION_URL | The authorization endpoint to use                | https://auth.imgag.de/auth/realms/master/protocol/openid-connect/auth |
 
 You can invoke environment variables like so:
 
