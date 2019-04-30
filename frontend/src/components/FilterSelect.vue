@@ -32,7 +32,7 @@
                 <input
                         type="file"
                         @change="selectedFile = $event.target"
-                        accept=".GSvar"
+                        accept=".GSvar,.vcf"
                 />
                 </v-input>
 
@@ -114,10 +114,6 @@ export default {
   props: {
     loading: {
       type: Boolean,
-      required: true
-    },
-    step: {
-      type: Number,
       required: true
     },
     filterNames: {

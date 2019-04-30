@@ -3,7 +3,6 @@
         <v-flex xs2 class="mb-2">
             <filter-select
                     :loading="$store.state.fileLoading"
-                    :step="$store.state.step"
                     :filterNames="$store.state.filterNames"
             >
             </filter-select>
