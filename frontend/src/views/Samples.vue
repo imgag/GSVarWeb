@@ -2,6 +2,7 @@
     <v-layout column>
         <v-flex xs2 class="mb-2">
             <filter-select
+                    :step="$store.state.step"
                     :loading="$store.state.fileLoading"
                     :filterNames="$store.state.filterNames"
             >

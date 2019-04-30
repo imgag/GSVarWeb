@@ -112,6 +112,10 @@ export default {
     }
   },
   props: {
+    step: {
+      type: Number,
+      required: true,
+    },
     loading: {
       type: Boolean,
       required: true
