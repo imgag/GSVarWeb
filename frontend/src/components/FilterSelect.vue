@@ -1,15 +1,15 @@
 <template>
-    <v-stepper :value="$store.state.step">
+    <v-stepper :value="step">
         <v-stepper-header>
-            <v-stepper-step :complete="$store.state.step > 1" step="1">Log in</v-stepper-step>
+            <v-stepper-step :complete="step > 1" step="1">Log in</v-stepper-step>
 
             <v-divider></v-divider>
 
-            <v-stepper-step :complete="$store.state.step > 2" step="2">Select GSVar file</v-stepper-step>
+            <v-stepper-step :complete="step > 2" step="2">Select GSVar file</v-stepper-step>
 
             <v-divider></v-divider>
 
-            <v-stepper-step :complete="$store.state.step > 3" step="3">Select filters</v-stepper-step>
+            <v-stepper-step :complete="step > 3" step="3">Select filters</v-stepper-step>
         </v-stepper-header>
 
         <v-stepper-items>
@@ -83,7 +83,7 @@ export default {
     }
   },
   mounted () {
-    if (this.$store.state.logged_in && this.$store.state.step < 2) {
+    if (this.$store.state.logged_in && this.step < 2) {
       this.$store.commit('incrementStep')
     }
   },
