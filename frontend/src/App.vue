@@ -8,9 +8,6 @@
         <samples></samples>
       </v-container>
     </v-content>
-    <v-footer color="indigo" app>
-      <span class="white--text ml-2">Institute of Medical Genetics and Applied Genomics &copy; 2019</span>
-    </v-footer>
   </v-app>
 </template>
 
