@@ -32,8 +32,8 @@ http://localhost:8080/v1/openapi.json
 
 To launch the integration tests, use tox:
 ```
-sudo pip install tox
-tox
+pip3 install -r requirements.txt
+nosetests
 ```
 
 ## Running with Docker

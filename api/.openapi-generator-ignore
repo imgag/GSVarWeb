@@ -25,5 +25,6 @@ openapi_server/controllers/
 openapi_server/__main__.py
 openapi_server/util.py
 setup.py
+tox.ini
 requirements.txt
 .gitignore
