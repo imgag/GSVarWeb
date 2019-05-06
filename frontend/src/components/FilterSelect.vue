@@ -114,7 +114,7 @@ export default {
   props: {
     step: {
       type: Number,
-      required: true,
+      required: true
     },
     loading: {
       type: Boolean,

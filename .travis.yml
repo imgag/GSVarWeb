@@ -11,8 +11,11 @@ matrix:
       - npm run lint
     - language: python
       python: 3.6
-      install: "pip install tox"
-      script: "cd api && tox"
-  allow_failures:
-    - language: python
-      python: 3.6
+      install:
+        - cd api
+        - pip install -r requirements.txt
+        - pip install -r test-requirements.txt
+      script:
+        - cd api
+        - nosetests
+        - flake8 --ignore=E501 openapi_server

@@ -2,7 +2,7 @@ import os
 import json
 from urllib.request import urlopen
 
-from jose import jwk, jwt
+from jose import jwt
 from werkzeug.exceptions import Unauthorized
 
 PRODUCTION = os.getenv('PRODUCTION', False)
@@ -27,7 +27,8 @@ def info_from_jwt(token):
 
     # NOTE: Implements validation as suggested on the Auth0 site at
     # https://auth0.com/docs/quickstart/backend/python/01-authorization#validate-access-tokens
-    json_url = urlopen('https://{}/auth/realms/{}/protocol/openid-connect/certs'.format(AUTH_DOMAIN, REALM))
+    json_url = urlopen(
+        'https://{}/auth/realms/{}/protocol/openid-connect/certs'.format(AUTH_DOMAIN, REALM))
     jwks = json.loads(json_url.read())
     unverified_header = jwt.get_unverified_header(token)
     rsa_key = {}
@@ -51,11 +52,14 @@ def info_from_jwt(token):
                 issuer='https://{}/auth/realms/{}'.format(AUTH_DOMAIN, REALM)
             )
         except jwt.ExpiredSignatureError:
-            raise Unauthorized({'code': 'token_expired',  'description': 'token is expired'})
+            raise Unauthorized(
+                {'code': 'token_expired', 'description': 'token is expired'})
         except jwt.JWTClaimsError as err:
             print(err)
-            raise Unauthorized({'code': 'invalid_claims', 'description': 'incorrect claims'})
+            raise Unauthorized(
+                {'code': 'invalid_claims', 'description': 'incorrect claims'})
         except Exception:
-            raise Unauthorized({'code': 'invalid_header', 'description': 'Unable to parse authentication token'})
+            raise Unauthorized(
+                {'code': 'invalid_header', 'description': 'Unable to parse authentication token'})
 
         return payload

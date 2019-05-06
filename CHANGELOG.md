@@ -12,3 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - serve VcfFilterAnnotate via API
 - add multi-stage UI (log in, select file, select filter)
 - automatically annotate (using an_vep) and convert (using vcf2gsvar) VCF files
+- add linting for frontend and API
+- add tests for API
+
+
