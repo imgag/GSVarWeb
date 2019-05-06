@@ -135,6 +135,27 @@ paths:
               schema:
                 type: string
                 format: binary
+  "/VcfCheck/{filePath}":
+    get:
+      description: Check a file at given path with VcfCheck.
+      tags:
+        - ngs-bits
+      parameters:
+        - name: filePath
+          in: path
+          description: Path to file
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successfull
+        "400":
+          description: error
+          content:
+            application/json:
+              schema:
+                type: string
   /VariantFilterAnnotations:
     post:
       tags:

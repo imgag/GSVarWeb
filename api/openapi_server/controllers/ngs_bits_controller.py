@@ -2,7 +2,7 @@ import os
 import tempfile
 import uuid
 
-from flask import current_app
+from flask import current_app, abort
 from werkzeug.exceptions import BadRequest
 import connexion
 
@@ -48,3 +48,31 @@ def variant_filter_annotations_post(variant_filter_request=None):  # noqa: E501
     else:
         raise BadRequest("The file {} wasn't found.".format(
             variant_filter_request._in))
+
+
+def vcf_check_file_path_get(filePath):  # noqa: E501
+    """vcf_check_file_path_get
+    Check a file at given path with VcfCheck.
+
+    :param filePath: Path to the file
+    :type filePath: str
+
+    :rtype: None
+    """
+
+    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filePath)
+    if os.path.isfile(abs_file_path):
+
+        bin_folder = os.path.abspath(os.getenv('NGS_BITS_BIN', os.getcwd()))
+        command = "./VcfCheck -in {}".format(abs_file_path)
+        full_command = "cd {} && {}".format(bin_folder, command)
+        current_app.logger.info("Running {}".format(full_command))
+        status = os.system(full_command)
+        if status == 0:
+            return "successfull"
+        else:
+            raise BadRequest("Command exited with status {}".format(status))
+    else:
+        abort(404)
+
+    return None

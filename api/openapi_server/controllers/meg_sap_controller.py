@@ -48,16 +48,6 @@ def vcf2gsvar_file_path_get(filePath):  # noqa: E501
     if os.path.isfile(abs_file_path):
         abs_gsvar_path = abs_file_path.replace(".vcf", ".GSvar")
         if not os.path.isfile(abs_gsvar_path):
-            bin_folder = os.path.abspath(
-                os.getenv('NGS_BITS_BIN', os.getcwd()))
-            command = "./VcfCheck -in {}".format(abs_file_path)
-            full_command = "cd {} && {}".format(bin_folder, command)
-
-            status = os.system(full_command)
-            if status != 0:
-                raise BadRequest(
-                    "Command exited with status {} while checking the VCF".format(status))
-
             meg_sap = os.path.abspath(os.getenv('MEGSAP_DIR'))
             meg_sap_command = "php {}/src/NGS/vcf2gsvar.php -in {} -out {}".format(
                 meg_sap, abs_file_path, abs_gsvar_path)

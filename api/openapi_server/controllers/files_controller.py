@@ -18,15 +18,6 @@ def count_file_path_get(filePath):  # noqa: E501
 
     Count items in a file # noqa: E501
 
-    :param file_path: Path to the file
-    :type file_path: str
-
-    :rtype: float
-    """
-    """count_file_path_get
-
-    Count items in a file # noqa: E501
-
     :param filePath: Path to the file
     :type filePath: str
 
@@ -43,7 +34,7 @@ def count_file_path_get(filePath):  # noqa: E501
         abort(404)
 
 
-def download_file_path_get(filePath, lines=None):  # noqa: E501
+def download_file_path_get(filePath, Lines=None):  # noqa: E501
     """download_file_path_get
 
     Download a file from given path eventually cutting it with Lines header # noqa: E501

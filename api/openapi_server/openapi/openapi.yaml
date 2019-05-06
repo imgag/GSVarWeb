@@ -44,6 +44,31 @@ paths:
       tags:
       - ngs-bits
       x-openapi-router-controller: openapi_server.controllers.ngs_bits_controller
+  /VcfCheck/{filePath}:
+    get:
+      description: Check a file at given path with VcfCheck.
+      operationId: vcf_check_file_path_get
+      parameters:
+      - description: Path to file
+        explode: false
+        in: path
+        name: filePath
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          description: successfull
+        400:
+          content:
+            application/json:
+              schema:
+                type: string
+          description: error
+      tags:
+      - ngs-bits
+      x-openapi-router-controller: openapi_server.controllers.ngs_bits_controller
   /an_vep/{filePath}:
     get:
       description: Annotates a VCF using VEP

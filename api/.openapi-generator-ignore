@@ -21,10 +21,12 @@
 #docs/*.md
 # Then explicitly reverse the ignore rule for a single file:
 #!docs/README.md
+README.md
 openapi_server/controllers/
 openapi_server/__main__.py
 openapi_server/util.py
 setup.py
 tox.ini
 requirements.txt
+test-requirements.txt
 .gitignore
