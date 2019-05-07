@@ -8,10 +8,15 @@
 
     <v-btn
       color="primary"
-      @click="applyFilter"
+      @click="$store.dispatch('applyFilter', selectedFilterName)"
       :disabled="(selectedFilterName === $store.state.lastSelectedFilterName) || $store.state.filterFileLoading"
     >
       Apply filter
+    </v-btn>
+    <v-btn
+      @click="$store.commit('incrementStep')"
+    >
+      Select file
     </v-btn>
   </div>
 </template>
@@ -22,11 +27,6 @@ export default {
   data () {
     return {
       selectedFilterName: ''
-    }
-  },
-  methods: {
-    applyFilter () {
-      this.$store.dispatch('applyFilter', this.selectedFilterName)
     }
   }
 }

@@ -13,9 +13,6 @@
             <filter-select-view></filter-select-view>
           </v-flex>
           <v-flex v-if="$store.state.fileLoaded" xs12>
-            <external-links
-              :selectedGenes="$store.state.selectedGenes"
-            ></external-links>
             <g-s-var-view
               :headers="$store.state.headers"
               :items="$store.state.lines"
