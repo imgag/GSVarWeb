@@ -1,11 +1,10 @@
 <template>
-    <v-toolbar flat>
-        <v-spacer></v-spacer>
-        <!-- See https://github.com/vuejs-templates/webpack/issues/450#issuecomment-388515010 -->
-        <v-btn v-for="item in items" v-bind:key="item.text" @click="openLinksForSelectedGenes(item)" :disabled="!$store.state.selectedGenes.length">
-            <img v-bind:src="require(`@/assets/icons/${item.icon}`)" height="16px" width="16px" class="mr-1">{{ item.text }}
-        </v-btn>
-    </v-toolbar>
+  <div>
+    <!-- See https://github.com/vuejs-templates/webpack/issues/450#issuecomment-388515010 -->
+    <v-btn v-for="item in items" v-bind:key="item.text" @click="openLinksForSelectedGenes(item)" flat>
+      <img v-bind:src="require(`@/assets/icons/${item.icon}`)" height="16px" width="16px" class="mr-1">{{ item.text }}
+    </v-btn>
+  </div>
 </template>
 
 <script>
@@ -26,14 +25,13 @@ export default {
     }
   },
   props: {
-    selectedGenes: {
-      type: Array,
+    selectedGene: {
+      type: Object,
       required: true
     }
   },
   methods: {
     openLinksForSelectedGenes (item) {
-      let selectedGenesSet = new Set(this.selectedGenes)
       let getURL = (item, gene) => {
         let tabURL = ''
         if (GENE_ONLY_URLS.includes(item.text)) {
@@ -49,9 +47,7 @@ export default {
         return tabURL
       }
 
-      selectedGenesSet.forEach((gene) => {
-        window.open(getURL(item, gene), '_blank')
-      })
+      window.open(getURL(item, this.selectedGene), '_blank')
     }
   }
 }

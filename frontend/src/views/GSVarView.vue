@@ -1,44 +1,39 @@
 <template>
+  <div>
+    <column-dialog v-if="shouldOpen" @close="closeDialog" :item="columnItem"></column-dialog>
     <v-data-table
-        :headers="headers"
-        :items="items"
-        class="elevation-1"
-        :rows-per-page-items="rowsPerPage"
-        :loading="loading"
+      :headers="headers"
+      :items="items"
+      class="elevation-1"
+      :rows-per-page-items="rowsPerPage"
+      :loading="loading"
     >
-        <template slot="headers" slot-scope="props">
-            <tr>
-                <th></th> <!-- insert empty th for selectable behaviour -->
-                <th
-                    v-for="header in props.headers"
-                    :key="header.text"
-                >
-                    {{ header.text }}
-                </th>
-            </tr>
-        </template>
-        <template slot="items" slot-scope="props">
-            <td>
-                <v-checkbox
-                    primary
-                    @change="updateSelectedGenes(props.item, $event)"
-                    hide-details
-                ></v-checkbox>
-            </td>
-            <td v-for="(item, index) in props.item" v-bind:key="index" :bgcolor="getColor(item, index)">
-                <tooltip-text :text="item"></tooltip-text>
-            </td>
-        </template>
+      <template slot="headers" slot-scope="props">
+        <tr>
+          <th
+            v-for="header in props.headers"
+            :key="header.text"
+          >
+            {{ header.text }}
+          </th>
+        </tr>
+      </template>
+      <template slot="items" slot-scope="props">
+        <td v-for="(item, index) in props.item" v-bind:key="index" :bgcolor="getColor(item, index)" v-on:click="openColumnDialog(props.item)">
+          <tooltip-text :text="item"></tooltip-text>
+        </td>
+      </template>
 
-        <template slot="actions-append">
-            <p class="mt-3 mr-3">Original variants: {{ lastTotalNumberOfVariants }}</p>
-        </template>
-
+      <template slot="actions-append">
+        <p class="mt-3 mr-3">Original variants: {{ lastTotalNumberOfVariants }}</p>
+      </template>
     </v-data-table>
+  </div>
 </template>
 
 <script>
 import TooltipText from '@/components/TooltipText'
+import ColumnDialog from '@/components/ColumnDialog'
 
 /// NOTE: Since the headers are sorted this array also needs to be sorted by index
 const columnHeaders = ['chr', 'start', 'end', 'ref', 'obs', 'gene', 'coding_and_splicing', 'ClinVar', 'HGMD', 'NGSD_hom', 'NGSD_het', 'classification', 'validation', 'comment']
@@ -46,10 +41,13 @@ const columnHeaders = ['chr', 'start', 'end', 'ref', 'obs', 'gene', 'coding_and_
 export default {
   name: 'GSVarView',
   components: {
-    TooltipText
+    TooltipText,
+    ColumnDialog
   },
   data: function () {
     return {
+      columnItem: {},
+      shouldOpen: false,
       selectedGenes: [],
       rowsPerPage: [
         15,
@@ -72,14 +70,7 @@ export default {
     }
   },
   methods: {
-    /**
-         * Adds a gene to the list of selected genes if selected is true.
-         * Otherwise tries to remove this gene from the list
-         * @function
-         * @param column
-         * @param selected
-         */
-    updateSelectedGenes (column, selected) {
+    openColumnDialog (column) {
       let selectedGene = {
         chr: column[this.columnMap['chr']],
         start: column[this.columnMap['start']],
@@ -88,17 +79,11 @@ export default {
         obs: column[this.columnMap['obs']],
         gene: column[this.columnMap['gene']]
       }
-
-      if (selected) {
-        this.selectedGenes.push(selectedGene)
-        this.$store.commit('updateSelectedGenes', this.selectedGenes)
-      } else {
-        let geneIndex = this.selectedGenes.findIndex((item) => item.start === selectedGene.start)
-        if (geneIndex > -1) {
-          this.selectedGenes.splice(geneIndex, 1)
-          this.$store.commit('updateSelectedGenes', this.selectedGenes)
-        }
-      }
+      this.columnItem = selectedGene
+      this.shouldOpen = true
+    },
+    closeDialog () {
+      this.shouldOpen = false
     },
     /// Ported from https://github.com/imgag/ngs-bits/blob/master/src/GSvar/VariantTable.cpp#L114
     getColor (item, index) {

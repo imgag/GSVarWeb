@@ -47,7 +47,6 @@ export default new Vuex.Store({
     step: 1,
 
     // Selection
-    selectedGenes: [],
     selectedFilePath: null
   },
   getters: {
@@ -76,9 +75,6 @@ export default new Vuex.Store({
     },
     incrementStep (state) {
       state.step = (state.step === 3) ? 2 : state.step + 1
-    },
-    updateSelectedGenes (state, selectedGenes) {
-      state.selectedGenes = selectedGenes
     },
     updateLastSelectedFilterName (state, name) {
       state.lastSelectedFilterName = name

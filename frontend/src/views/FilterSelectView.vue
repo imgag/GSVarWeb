@@ -10,6 +10,7 @@
 
     <v-flex>
       <v-btn
+        class="ml-4"
         color="primary"
         @click="$store.dispatch('applyFilter', selectedFilterName)"
         :disabled="(selectedFilterName === $store.state.lastSelectedFilterName) || $store.state.filterFileLoading"
