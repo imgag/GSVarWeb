@@ -52,8 +52,8 @@ export default {
     return {
       selectedGenes: [],
       rowsPerPage: [
-        10,
-        25,
+        15,
+        30,
         50,
         100
       ]
