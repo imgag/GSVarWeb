@@ -134,6 +134,9 @@ export default new Vuex.Store({
         formData.append('uploadedFile', file.files[0])
         let xhr = new XMLHttpRequest()
         xhr.open('POST', `${$basePath}/upload`, true)
+        xhr.onerror = (err) => { // eslint-disable-line handle-callback-err
+          reject(new Error('Could not submit file'))
+        }
         xhr.onload = () => {
           if (xhr.status === 200) {
             resolve(xhr.statusText)
@@ -214,7 +217,7 @@ export default new Vuex.Store({
       let outFile = context.state.selectedFilePath.replace('.GSvar', `_${dateAppend}.GSVar`)
       context.commit('toggleFilterFileLoading')
 
-      apiFetch(`${$basePath}/VariantFilterAnnotations`, {
+      return apiFetch(`${$basePath}/VariantFilterAnnotations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

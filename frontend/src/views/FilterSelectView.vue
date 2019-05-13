@@ -12,7 +12,7 @@
       <v-btn
         class="ml-4"
         color="primary"
-        @click="$store.dispatch('applyFilter', selectedFilterName)"
+        @click="updateSelectedFilter"
         :disabled="(selectedFilterName === $store.state.lastSelectedFilterName) || $store.state.filterFileLoading"
       >
         Apply filter
@@ -35,6 +35,18 @@ export default {
   data () {
     return {
       selectedFilterName: ''
+    }
+  },
+  methods: {
+    updateSelectedFilter () {
+      let vm = this
+      vm.$store.dispatch('applyFilter', vm.selectedFilterName)
+        .then(() => {
+          vm.$store.commit('toggleFilterFileLoading')
+        }).catch((err) => {
+          vm.$emit('error', err)
+          vm.$store.commit('toggleFilterFileLoading')
+        })
     }
   }
 }

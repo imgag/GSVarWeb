@@ -34,10 +34,13 @@ export default {
   },
   methods: {
     updateSelectedFile () {
-      if (this.selectedFile) {
-        this.$store.dispatch('updateSelectedFile', this.selectedFile)
-          .then(() => this.$store.commit('incrementStep'))
-      }
+      let vm = this
+      vm.$store.dispatch('updateSelectedFile', vm.selectedFile)
+        .then(() => vm.$store.commit('incrementStep'))
+        .catch((err) => {
+          vm.$store.commit('toggleFileLoading')
+          vm.$emit('error', err)
+        })
     }
   }
 }
