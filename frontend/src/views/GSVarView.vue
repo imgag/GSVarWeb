@@ -19,7 +19,7 @@
       </template>
       <template slot="items" slot-scope="props">
         <td v-for="(item, index) in props.item" v-bind:key="index" :bgcolor="getColor(item, index)" v-on:click="openColumnDialog(props.item)">
-          <tooltip-text :text="item"></tooltip-text>
+          <tooltip-text :text="item" style="height:50px !important;"></tooltip-text>
         </td>
       </template>
 
@@ -144,8 +144,9 @@ export default {
 </script>
 
 <style scoped>
-td {
-    max-width: 100ch;
-    word-wrap:break-word
-}
+table { table-layout:fixed; width:50px; word-break:break-all; } /*Setting the table width is important!*/
+table td {overflow:hidden;} /*Hide text outside the cell.*/
+table td:nth-of-type(1) {width:20px;} /*Setting the width of column 1.*/
+table td:nth-of-type(2) {width:30px;} /*Setting the width of column 2.*/
+table td:nth-of-type(3) {width:40px;} /*Setting the width of column 3.*/
 </style>
