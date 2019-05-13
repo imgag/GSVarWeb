@@ -2,10 +2,10 @@ import os
 import json
 from urllib.request import urlopen
 
-from jose import jwt
+from flask import current_app
+from jose import jwt, exceptions
 from werkzeug.exceptions import Unauthorized
 
-PRODUCTION = os.getenv('PRODUCTION', False)
 AUTH_DOMAIN = os.getenv('AUTH_DOMAIN', 'auth.imgag.de')
 ALGORITHMS = ['RS256']
 REALM = os.getenv('REALM', 'master')
@@ -22,7 +22,7 @@ def info_from_jwt(token):
     :return: Decoded token information or None if token is invalid
     :rtype: dict | None
     """
-    if not PRODUCTION:  # never check values in debug
+    if not current_app.config['PRODUCTION']:  # never check values in debug
         return {}
 
     # NOTE: Implements validation as suggested on the Auth0 site at
@@ -55,9 +55,15 @@ def info_from_jwt(token):
             raise Unauthorized(
                 {'code': 'token_expired', 'description': 'token is expired'})
         except jwt.JWTClaimsError as err:
+            current_app.logger.error(err)
             raise Unauthorized(
                 {'code': 'invalid_claims', 'description': 'incorrect claims'})
-        except Exception:
+        except exceptions.JWSError as err:
+            current_app.logger.error(err)
+            raise Unauthorized(
+                {'code': 'invalid_header', 'description': 'Unable to parse authentication token'})
+        except exceptions.JWTError as err:
+            current_app.logger.error(err)
             raise Unauthorized(
                 {'code': 'invalid_header', 'description': 'Unable to parse authentication token'})
 

@@ -24,6 +24,10 @@ def count_file_path_get(filePath):  # noqa: E501
     :rtype: float
     """
     abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filePath)
+    if current_app.config['PRODUCTION']:
+        if not any(map(lambda extension: filePath.endswith(extension), current_app.config['ALLOWED_EXTENSIONS'])):
+            return "File must be one of allowed types.", 400
+
     if os.path.isfile(abs_file_path):
         command = "cat {} | grep -v '#' | wc -l".format(abs_file_path)
         count = subprocess.check_output(command, shell=True)
@@ -45,6 +49,10 @@ def download_file_path_get(filePath, Lines=None):  # noqa: E501
 
     :rtype: file
     """
+
+    if current_app.config['PRODUCTION']:
+        if not any(map(lambda extension: filePath.endswith(extension), current_app.config['ALLOWED_EXTENSIONS'])):
+            return "File must be one of allowed types.", 400
     abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filePath)
     if os.path.isfile(abs_file_path):  # this makes sure the upload folder is not escaped
         lines = connexion.request.headers['Lines'] if 'lines' in connexion.request.headers else None
@@ -89,6 +97,9 @@ def upload_post(uploadedFile=None):  # noqa: E501
     :rtype: None
     """
     file_name = secure_filename(uploadedFile.filename)
+    if current_app.config['PRODUCTION']:
+        if not any(map(lambda extension: file_name.endswith(extension), current_app.config['ALLOWED_EXTENSIONS'])):
+            return "File must be one of allowed types.", 400
     abs_file_path = os.path.join(
         current_app.config['UPLOAD_FOLDER'], file_name)
     if os.path.exists(abs_file_path):

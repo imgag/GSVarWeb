@@ -15,14 +15,14 @@ def main():
     app.add_api('openapi.yaml', arguments={'title': 'ngs-bits'})
     app.app.config['UPLOAD_FOLDER'] = os.path.abspath(
         os.getenv('NGS_BITS_DATA', os.getcwd()))
-    app.app.config['ALLOWED_EXTENSIONS'] = {'tsv', 'gsvar'}
+    app.app.config['PRODUCTION'] = os.getenv('PRODUCTION', False)
+    app.app.config['ALLOWED_EXTENSIONS'] = {'tsv', 'GSvar'}
     origins = os.getenv('CORS_ORIGINS', os.getenv(
         'ORIGINS', ['http://localhost:8080']))
     # enable CORS for all
     CORS(app.app, origins=origins, supports_credentials=True)
 
-    production = os.getenv('PRODUCTION', False)
-    if not production:
+    if not app.app.config['PRODUCTION']:
         @app.app.route('/')
         def serve_index():
             return send_from_directory(directory=os.path.join(os.getcwd(), 'dist'), filename='index.html')
@@ -31,8 +31,8 @@ def main():
         def serve_dist(path):
             return send_from_directory(directory=os.path.join(os.getcwd(), 'dist'), filename=path)
 
-    app.run(port=os.getenv('PORT', 9000), debug=not production, use_debugger=not production,
-            use_reloader=not production, passthrough_errors=not production)
+    app.run(port=os.getenv('PORT', 9000), debug=not app.app.config['PRODUCTION'], use_debugger=not app.app.config['PRODUCTION'],
+            use_reloader=not app.app.config['PRODUCTION'], passthrough_errors=not app.app.config['PRODUCTION'])
 
 
 if __name__ == '__main__':
