@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-toolbar color="indigo" dark fixed app>
-      <v-toolbar-title>ngs-remote</v-toolbar-title>
+      <v-toolbar-title>GSVarWeb</v-toolbar-title>
     </v-toolbar>
     <!-- used for error reporting -->
     <v-snackbar

@@ -6,7 +6,7 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  title: ngs-remote
+  title: GSVarWeb
   version: "2018_11"
 externalDocs:
   description: Find out more about ngs-bits

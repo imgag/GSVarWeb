@@ -1,8 +1,8 @@
-ngs-remote
+GSVarWeb
 ----------
-[![Build Status](https://travis-ci.org/imgag/ngs-remote.svg?branch=master)](https://travis-ci.org/imgag/ngs-remote)
+[![Build Status](https://travis-ci.org/imgag/GSVarWeb.svg?branch=master)](https://travis-ci.org/imgag/GSVarWeb)
 
-`ngs-remote` is a remote API and browser application for [ngs-bits](https://github.com/imgag/ngs-bits).
+`GSVarWeb` is a remote API and browser application for [ngs-bits](https://github.com/imgag/ngs-bits).
 
 Currently it is capable of displaying and processing `.GSvar` files
 
@@ -10,7 +10,7 @@ Currently it is capable of displaying and processing `.GSvar` files
 
 ## Architecture
 
-`ngs-remote` consists of server API which is [specified](./openapi.yaml) and implemented with [flask](http://flask.pocoo.org) using [OpenAPI](https://www.openapis.org/). 
+`GSVarWeb` consists of server API which is [specified](./openapi.yaml) and implemented with [flask](http://flask.pocoo.org) using [OpenAPI](https://www.openapis.org/). 
 
 Installation instructions can be found in the [API folder](./api/README.md).
 
@@ -60,6 +60,6 @@ After building the project one can copy the `dist` folder into the `api` directo
 
 ## Deployment in production
 
-Currently `ngs-remote` has not been tested in a production environment (meaning, it has not been publicly deployed to the WWW).
+Currently `GSVarWeb` has not been tested in a production environment (meaning, it has not been publicly deployed to the WWW).
 
 It is strongly recommended to use standalone [WSGI](https://wsgi.readthedocs.io/en/latest/index.html) containers, [such as gunicorn](http://flask.pocoo.org/docs/1.0/deploying/wsgi-standalone/#gunicorn), additionally behind a proxy.

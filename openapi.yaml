@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   description: Short-read sequencing tools
   version: "2018_11"
-  title: ngs-remote
+  title: GSVarWeb
   contact:
     email: marc.sturm@med.uni-tuebingen.de
   license:
