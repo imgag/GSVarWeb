@@ -4,7 +4,6 @@
     <v-data-table
       :headers="headers"
       :items="items"
-      class="elevation-1"
       :rows-per-page-items="rowsPerPage"
       :loading="loading"
     >
@@ -71,7 +70,7 @@ export default {
   },
   methods: {
     openColumnDialog (column) {
-      let selectedGene = {
+      this.columnItem = {
         chr: column[this.columnMap['chr']],
         start: column[this.columnMap['start']],
         end: column[this.columnMap['end']],
@@ -79,7 +78,6 @@ export default {
         obs: column[this.columnMap['obs']],
         gene: column[this.columnMap['gene']]
       }
-      this.columnItem = selectedGene
       this.shouldOpen = true
     },
     closeDialog () {
