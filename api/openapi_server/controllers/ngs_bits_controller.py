@@ -21,7 +21,6 @@ def variant_filter_annotations_post(variant_filter_request=None):  # noqa: E501
     if connexion.request.is_json:
         variant_filter_request = VariantFilterRequest.from_dict(connexion.request.get_json())  # noqa: E501
 
-    print(current_app.config)
     abs_in_path = os.path.join(
         current_app.config['UPLOAD_FOLDER'], variant_filter_request._in)
     abs_out_path = os.path.join(

@@ -55,7 +55,6 @@ def info_from_jwt(token):
             raise Unauthorized(
                 {'code': 'token_expired', 'description': 'token is expired'})
         except jwt.JWTClaimsError as err:
-            print(err)
             raise Unauthorized(
                 {'code': 'invalid_claims', 'description': 'incorrect claims'})
         except Exception:

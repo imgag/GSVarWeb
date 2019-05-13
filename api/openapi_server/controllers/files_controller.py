@@ -27,7 +27,6 @@ def count_file_path_get(filePath):  # noqa: E501
     if os.path.isfile(abs_file_path):
         command = "cat {} | grep -v '#' | wc -l".format(abs_file_path)
         count = subprocess.check_output(command, shell=True)
-        print(getpreferredencoding())
         count = str(count, getpreferredencoding()).strip()
         return count
     else:
