@@ -86,16 +86,18 @@ export default new Vuex.Store({
      * @param context
      * @return {Promise<Response>}
      */
-    annotateVcf (context) {
-      return fetch(`${$basePath}/an_vep/${context.state.selectedFilePath}`).then((response) => response.json())
+    annotateVcf (context, fileName) {
+      fileName = fileNameFromPath(fileName)
+      return apiFetch(`${$basePath}/an_vep/${fileName}`).then((response) => response.json())
     },
     /**
      * Converts the current VCF file to a GSvar
      * @param context
      * @return {Promise<Response>}
      */
-    convertVcf (context) {
-      return fetch(`${$basePath}/vcf2gsvar/${context.state.selectedFilePath}`).then((response) => response.json())
+    convertVcf (context, fileName) {
+      fileName = fileNameFromPath(fileName)
+      return apiFetch(`${$basePath}/vcf2gsvar/${fileName}`).then((response) => response.json())
     },
     /**
      * Updates header fields based on first line of a GSVar / VCF
@@ -191,8 +193,8 @@ export default new Vuex.Store({
           .then(() => context.dispatch('uploadGSVarFile', file))
           .then(() => {
             if (vcf) {
-              return context.dispatch('annotateVcf').then(() => {
-                return context.dispatch('convertVcf').then((fileName) => Promise.resolve(fileName))
+              return context.dispatch('annotateVcf', file.value).then((fileName) => {
+                return context.dispatch('convertVcf', fileName).then((fileName) => Promise.resolve(fileName))
               }).catch((err) => Promise.reject(err))
             } else {
               return Promise.resolve(file.value)
