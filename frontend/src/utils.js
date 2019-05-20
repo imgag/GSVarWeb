@@ -46,7 +46,7 @@ function parseTSV (lines) {
       break
     }
   }
-  return lines.slice(index).map((line) => line.trim().split('\t'))
+  return lines.slice(index).filter((l) => l.length > 0).map((line) => line.trim().split('\t'))
 }
 
 /**

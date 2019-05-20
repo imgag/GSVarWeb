@@ -49,10 +49,9 @@ export default {
       shouldOpen: false,
       selectedGenes: [],
       rowsPerPage: [
-        15,
-        30,
-        50,
-        100
+        100,
+        150,
+        300
       ]
     }
   },
