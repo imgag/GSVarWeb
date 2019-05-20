@@ -32,22 +32,27 @@ export default {
   },
   methods: {
     openLinksForSelectedGenes (item) {
-      let getURL = (item, gene) => {
-        let tabURL = ''
+      let getURLs = (item, gene) => {
+        let tabURLs = []
         if (GENE_ONLY_URLS.includes(item.text)) {
-          tabURL = `${item.baseURL}${gene.gene}`
+          let genes = gene.gene.split(',')
+          genes.forEach((gene) => {
+            tabURLs.push(`${item.baseURL}${gene}`)
+          })
         } else if (item.text === 'VarSome') {
-          tabURL = `${item.baseURL}${gene.chr}-${gene.start}-${gene.ref}-${gene.obs}`
+          tabURLs.push(`${item.baseURL}${gene.chr}-${gene.start}-${gene.ref}-${gene.obs}`)
         } else if (item.text === 'UCSC Genome Browser') {
-          tabURL = `${item.baseURL}${gene.chr}:${gene.start}-${gene.end}`
+          tabURLs.push(`${item.baseURL}${gene.chr}:${gene.start}-${gene.end}`)
         } else if (item.text === 'LOVD') {
-          tabURL = `${item.baseURL}#search_chromosome=${gene.chr}&search_VariantOnGenome/DNA=${gene.ref.toLowerCase()}.${gene.start}&page_size=100&page=1`
+          tabURLs.push(`${item.baseURL}#search_chromosome=${gene.chr}&search_VariantOnGenome/DNA=${gene.ref.toLowerCase()}.${gene.start}&page_size=100&page=1`)
         }
 
-        return tabURL
+        return tabURLs
       }
 
-      window.open(getURL(item, this.selectedGene), '_blank')
+      getURLs(item, this.selectedGene).forEach((url) => {
+        window.open(url, '_blank')
+      })
     }
   }
 }
