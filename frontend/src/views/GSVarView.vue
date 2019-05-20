@@ -34,9 +34,6 @@
 import TooltipText from '@/components/TooltipText'
 import ColumnDialog from '@/components/ColumnDialog'
 
-/// NOTE: Since the headers are sorted this array also needs to be sorted by index
-const columnHeaders = ['chr', 'start', 'end', 'ref', 'obs', 'gene', 'coding_and_splicing', 'ClinVar', 'HGMD', 'NGSD_hom', 'NGSD_het', 'classification', 'validation', 'comment']
-
 export default {
   name: 'GSVarView',
   components: {
@@ -56,13 +53,9 @@ export default {
     }
   },
   computed: {
-    colorIndexes () {
-      let headers = this.$store.state.headers.map((header) => header.value)
-      return headers.filter((header) => columnHeaders.includes(header)).map((header) => headers.indexOf(header))
-    },
     columnMap () {
-      return this.colorIndexes.reduce((result, item, index) => {
-        result[columnHeaders[index]] = item
+      return this.headers.reduce((result, item, index) => {
+        result[item.value] = index
         return result
       }, {})
     }
@@ -75,7 +68,18 @@ export default {
         end: column[this.columnMap['end']],
         ref: column[this.columnMap['ref']],
         obs: column[this.columnMap['obs']],
-        gene: column[this.columnMap['gene']]
+        gene: column[this.columnMap['gene']],
+        phyloP: column[this.columnMap['phyloP']],
+        Sift: column[this.columnMap['Sift']],
+        PolyPhen: column[this.columnMap['PolyPhen']],
+        fathmm: column[this.columnMap['fathmm-MKL']],
+        CADD: column[this.columnMap['CADD']],
+        REVEL: column[this.columnMap['REVEL']],
+        MaxEntScan: column[this.columnMap['MaxEntScan']],
+        GeneSplicer: column[this.columnMap['GeneSplicer']],
+        OMIM: column[this.columnMap['OMIM']],
+        classification: column[this.columnMap['classification']],
+        classification_comment: column[this.columnMap['classification_comment']]
       }
       this.shouldOpen = true
     },
