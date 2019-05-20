@@ -10,7 +10,7 @@
         <template v-slot:activator="{ on }">
             <span v-on="on">{{ text.substr(0, 100).replace(" ", "&nbsp;") }}</span>
         </template>
-        <span v-for="t in text.split(';')">{{ t }}<br/></span>
+        <span v-for="t in text.split(';')" v-bind:key="t">{{ t }}<br/></span>
     </v-tooltip>
 </template>
 
