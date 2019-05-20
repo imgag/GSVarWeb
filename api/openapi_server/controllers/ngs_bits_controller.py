@@ -6,7 +6,6 @@ from flask import current_app, abort
 from werkzeug.exceptions import BadRequest
 import connexion
 
-from openapi_server.models.variant_filter_request import VariantFilterRequest  # noqa: E501
 from openapi_server.tools.import_and_convert import convert_dict_to_lines
 
 
@@ -19,15 +18,15 @@ def variant_filter_annotations_post(variant_filter_request=None):  # noqa: E501
     :rtype: None
     """
     if connexion.request.is_json:
-        variant_filter_request = VariantFilterRequest.from_dict(connexion.request.get_json())  # noqa: E501
+        variant_filter_request = connexion.request.get_json()
 
     abs_in_path = os.path.join(
-        current_app.config['UPLOAD_FOLDER'], variant_filter_request._in)
+        current_app.config['UPLOAD_FOLDER'], variant_filter_request['in'])
     abs_out_path = os.path.join(
-        current_app.config['UPLOAD_FOLDER'], variant_filter_request.out)
+        current_app.config['UPLOAD_FOLDER'], variant_filter_request['out'])
 
     if os.path.isfile(abs_in_path) and not os.path.isfile(abs_out_path):
-        lines = convert_dict_to_lines(variant_filter_request.filter)
+        lines = convert_dict_to_lines(variant_filter_request['filter'])
         tmp_path = os.path.join(tempfile.gettempdir(), uuid.uuid4().hex)
         with open(tmp_path, "w") as tmpFile:  # write filters file
             tmpFile.write(lines)
@@ -46,7 +45,7 @@ def variant_filter_annotations_post(variant_filter_request=None):  # noqa: E501
             raise BadRequest("Command exited with status {}".format(status))
     else:
         raise BadRequest("The file {} wasn't found.".format(
-            variant_filter_request._in))
+            variant_filter_request['in']))
 
 
 def vcf_check_file_path_get(filePath):  # noqa: E501
