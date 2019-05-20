@@ -8,7 +8,7 @@
             nudge-width="300px"
     >
         <template v-slot:activator="{ on }">
-            <span v-on="on">{{ text.substr(0, 100) }}</span>
+            <span v-on="on">{{ text.substr(0, 100).replace(" ", "&nbsp;") }}</span>
         </template>
         <span>{{ text }}</span>
     </v-tooltip>
