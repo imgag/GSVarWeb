@@ -200,8 +200,11 @@ export default new Vuex.Store({
               return Promise.resolve(file.value)
             }
           })
-          .then((fileName) => context.dispatch('loadGSVarFileFromPath', fileName))
-          .then(() => Promise.resolve(context.commit('updateSelectedFilePath', file.value)))
+          .then((fileName) => {
+            context.dispatch('loadGSVarFileFromPath', fileName)
+            return Promise.resolve(fileName)
+          })
+          .then((fileName) => Promise.resolve(context.commit('updateSelectedFilePath', fileName)))
           .then(() => context.dispatch('updateLastTotalNumberOfVariants'))
           .then(() => Promise.resolve(context.commit('toggleFileLoading')))
           .catch((err) => Promise.reject(err))
