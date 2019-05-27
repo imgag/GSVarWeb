@@ -62,25 +62,11 @@ export default {
   },
   methods: {
     openColumnDialog (column) {
-      this.columnItem = {
-        chr: column[this.columnMap['chr']],
-        start: column[this.columnMap['start']],
-        end: column[this.columnMap['end']],
-        ref: column[this.columnMap['ref']],
-        obs: column[this.columnMap['obs']],
-        gene: column[this.columnMap['gene']],
-        phyloP: column[this.columnMap['phyloP']],
-        Sift: column[this.columnMap['Sift']],
-        PolyPhen: column[this.columnMap['PolyPhen']],
-        fathmm: column[this.columnMap['fathmm-MKL']],
-        CADD: column[this.columnMap['CADD']],
-        REVEL: column[this.columnMap['REVEL']],
-        MaxEntScan: column[this.columnMap['MaxEntScan']],
-        GeneSplicer: column[this.columnMap['GeneSplicer']],
-        OMIM: column[this.columnMap['OMIM']],
-        classification: column[this.columnMap['classification']],
-        classification_comment: column[this.columnMap['classification_comment']]
-      }
+      let vm = this
+      vm.columnItem = column.reduce((result, item, index) => {
+        result[vm.headers[index].text] = item
+        return result
+      }, {})
       this.shouldOpen = true
     },
     closeDialog () {
