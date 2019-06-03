@@ -19,7 +19,14 @@
       </template>
       <template slot="items" slot-scope="props">
         <td v-for="(item, index) in props.item" v-bind:key="index" :bgcolor="getColor(item, index)" v-on:click="openColumnDialog(props.item)">
-          <tooltip-text :text="item" style="height:50px !important;"></tooltip-text>
+          <tooltip-text :text="item" v-if="index === columnMap['gene']"></tooltip-text>
+          <tooltip-text :text="item" v-else-if="index === columnMap['coding_and_splicing']"></tooltip-text>
+          <tooltip-text :text="item" v-else-if="index === columnMap['regulatory']"></tooltip-text>
+          <tooltip-text :text="item" :limit=50 v-else-if="index === columnMap['OMIM']"></tooltip-text>
+          <tooltip-text :text="item" :limit=50 v-else-if="index === columnMap['ClinVar']"></tooltip-text>
+          <tooltip-text :text="item" :limit=50 v-else-if="index === columnMap['HGMD']"></tooltip-text>
+          <tooltip-text :text="item" :limit=20 v-else-if="index === columnMap['gene_info']"></tooltip-text>
+          <span v-else> {{ item }}</span>
         </td>
       </template>
 

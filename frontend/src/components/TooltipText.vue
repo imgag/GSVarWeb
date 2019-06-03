@@ -8,9 +8,13 @@
             nudge-width="300px"
     >
         <template v-slot:activator="{ on }">
-            <span v-on="on">{{ text.substr(0, 100).replace(" ", "&nbsp;") }}</span>
+            <span v-on="on">{{ text.substr(0, limit) }}</span>
         </template>
-        <span v-for="t in text.split(';')" v-bind:key="t">{{ t }}<br/></span>
+        <span>
+          <ul>
+            <li v-for="(item, index) in text.split(this.separator)" v-bind:key="index">{{ item }}</li>
+          </ul>
+        </span>
     </v-tooltip>
 </template>
 
@@ -18,6 +22,14 @@
 export default {
   name: 'TooltipText',
   props: {
+    limit: {
+      type: Number,
+      default: 100
+    },
+    separator: {
+      type: String,
+      default: ','
+    },
     text: {
       type: String,
       required: true
