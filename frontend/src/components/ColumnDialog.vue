@@ -20,14 +20,23 @@
         <v-card-text>
           <v-layout column>
             <v-layout row>
-              <v-flex v-for="prop in parseCodingSplicingInfo(item.coding_and_splicing)" :key="prop.ID">
-                <p class="subheading"><a :href="`http://exac.broadinstitute.org/gene/${prop.Gene}`" target="_blank">{{ prop.Gene }}</a> (<a :href="`http://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=${prop.ID}`" target="_blank">{{ prop.ID }}</a>)</p>
-                <p>Type: {{ prop.Type }}</p>
-                <p>Impact: {{ prop.Impact }}</p>
-                <p>Exon: {{ prop.Exon }}</p>
-                <p>cDNA: {{ prop.cDNA }}</p>
-                <p>Protein: {{ prop.Protein }}</p>
-                <p>Domain: {{ prop.Domain }}</p>
+              <v-flex xs-12>
+                <v-data-table
+                  max-width
+                  :headers="codingSplicingHeaders"
+                  :items="parseCodingSplicingInfo(item.coding_and_splicing)"
+                >
+                  <template v-slot:items="props">
+                    <td><a :href="`https://gnomad.broadinstitute.org/gene/${props.item.Gene}`" target="_blank">{{ props.item.Gene }}</a></td>
+                    <td><a :href="`http://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=${props.item.ID}`" target="_blank">{{ props.item.ID }}</a></td>
+                    <td>{{ props.item.Impact }}</td>
+                    <td>{{ props.item.Type }}</td>
+                    <td>{{ props.item.Exon}}</td>
+                    <td>{{ props.item.cDNA }}</td>
+                    <td>{{ props.item.Protein }}</td>
+                    <td>{{ props.item.Domain }}</td>
+                  </template>
+                </v-data-table>
               </v-flex>
             </v-layout>
             <v-flex>
@@ -40,13 +49,13 @@
                 <p>GeneSplicer: {{ item.GeneSplicer }}</p>
                 <p>dbscSNV: {{ item.dbscSNV }}</p>
                 <p class="subheading">Regulatory</p>
-                <p>Regulatory: {{ item.regulatory }}</p>
+                <p>Regulatory: {{ item.regulatory.replace('regulatory_region_variant:', '') }}</p>
               </v-flex>
               <v-flex>
                 <p class="subheading">Databases</p>
                 <p>dbSNP: <a :href="`https://www.ncbi.nlm.nih.gov/snp/${item.dbSNP}`" v-if="item.dbSNP" target="_blank">{{ item.dbSNP }}</a></p>
                 <p>ClinVar: <a :href="`https://www.ncbi.nlm.nih.gov/clinvar/variation/${getID(item.ClinVar)}`" v-if="item.ClinVar" target="_blank">{{ getID(item.ClinVar) }}</a></p>
-                <p>HGMD: {{ item.HGMD }}</p>
+                <p>HGMD: <a :href="`https://portal.biobase-international.com/hgmd/pro/mut.php?acc=${getID(item.HGMD)}`" target="_blank">{{ getID(item.HGMD) }}</a></p>
                 <p>OMIM: <a :href="`https://omim.org/entry/${getID(item.OMIM)}`" v-if="item.OMIM" target="_blank">{{ getID(item.OMIM) }}</a></p>
                 <p>COSMIC: <a :href="`https://cancer.sanger.ac.uk/cosmic/search?q=${item.COSMIC}`" v-if="item.COSMIC" target="_blank">{{ item.COSMIC }}</a></p>
               </v-flex>
@@ -95,7 +104,17 @@ export default {
   },
   data () {
     return {
-      dialog: true
+      dialog: true,
+      codingSplicingHeaders: [
+        { text: 'Gene', sortable: false },
+        { text: 'ID', sortable: false },
+        { text: 'Impact', sortable: false },
+        { text: 'Type', sortable: false },
+        { text: 'Exon', sortable: false },
+        { text: 'cDNA', sortable: false },
+        { text: 'Protein', sortable: false },
+        { text: 'Domain', sortable: false }
+      ]
     }
   },
   methods: {
@@ -104,17 +123,17 @@ export default {
         return {
           Gene: item[0],
           ID: item[1],
-          Type: item[3],
-          Impact: item[4],
-          Exon: item[5],
-          cDNA: item[6],
-          Protein: item[7],
-          Domain: item[8]
+          Impact: item[3],
+          Type: item[2],
+          Exon: item[4],
+          cDNA: item[5],
+          Protein: item[6],
+          Domain: item[7]
         }
       })
     },
     getID (text) {
-      return text.substring(0, text.indexOf('[') - 2)
+      return text.substring(0, text.indexOf('[')).trim()
     }
   },
   watch: {
