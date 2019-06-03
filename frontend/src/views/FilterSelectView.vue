@@ -5,6 +5,7 @@
         v-model="selectedFilterName"
         :items="$store.state.filterNames"
         label="Select a filter"
+        clearable
       ></v-select>
     </v-flex>
 
