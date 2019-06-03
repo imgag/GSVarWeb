@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-toolbar color="indigo" dark fixed app>
-      <v-toolbar-title>GSVarWeb</v-toolbar-title>
+      <v-toolbar-title>GSvarWeb</v-toolbar-title>
     </v-toolbar>
     <!-- used for error reporting -->
     <v-snackbar
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import GSVarView from '@/views/GSVarView'
+import GSVarView from '@/views/GSvarView'
 import FileSelectView from '@/views/FileSelectView'
 import FilterSelectView from '@/views/FilterSelectView'
 import { createOAuthProvider } from '@/utils'
