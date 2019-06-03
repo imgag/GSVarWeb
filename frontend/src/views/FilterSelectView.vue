@@ -45,8 +45,10 @@ export default {
         .then(() => {
           vm.$store.commit('toggleFilterFileLoading')
         }).catch((err) => {
-          vm.$emit('error', err)
           vm.$store.commit('toggleFilterFileLoading')
+          err.then((body) => {
+            vm.$emit('error', body.detail)
+          })
         })
     }
   }

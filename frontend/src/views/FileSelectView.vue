@@ -39,7 +39,9 @@ export default {
         .then(() => vm.$store.commit('incrementStep'))
         .catch((err) => {
           vm.$store.commit('toggleFileLoading')
-          vm.$emit('error', err)
+          err.then((body) => {
+            vm.$emit('error', body.detail)
+          })
         })
     }
   }

@@ -88,7 +88,7 @@ export default new Vuex.Store({
      */
     annotateVcf (context, fileName) {
       fileName = fileNameFromPath(fileName)
-      return apiFetch(`${$basePath}/an_vep/${fileName}`).then((response) => response.json())
+      return apiFetch(`${$basePath}/an_vep/${fileName}`).then((response) => (response.status === 200) ? Promise.resolve(response.json()) : Promise.reject(response.json()))
     },
     /**
      * Converts the current VCF file to a GSvar
@@ -97,7 +97,7 @@ export default new Vuex.Store({
      */
     convertVcf (context, fileName) {
       fileName = fileNameFromPath(fileName)
-      return apiFetch(`${$basePath}/vcf2gsvar/${fileName}`).then((response) => response.json())
+      return apiFetch(`${$basePath}/vcf2gsvar/${fileName}`).then((response) => (response.status === 200) ? Promise.resolve(response.json()) : Promise.reject(response.json()))
     },
     /**
      * Updates header fields based on first line of a GSVar / VCF
@@ -195,7 +195,9 @@ export default new Vuex.Store({
             if (vcf) {
               return context.dispatch('annotateVcf', file.value).then((fileName) => {
                 return context.dispatch('convertVcf', fileName).then((fileName) => Promise.resolve(fileName))
-              }).catch((err) => Promise.reject(err))
+              }).catch((err) => {
+                throw err
+              })
             } else {
               return Promise.resolve(file.value)
             }
@@ -207,7 +209,9 @@ export default new Vuex.Store({
           .then((fileName) => Promise.resolve(context.commit('updateSelectedFilePath', fileName)))
           .then(() => context.dispatch('updateLastTotalNumberOfVariants'))
           .then(() => Promise.resolve(context.commit('toggleFileLoading')))
-          .catch((err) => Promise.reject(err))
+          .catch((err) => {
+            throw err
+          })
       }
     },
     /**
@@ -232,11 +236,13 @@ export default new Vuex.Store({
           out: fileNameFromPath(outFile),
           filter: config
         })
-      }).then(() => Promise.resolve(context.commit('updateLastSelectedFilterName', name)))
+      })
+        .then((response) => (response.status === 200) ? Promise.resolve(response.json()) : Promise.reject(response.json()))
+        .then(() => Promise.resolve(context.commit('updateLastSelectedFilterName', name)))
         .then(() => context.dispatch('loadGSVarFileFromPath', outFile))
         .then(() => context.dispatch('loadGSVarFileFromPath', outFile))
         .catch((err) => {
-          throw (new Error(err))
+          throw err
         })
     },
     updateLastTotalNumberOfVariants (context) {
