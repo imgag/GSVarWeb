@@ -1,7 +1,4 @@
 [build]
   base = "frontend"
   publish = "frontend/dist"
-  command = "npm run build"
-
-[context.production.environment]
-  VUE_APP_BASEPATH = "https://gsvarweb.imgag.de/v1"
+  command = "VUE_APP_BASEPATH=https://gsvarweb.imgag.de/v1 npm run build"
