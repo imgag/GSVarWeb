@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Added download button
-- changed default display limit for variants in column dialog to 15
+- Added netlify support
+
+### Changed
+- Changed default display limit for variants in column dialog to 15
+- Removed apply filter button -> automatically load filter when changing
 
 ## 0.0.2
 

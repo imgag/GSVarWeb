@@ -3,6 +3,5 @@
   publish = "frontend/dist"
   command = "npm run build"
 
-[context.production]
+[context.production.environment]
   VUE_APP_BASEPATH = "https://gsvarweb.imgag.de/v1"
-
