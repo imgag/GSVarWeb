@@ -245,6 +245,10 @@ export default new Vuex.Store({
           throw err
         })
     },
+    downloadFile (context) {
+      let fileName = fileNameFromPath(context.state.selectedFilePath)
+      window.open(`${$basePath}/download/${fileName}`, '_blank')
+    },
     updateLastTotalNumberOfVariants (context) {
       let fileName = fileNameFromPath(context.state.selectedFilePath)
       apiFetch(`${$basePath}/count/${fileName}`).then((response) => {

@@ -27,6 +27,14 @@
         Select file
       </v-btn>
     </v-flex>
+
+    <v-flex>
+      <v-btn
+        @click="$store.dispatch('downloadFile')"
+      >
+        Download file
+      </v-btn>
+    </v-flex>
   </v-layout>
 </template>
 
