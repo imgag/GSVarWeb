@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Added download button
+- changed default display limit for variants in column dialog to 15
 
 ## 0.0.2
 

@@ -23,6 +23,7 @@
               <v-flex xs-12>
                 <v-data-table
                   max-width
+                  :rows-per-page-items="codingSplicingRowsPerPage"
                   :headers="codingSplicingHeaders"
                   :items="parseCodingSplicingInfo(item.coding_and_splicing)"
                 >
@@ -105,6 +106,7 @@ export default {
   data () {
     return {
       dialog: true,
+      codingSplicingRowsPerPage: [15, 25, { 'text': '$vuetify.dataIterator.rowsPerPageAll', 'value': -1 }],
       codingSplicingHeaders: [
         { text: 'Gene', sortable: false },
         { text: 'ID', sortable: false },
