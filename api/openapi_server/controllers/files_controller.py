@@ -13,7 +13,7 @@ import connexion
 ALLOWED_EXTENSIONS = set('GSvar')
 
 
-def count_file_path_get(filePath):  # noqa: E501
+def count_file_path_get(filePath, user=None):  # noqa: E501
     """count_file_path_get
 
     Count items in a file # noqa: E501
@@ -23,7 +23,8 @@ def count_file_path_get(filePath):  # noqa: E501
 
     :rtype: float
     """
-    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filePath)
+    user_dir = user if user else 'debug'
+    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user_dir, filePath)
     if current_app.config['PRODUCTION']:
         if not any(map(lambda extension: filePath.endswith(extension), current_app.config['ALLOWED_EXTENSIONS'])):
             return "File must be one of allowed types.", 400
@@ -37,15 +38,15 @@ def count_file_path_get(filePath):  # noqa: E501
         abort(404)
 
 
-def download_file_path_get(filePath, Lines=None):  # noqa: E501
+def download_file_path_get(filePath, user=None):  # noqa: E501
     """download_file_path_get
 
     Download a file from given path eventually cutting it with Lines header # noqa: E501
 
     :param filePath: Path to the file
     :type filePath: str
-    :param lines: The lines to serve represented as from-to e.g 1-100 starting at 1
-    :type lines: str
+    :param user: The user name.
+    :type user: str
 
     :rtype: file
     """
@@ -53,7 +54,8 @@ def download_file_path_get(filePath, Lines=None):  # noqa: E501
     if current_app.config['PRODUCTION']:
         if not any(map(lambda extension: filePath.endswith(extension), current_app.config['ALLOWED_EXTENSIONS'])):
             return "File must be one of allowed types.", 400
-    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filePath)
+    user_dir = user if user else 'debug'
+    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user_dir, filePath)
     if os.path.isfile(abs_file_path):  # this makes sure the upload folder is not escaped
         lines = connexion.request.headers['Lines'] if 'lines' in connexion.request.headers else None
 
@@ -86,22 +88,33 @@ def download_file_path_get(filePath, Lines=None):  # noqa: E501
     return 'do some magic!'
 
 
-def upload_post(uploadedFile=None):  # noqa: E501
+def upload_post(uploadedFile=None, user=None):  # noqa: E501
     """upload_post
 
     Uploads a file to the server # noqa: E501
 
     :param uploadedFile: The GSVar file to upload.
     :type uploadedFile: werkzeug.datastructures.FileStorage
+    :param user: The user name.
+    :type user: str.
 
     :rtype: None
     """
+    user_dir = user if user else 'debug'
     file_name = secure_filename(uploadedFile.filename)
     if current_app.config['PRODUCTION']:
         if not any(map(lambda extension: file_name.endswith(extension), current_app.config['ALLOWED_EXTENSIONS'])):
             return "File must be one of allowed types.", 400
+    abs_folder_path = os.path.join(
+        current_app.config['UPLOAD_FOLDER'],
+        user_dir
+    )
     abs_file_path = os.path.join(
-        current_app.config['UPLOAD_FOLDER'], file_name)
+        abs_folder_path,
+        file_name
+    )
+    if not os.path.exists(abs_folder_path):
+        os.mkdir(abs_folder_path)
     if os.path.exists(abs_file_path):
         pass
     else:

@@ -9,21 +9,24 @@ import connexion
 from openapi_server.tools.import_and_convert import convert_dict_to_lines
 
 
-def variant_filter_annotations_post(variant_filter_request=None):  # noqa: E501
+def variant_filter_annotations_post(variant_filter_request=None, user=None):  # noqa: E501
     """variant_filter_annotations_post
 
     :param variant_filter_request:
     :type variant_filter_request: dict | bytes
+    :param user: The user name.
+    :type user: str.
 
     :rtype: None
     """
     if connexion.request.is_json:
         variant_filter_request = connexion.request.get_json()
 
+    user_dir = user if user else 'debug'
     abs_in_path = os.path.join(
-        current_app.config['UPLOAD_FOLDER'], variant_filter_request['in'])
+        current_app.config['UPLOAD_FOLDER'], user_dir, variant_filter_request['in'])
     abs_out_path = os.path.join(
-        current_app.config['UPLOAD_FOLDER'], variant_filter_request['out'])
+        current_app.config['UPLOAD_FOLDER'], user_dir, variant_filter_request['out'])
 
     if os.path.isfile(abs_in_path) and not os.path.isfile(abs_out_path):
         lines = convert_dict_to_lines(variant_filter_request['filter'])
@@ -48,17 +51,20 @@ def variant_filter_annotations_post(variant_filter_request=None):  # noqa: E501
             variant_filter_request['in']))
 
 
-def vcf_check_file_path_get(filePath):  # noqa: E501
+def vcf_check_file_path_get(filePath, user=None):  # noqa: E501
     """vcf_check_file_path_get
     Check a file at given path with VcfCheck.
 
     :param filePath: Path to the file
     :type filePath: str
+    :param user: The user name.
+    :type user: str.
 
     :rtype: None
     """
 
-    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filePath)
+    user_dir = user if user else 'debug'
+    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user_dir, filePath)
     if os.path.isfile(abs_file_path):
 
         bin_folder = os.path.abspath(os.getenv('NGS_BITS_BIN', os.getcwd()))

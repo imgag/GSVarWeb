@@ -4,17 +4,20 @@ from flask import current_app, abort
 from werkzeug.exceptions import BadRequest
 
 
-def an_vep_file_path_get(filePath):  # noqa: E501
+def an_vep_file_path_get(filePath, user=None):  # noqa: E501
     """an_vep_file_path_get
 
     Annotates a VCF using VEP # noqa: E501
 
     :param file_path: The VCF file to annotate
     :type file_path: str
+    :param user: The user name.
+    :type user: str.
 
     :rtype: string
     """
-    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filePath)
+    user_dir = user if user else 'debug'
+    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user_dir, filePath)
     if os.path.isfile(abs_file_path):
         abs_out_path = abs_file_path.replace(".vcf", "_annotated.vcf")
         if not os.path.isfile(abs_out_path):
@@ -33,18 +36,20 @@ def an_vep_file_path_get(filePath):  # noqa: E501
         abort(404)
 
 
-def vcf2gsvar_file_path_get(filePath):  # noqa: E501
+def vcf2gsvar_file_path_get(filePath, user=None):  # noqa: E501
     """vcf2gsvar_file_path_get
 
     Converts a VCF file to a GSvar # noqa: E501
 
     :param file_path: The GSvar file to convert
     :type file_path: str
+    :param user: The user name.
+    :type user: str.
 
     :rtype: string
     """
-
-    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filePath)
+    user_dir = user if user else 'debug'
+    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user_dir, filePath)
     if os.path.isfile(abs_file_path):
         abs_gsvar_path = abs_file_path.replace(".vcf", ".GSvar")
         if not os.path.isfile(abs_gsvar_path):
