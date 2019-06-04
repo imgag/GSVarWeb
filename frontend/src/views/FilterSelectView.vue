@@ -5,24 +5,16 @@
         v-model="selectedFilterName"
         :items="$store.state.filterNames"
         label="Select a filter"
+        :disabled="$store.state.filterFileLoading"
+        @change="updateSelectedFilter"
         clearable
       ></v-select>
     </v-flex>
 
     <v-flex>
       <v-btn
-        class="ml-4"
-        color="primary"
-        @click="updateSelectedFilter"
-        :disabled="(selectedFilterName === $store.state.lastSelectedFilterName) || $store.state.filterFileLoading"
-      >
-        Apply filter
-      </v-btn>
-    </v-flex>
-
-    <v-flex>
-      <v-btn
         @click="$store.commit('incrementStep')"
+        class="ml-3"
       >
         Select file
       </v-btn>
