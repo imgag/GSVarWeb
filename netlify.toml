@@ -1,0 +1,8 @@
+[build]
+  base = "frontend"
+  publish = "frontend/dist"
+  command = "npm run build"
+
+[context.production]
+  VUE_APP_BASEPATH = "https://gsvarweb.imgag.de/v1"
+
