@@ -22,8 +22,6 @@ def info_from_jwt(token):
     :return: Decoded token information or None if token is invalid
     :rtype: dict | None
     """
-    if not current_app.config['PRODUCTION']:  # never check values in debug
-        return {}
 
     # NOTE: Implements validation as suggested on the Auth0 site at
     # https://auth0.com/docs/quickstart/backend/python/01-authorization#validate-access-tokens

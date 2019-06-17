@@ -16,8 +16,7 @@ def an_vep_file_path_get(filePath, user=None):  # noqa: E501
 
     :rtype: string
     """
-    user_dir = user if user else 'debug'
-    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user_dir, filePath)
+    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user, filePath)
     if os.path.isfile(abs_file_path):
         abs_out_path = abs_file_path.replace(".vcf", "_annotated.vcf")
         if not os.path.isfile(abs_out_path):
@@ -48,8 +47,7 @@ def vcf2gsvar_file_path_get(filePath, user=None):  # noqa: E501
 
     :rtype: string
     """
-    user_dir = user if user else 'debug'
-    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user_dir, filePath)
+    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user, filePath)
     if os.path.isfile(abs_file_path):
         abs_gsvar_path = abs_file_path.replace(".vcf", ".GSvar")
         if not os.path.isfile(abs_gsvar_path):

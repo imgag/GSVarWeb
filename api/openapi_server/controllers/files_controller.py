@@ -23,8 +23,7 @@ def count_file_path_get(filePath, user=None):  # noqa: E501
 
     :rtype: float
     """
-    user_dir = user if user else 'debug'
-    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user_dir, filePath)
+    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user, filePath)
     if current_app.config['PRODUCTION']:
         if not any(map(lambda extension: filePath.endswith(extension), current_app.config['ALLOWED_EXTENSIONS'])):
             return "File must be one of allowed types.", 400
@@ -54,8 +53,7 @@ def download_file_path_get(filePath, user=None):  # noqa: E501
     if current_app.config['PRODUCTION']:
         if not any(map(lambda extension: filePath.endswith(extension), current_app.config['ALLOWED_EXTENSIONS'])):
             return "File must be one of allowed types.", 400
-    user_dir = user if user else 'debug'
-    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user_dir, filePath)
+    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user, filePath)
     if os.path.isfile(abs_file_path):  # this makes sure the upload folder is not escaped
         lines = connexion.request.headers['Lines'] if 'lines' in connexion.request.headers else None
 
@@ -82,7 +80,7 @@ def download_file_path_get(filePath, user=None):  # noqa: E501
                 raise BadRequest(
                     "Command exited with status {}".format(status))
         else:
-            return send_from_directory(directory=current_app.config['UPLOAD_FOLDER'], filename=filePath)
+            return send_from_directory(directory=os.path.join(current_app.config['UPLOAD_FOLDER'], user), filename=filePath)
     else:
         abort(404)
     return 'do some magic!'
@@ -100,14 +98,13 @@ def upload_post(uploadedFile=None, user=None):  # noqa: E501
 
     :rtype: None
     """
-    user_dir = user if user else 'debug'
     file_name = secure_filename(uploadedFile.filename)
     if current_app.config['PRODUCTION']:
         if not any(map(lambda extension: file_name.endswith(extension), current_app.config['ALLOWED_EXTENSIONS'])):
             return "File must be one of allowed types.", 400
     abs_folder_path = os.path.join(
         current_app.config['UPLOAD_FOLDER'],
-        user_dir
+        user
     )
     abs_file_path = os.path.join(
         abs_folder_path,

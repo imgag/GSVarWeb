@@ -22,11 +22,10 @@ def variant_filter_annotations_post(variant_filter_request=None, user=None):  # 
     if connexion.request.is_json:
         variant_filter_request = connexion.request.get_json()
 
-    user_dir = user if user else 'debug'
     abs_in_path = os.path.join(
-        current_app.config['UPLOAD_FOLDER'], user_dir, variant_filter_request['in'])
+        current_app.config['UPLOAD_FOLDER'], user, variant_filter_request['in'])
     abs_out_path = os.path.join(
-        current_app.config['UPLOAD_FOLDER'], user_dir, variant_filter_request['out'])
+        current_app.config['UPLOAD_FOLDER'], user, variant_filter_request['out'])
 
     if os.path.isfile(abs_in_path) and not os.path.isfile(abs_out_path):
         lines = convert_dict_to_lines(variant_filter_request['filter'])
@@ -63,8 +62,7 @@ def vcf_check_file_path_get(filePath, user=None):  # noqa: E501
     :rtype: None
     """
 
-    user_dir = user if user else 'debug'
-    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user_dir, filePath)
+    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user, filePath)
     if os.path.isfile(abs_file_path):
 
         bin_folder = os.path.abspath(os.getenv('NGS_BITS_BIN', os.getcwd()))

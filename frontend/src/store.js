@@ -247,7 +247,17 @@ export default new Vuex.Store({
     },
     downloadFile (context) {
       let fileName = fileNameFromPath(context.state.selectedFilePath)
-      window.open(`${$basePath}/download/${fileName}`, '_blank')
+      let file = `${$basePath}/download/${fileName}`
+      apiFetch(file).then((response) => response.blob()).then((blobby) => {
+        let anchor = document.createElement('a')
+        let objectURL = window.URL.createObjectURL(blobby)
+
+        anchor.href = objectURL
+        anchor.download = fileName
+        anchor.click()
+
+        window.URL.revokeObjectURL(objectURL)
+      })
     },
     updateLastTotalNumberOfVariants (context) {
       let fileName = fileNameFromPath(context.state.selectedFilePath)
