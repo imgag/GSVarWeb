@@ -28,13 +28,12 @@
             <filter-select-view @error="showError"></filter-select-view>
           </v-flex>
           <v-flex v-if="$store.state.fileLoaded" xs12>
-            <g-s-var-view
+            <GSvarView
               :headers="$store.state.headers"
               :items="$store.state.lines"
               :loading="$store.state.filterFileLoading"
               :lastTotalNumberOfVariants="$store.state.lastTotalNumberOfVariants"
-            >
-            </g-s-var-view>
+            />
           </v-flex>
         </v-layout>
       </v-container>
@@ -43,7 +42,7 @@
 </template>
 
 <script>
-import GSVarView from '@/views/GSvarView'
+import GSvarView from '@/views/GSvarView'
 import FileSelectView from '@/views/FileSelectView'
 import FilterSelectView from '@/views/FilterSelectView'
 import { createOAuthProvider } from '@/utils'
@@ -84,7 +83,7 @@ export default {
   components: {
     FilterSelectView,
     FileSelectView,
-    GSVarView
+    GSvarView
   }
 }
 </script>

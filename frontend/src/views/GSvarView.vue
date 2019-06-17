@@ -42,7 +42,7 @@ import TooltipText from '@/components/TooltipText'
 import ColumnDialog from '@/components/ColumnDialog'
 
 export default {
-  name: 'GSVarView',
+  name: 'GSvarView',
   components: {
     TooltipText,
     ColumnDialog

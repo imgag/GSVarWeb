@@ -100,7 +100,7 @@ export default new Vuex.Store({
       return apiFetch(`${$basePath}/vcf2gsvar/${fileName}`).then((response) => (response.status === 200) ? Promise.resolve(response.json()) : Promise.reject(response.json()))
     },
     /**
-     * Updates header fields based on first line of a GSVar / VCF
+     * Updates header fields based on first line of a GSvar / VCF
      * @param context
      */
     updateHeaders (context) {
@@ -124,13 +124,13 @@ export default new Vuex.Store({
       context.commit('replaceLines', lines)
     },
     /**
-     * Uploads a GSVar file to the server
+     * Uploads a GSvar file to the server
      * @function
      * @param {Object} context
      * @param {File} file
      * @return {Promise<any>}
      */
-    uploadGSVarFile (context, file) {
+    uploadGSvarFile (context, file) {
       return new Promise((resolve, reject) => {
         let formData = new FormData()
         formData.append('uploadedFile', file.files[0])
@@ -160,7 +160,7 @@ export default new Vuex.Store({
      * @param path
      * @return {Promise<any>}
      */
-    loadGSVarFileFromPath (context, path) {
+    loadGSvarFileFromPath (context, path) {
       return new Promise((resolve, reject) => {
         let fileName = fileNameFromPath(path)
         apiFetch(`${$basePath}/download/${fileName}`, {
@@ -190,7 +190,7 @@ export default new Vuex.Store({
       if (context.state.selectedFilePath !== file.value) {
         let vcf = file.value.endsWith('.vcf') // if VCF annotate and/or convert, annotate first
         return Promise.resolve(context.commit('toggleFileLoading'))
-          .then(() => context.dispatch('uploadGSVarFile', file))
+          .then(() => context.dispatch('uploadGSvarFile', file))
           .then(() => {
             if (vcf) {
               return context.dispatch('annotateVcf', file.value).then((fileName) => {
@@ -203,7 +203,7 @@ export default new Vuex.Store({
             }
           })
           .then((fileName) => {
-            context.dispatch('loadGSVarFileFromPath', fileName)
+            context.dispatch('loadGSvarFileFromPath', fileName)
             return Promise.resolve(fileName)
           })
           .then((fileName) => Promise.resolve(context.commit('updateSelectedFilePath', fileName)))
@@ -223,7 +223,7 @@ export default new Vuex.Store({
     applyFilter (context, name) {
       let config = createFilterConfig(filterJSON, name)
       let dateAppend = String(Date.now())
-      let outFile = context.state.selectedFilePath.replace('.GSvar', `_${dateAppend}.GSVar`)
+      let outFile = context.state.selectedFilePath.replace('.GSvar', `_${dateAppend}.GSvar`)
       context.commit('toggleFilterFileLoading')
 
       return apiFetch(`${$basePath}/VariantFilterAnnotations`, {
@@ -239,8 +239,8 @@ export default new Vuex.Store({
       })
         .then((response) => (response.status === 200) ? Promise.resolve(response.json()) : Promise.reject(response.json()))
         .then(() => Promise.resolve(context.commit('updateLastSelectedFilterName', name)))
-        .then(() => context.dispatch('loadGSVarFileFromPath', outFile))
-        .then(() => context.dispatch('loadGSVarFileFromPath', outFile))
+        .then(() => context.dispatch('loadGSvarFileFromPath', outFile))
+        .then(() => context.dispatch('loadGSvarFileFromPath', outFile))
         .catch((err) => {
           throw err
         })
