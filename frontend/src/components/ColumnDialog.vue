@@ -47,7 +47,11 @@
               <v-flex>
                 <p class="subheading">Splicing</p>
                 <p>MaxEntScan: {{ item.MaxEntScan }}</p>
-                <p>GeneSplicer: {{ item.GeneSplicer }}</p>
+                <p v-if="item.GeneSplicer">GeneSplicer:<br/>
+                  <span v-for="splicer in item.GeneSplicer.split('&')" v-bind:key="splicer">
+                    {{ splicer }}<br/>
+                  </span>
+                </p>
                 <p>dbscSNV: {{ item.dbscSNV }}</p>
                 <p class="subheading">Regulatory</p>
                 <p>Regulatory: {{ item.regulatory.replace('regulatory_region_variant:', '') }}</p>
