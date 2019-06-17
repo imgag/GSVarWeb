@@ -44,7 +44,7 @@ def variant_filter_annotations_post(variant_filter_request=None, user=None):  # 
         if status == 0:
             return "successfull"
         else:
-            raise BadRequest("Command exited with status {}".format(status))
+            raise BadRequest("Could not apply filter.")
     else:
         raise BadRequest("The file {} wasn't found.".format(
             variant_filter_request['in']))

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added netlify support
 
 ### Changed
+- Add better error message when filter fails
 - Break COSMIC into multiple links using ,
 - Changed default realm to debug
 - Changed default display limit for variants in column dialog to 15
