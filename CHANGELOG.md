@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed default display limit for variants in column dialog to 15
 - Removed apply filter button -> automatically load filter when changing
 - Use user (id) as base name for storing files
+- Rename ID -> Transcript
 
 ## 0.0.2
 

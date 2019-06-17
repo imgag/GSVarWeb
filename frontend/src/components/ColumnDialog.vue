@@ -29,7 +29,7 @@
                 >
                   <template v-slot:items="props">
                     <td><a :href="`https://gnomad.broadinstitute.org/gene/${props.item.Gene}`" target="_blank">{{ props.item.Gene }}</a></td>
-                    <td><a :href="`http://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=${props.item.ID}`" target="_blank">{{ props.item.ID }}</a></td>
+                    <td><a :href="`http://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=${props.item.Transcript}`" target="_blank">{{ props.item.Transcript }}</a></td>
                     <td>{{ props.item.Impact }}</td>
                     <td>{{ props.item.Type }}</td>
                     <td>{{ props.item.Exon}}</td>
@@ -109,7 +109,7 @@ export default {
       codingSplicingRowsPerPage: [15, 25, { 'text': '$vuetify.dataIterator.rowsPerPageAll', 'value': -1 }],
       codingSplicingHeaders: [
         { text: 'Gene', sortable: false },
-        { text: 'ID', sortable: false },
+        { text: 'Transcript', sortable: false },
         { text: 'Impact', sortable: false },
         { text: 'Type', sortable: false },
         { text: 'Exon', sortable: false },
@@ -124,7 +124,7 @@ export default {
       return text.split(',').map((e) => e.split(':')).map((item) => {
         return {
           Gene: item[0],
-          ID: item[1],
+          Transcript: item[1],
           Impact: item[3],
           Type: item[2],
           Exon: item[4],
