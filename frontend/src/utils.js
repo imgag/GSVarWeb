@@ -24,8 +24,8 @@ function produceHeaders (items) {
   return items.map((item) => {
     if (item.startsWith('#')) item = item.substr(1)
     return {
-      text: item,
-      value: item,
+      headerName: item,
+      field: item,
       sortable: false
     }
   })

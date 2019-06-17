@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added netlify support
 
 ### Changed
+- Removed v-data-table with ag-grid
 - Rename GSVar -> GSvar everywhere
 - Split GeneSplicer by &
 - Add better error message when filter fails

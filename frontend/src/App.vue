@@ -21,13 +21,13 @@
     <v-content>
       <v-container fluid fill-height>
         <v-layout column>
-          <v-flex xs2 class="mb-2" v-if="$store.state.step === 2">
+          <v-flex xs1 class="mb-2" v-if="$store.state.step === 2">
             <file-select-view @error="showError"></file-select-view>
           </v-flex>
-          <v-flex xs class="mb-2" v-if="$store.state.step === 3">
+          <v-flex xs1 class="mb-2" v-if="$store.state.step === 3">
             <filter-select-view @error="showError"></filter-select-view>
           </v-flex>
-          <v-flex v-if="$store.state.fileLoaded" xs12>
+          <v-flex v-if="$store.state.fileLoaded" xs10>
             <GSvarView
               :headers="$store.state.headers"
               :items="$store.state.lines"

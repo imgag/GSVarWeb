@@ -1,123 +1,86 @@
 <template>
   <div>
     <column-dialog v-if="shouldOpen" @close="closeDialog" :item="columnItem"></column-dialog>
-    <v-data-table
-      :headers="headers"
-      :items="items"
-      :rows-per-page-items="rowsPerPage"
-      :loading="loading"
-    >
-      <template slot="headers" slot-scope="props">
-        <tr>
-          <th
-            v-for="header in props.headers"
-            :key="header.text"
-          >
-            {{ header.text }}
-          </th>
-        </tr>
-      </template>
-      <template slot="items" slot-scope="props">
-        <td v-for="(item, index) in props.item" v-bind:key="index" :bgcolor="getColor(item, index)" v-on:click="openColumnDialog(props.item)">
-          <tooltip-text :text="item" v-if="index === columnMap['gene']"></tooltip-text>
-          <tooltip-text :text="item" v-else-if="index === columnMap['coding_and_splicing']"></tooltip-text>
-          <tooltip-text :text="item" v-else-if="index === columnMap['regulatory']"></tooltip-text>
-          <tooltip-text :text="item" :limit=50 v-else-if="index === columnMap['OMIM']"></tooltip-text>
-          <tooltip-text :text="item" :limit=50 v-else-if="index === columnMap['ClinVar']"></tooltip-text>
-          <tooltip-text :text="item" :limit=50 v-else-if="index === columnMap['HGMD']"></tooltip-text>
-          <tooltip-text :text="item" :limit=20 v-else-if="index === columnMap['gene_info']"></tooltip-text>
-          <span v-else> {{ item }}</span>
-        </td>
-      </template>
-
-      <template slot="actions-append">
-        <p class="mt-3 mr-3">Original variants: {{ lastTotalNumberOfVariants }}</p>
-      </template>
-    </v-data-table>
+    <ag-grid-vue
+        style="width: 100%; height: 80vmin;"
+        class="ag-theme-material"
+        @rowClicked="openColumnDialog"
+        :columnDefs="mergedColorHeaders(headers)"
+        :rowData="items.map((column) => reduceColumnToObject(column))"
+        :pagination="true"
+    />
   </div>
 </template>
 
 <script>
-import TooltipText from '@/components/TooltipText'
 import ColumnDialog from '@/components/ColumnDialog'
+import { AgGridVue } from 'ag-grid-vue'
+import 'ag-grid-community/dist/styles/ag-grid.css'
+import 'ag-grid-community/dist/styles/ag-theme-material.css'
 
 export default {
   name: 'GSvarView',
   components: {
-    TooltipText,
+    AgGridVue,
     ColumnDialog
   },
   data: function () {
     return {
       columnItem: {},
-      shouldOpen: false,
-      selectedGenes: [],
-      rowsPerPage: [
-        10,
-        20,
-        50,
-        100,
-        { 'text': '$vuetify.dataIterator.rowsPerPageAll', 'value': -1 }
-      ]
+      shouldOpen: false
     }
   },
   computed: {
     columnMap () {
       return this.headers.reduce((result, item, index) => {
-        result[item.value] = index
+        result[item.field] = index
         return result
       }, {})
     }
   },
   methods: {
-    openColumnDialog (column) {
-      let vm = this
-      vm.columnItem = column.reduce((result, item, index) => {
-        result[vm.headers[index].text] = item
-        return result
-      }, {})
+    openColumnDialog (row) {
+      this.columnItem = row.data // TODO: Rename ColumnDialog -> RowDialog
       this.shouldOpen = true
     },
     closeDialog () {
       this.shouldOpen = false
     },
+    reduceColumnToObject (column) {
+      let vm = this
+      return column.reduce((result, item, index) => {
+        result[vm.headers[index].headerName] = item
+        return result
+      }, {})
+    },
     /// Ported from https://github.com/imgag/ngs-bits/blob/master/src/GSvar/VariantTable.cpp#L114
-    getColor (item, index) {
-      let color = ''
-
-      // warning
-      if (index === this.columnMap['coding_and_splicing'] && item.includes(':HIGH:')) {
-        color = 'red'
+    mergedColorHeaders (headers) {
+      headers[this.columnMap['coding_and_splicing']]['cellClassRules'] = {
+        'rag-red': (params) => params.value.includes(':HIGH:')
+      }
+      // TODO: Handle virtual color calculations
+      // headers[this.columnMap['classification']]['cellClassRules'] = {
+      //   'rag-orange': (params) => (params.value === '3' || params.value === 'M'),
+      //   'rag-red': (params) => (params.value === '4' || params.value === '5' || params.value.includes('pathogenic') || params.value.includes('CLASS=DM')),
+      //   'rag-green': (params) => (params.value === '0' || params.value === '1' || params.value === '2') // non-pathogenic
+      // }
+      // headers[this.columnMap['validation']]['cellClassRules'] = {
+      //   'rag-yellow': (params) => params.value.includes('TP')
+      // }
+      // headers[this.columnMap['comment']]['cellClassRules'] = {
+      //   'rag-yellow': (params) => params.value !== ''
+      // }
+      // headers[this.columnMap['NGSD_hom']]['cellClassRules'] = {
+      //   'rag-yellow': (params) => params.value !== '0'
+      // }
+      // headers[this.columnMap['NGSD_het']]['cellClassRules'] = {
+      //   'rag-yellow': (params) => params.value !== '1'
+      // }
+      headers[this.columnMap['ClinVar']]['cellClassRules'] = {
+        'rag-yellow': (params) => params.value.includes('confirmed')
       }
 
-      if (index === this.columnMap['classification'] && (item === '3' || item === 'M')) {
-        color = 'orange'
-      } else if (index === this.columnMap['classification'] && (item === '4' || item === '5')) {
-        color = 'red'
-      } else if (index === this.columnMap['classification'] && item.includes('pathogenic')) {
-        color = 'red'
-      } else if (index === this.columnMap['classification'] && item.includes('CLASS=DM')) {
-        color = 'red'
-      }
-
-      if (index === this.columnMap['classification'] && (item === '0' || item === '1' || item === '2')) { // non-pathogenic
-        color = 'green'
-      }
-
-      // highlighted
-      if (index === this.columnMap['validation'] && item.includes('TP')) {
-        color = 'yellow'
-      } else if (index === this.columnMap['comment'] && item !== '') {
-        color = 'yellow'
-      } else if (index === this.columnMap['NGSD_hom'] && item === '0') {
-        color = 'yellow'
-      } else if (index === this.columnMap['NGSD_het'] && item === '1') {
-        color = 'yellow'
-      } else if (index === this.columnMap['ClinVar'] && item.includes('confirmed')) {
-        color = 'yellow'
-      } // else if (index === this.columnMap["genes"]) /// TODO: Deal with imprinting genes
-
-      return color
+      return headers
     }
   },
   props: {
