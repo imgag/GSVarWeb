@@ -53,9 +53,11 @@ export default {
       shouldOpen: false,
       selectedGenes: [],
       rowsPerPage: [
+        10,
+        20,
+        50,
         100,
-        150,
-        300
+        { 'text': '$vuetify.dataIterator.rowsPerPageAll', 'value': -1 }
       ]
     }
   },
