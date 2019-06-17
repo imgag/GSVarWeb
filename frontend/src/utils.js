@@ -1,5 +1,6 @@
 const OAuth = require('@zalando/oauth2-client-js')
-const AUTHORIZATION_URL = (process.env.VUE_APP_AUTHORIZATION_URL !== undefined) ? process.env.VUE_APP_AUTHORIZATION_URL : 'https://auth.imgag.de/auth/realms/master/protocol/openid-connect/auth'
+const REALM = (process.env.VUE_APP_REALM !== undefined) ? process.env.VUE_APP_REALM : 'debug'
+const AUTHORIZATION_URL = `https://auth.imgag.de/auth/realms/${REALM}/protocol/openid-connect/auth`
 
 /**
  * Creates an OAuth provider for keycloak

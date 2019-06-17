@@ -24,7 +24,7 @@ The following environment variables can be set during startup:
 | MEGSAP_DIR      | Where to find the megSAP directory         | None    |
 | PRODUCTION      | Whether or not the server is in production | False   |
 | AUTH_DOMAIN     | The domain to authenticate against  | auth.imgag.de  |
-| REALM           | The authentication realm                   | master  |
+| REALM           | The authentication realm                   | debug   |
 | ORIGINS         | Which origins to allow   | [ http://localhost:8080 ] |
 
 You can start the server using above variables like so:
@@ -48,7 +48,7 @@ The following environment variables can be set:
 | Variable          | Meaning                                                  | Default                  | 
 | ----------------- | -------------------------------------------------------- | ------------------------ |
 | VUE_APP_BASEPATH  | Which URL to use for API requests                        | http://localhost:9000/v1 |
-| VUE_APP_AUTHORIZATION_URL | The authorization endpoint to use                | https://auth.imgag.de/auth/realms/master/protocol/openid-connect/auth |
+| VUE_APP_REALM     | The authorization realm to use                           | debug                    |
 
 You can invoke environment variables like so:
 
