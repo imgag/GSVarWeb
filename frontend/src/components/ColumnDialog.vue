@@ -32,7 +32,7 @@
                     <td><a :href="`http://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=${props.item.Transcript}`" target="_blank">{{ props.item.Transcript }}</a></td>
                     <td>{{ props.item.Impact }}</td>
                     <td>{{ props.item.Type }}</td>
-                    <td>{{ props.item.Exon}}</td>
+                    <td>{{ props.item.Exon.replace(/^(exon)/, '') }}</td>
                     <td>{{ props.item.cDNA }}</td>
                     <td>{{ props.item.Protein }}</td>
                     <td>{{ props.item.Domain }}</td>

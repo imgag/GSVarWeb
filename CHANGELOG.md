@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed apply filter button -> automatically load filter when changing
 - Use user (id) as base name for storing files
 - Rename ID -> Transcript
+- Remove the "exon" part from the exon string on display
 
 ## 0.0.2
 
