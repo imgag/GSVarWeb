@@ -254,7 +254,7 @@ export default new Vuex.Store({
 
         anchor.href = objectURL
         anchor.download = fileName
-        anchor.click()
+        anchor.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }))
 
         window.URL.revokeObjectURL(objectURL)
       })
