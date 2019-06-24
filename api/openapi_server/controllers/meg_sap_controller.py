@@ -20,7 +20,7 @@ def an_vep_file_path_get(filePath, user=None):  # noqa: E501
     if os.path.isfile(abs_file_path):
         abs_out_path = abs_file_path.replace(".vcf", "_annotated.vcf")
         if not os.path.isfile(abs_out_path):
-            meg_sap = os.path.abspath(os.getenv('MEGSAP_DIR'))
+            meg_sap = os.path.abspath(os.getenv('MEGSAP'))
             meg_sap_command = "php {}/src/NGS/an_vep.php -in {} -out {}".format(
                 meg_sap, abs_file_path, abs_out_path)
             status = os.system(meg_sap_command)
@@ -51,7 +51,7 @@ def vcf2gsvar_file_path_get(filePath, user=None):  # noqa: E501
     if os.path.isfile(abs_file_path):
         abs_gsvar_path = abs_file_path.replace(".vcf", ".GSvar")
         if not os.path.isfile(abs_gsvar_path):
-            meg_sap = os.path.abspath(os.getenv('MEGSAP_DIR'))
+            meg_sap = os.path.abspath(os.getenv('MEGSAP'))
             meg_sap_command = "php {}/src/NGS/vcf2gsvar.php -in {} -out {}".format(
                 meg_sap, abs_file_path, abs_gsvar_path)
             status = os.system(meg_sap_command)

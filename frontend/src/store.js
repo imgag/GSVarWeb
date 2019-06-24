@@ -9,7 +9,7 @@ const flat = require('array.prototype.flat')
 
 Vue.use(Vuex)
 
-const $basePath = (process.env.VUE_APP_BASEPATH) ? process.env.VUE_APP_BASEPATH : 'http://localhost:9000/v1'
+const $basePath = (process.env.VUE_APP_API_URL) ? process.env.VUE_APP_API_URL : 'http://localhost:9000/v1'
 
 let keycloak = createOAuthProvider()
 

@@ -19,18 +19,18 @@ The following environment variables can be set during startup:
 | Variable        | Meaning                                    | Default |
 | --------------- |:------------------------------------------:|:-------:|
 | PORT            | Which port the server should listen on     | 8080    |
-| NGS_BITS_DATA   | Where to put uploaded files                | $PWD    |
-| NGS_BITS_BIN    | Where to find ngs bits binaries            | $PWD    |
-| MEGSAP_DIR      | Where to find the megSAP directory         | None    |
+| DATA            | Where to put uploaded files                | $PWD    |
+| NGS_BITS        | Where to find ngs bits binaries            | $PWD    |
+| MEGSAP          | Where to find the megSAP directory         | None    |
 | PRODUCTION      | Whether or not the server is in production | False   |
 | AUTH_DOMAIN     | The domain to authenticate against  | auth.imgag.de  |
-| REALM           | The authentication realm                   | debug   |
-| ORIGINS         | Which origins to allow   | [ http://localhost:8080 ] |
+| AUTH_REALM      | The authentication realm                   | debug   |
+| CORS_ORIGINS    | Comma-seperated list of allowed hosts      | -       |
 
 You can start the server using above variables like so:
 
 ```
-PORT=9000 NGS_BITS_DATA=$PWD/data NGS_BITS_BIN=/some/path/to/ngs-bits/bin python3 -m openapi_server
+DATA=$PWD/data NGS_BITS=/some/path/to/ngs-bits/bin python3 -m openapi_server
 ```
 
 You can find the OpenAPI UI under `/v1/ui` for testing and experiment purposes.
@@ -47,13 +47,13 @@ The following environment variables can be set:
 
 | Variable          | Meaning                                                  | Default                  | 
 | ----------------- | -------------------------------------------------------- | ------------------------ |
-| VUE_APP_BASEPATH  | Which URL to use for API requests                        | http://localhost:9000/v1 |
+| VUE_APP_API_URL   | Which URL to use for API requests                        | http://localhost:9000/v1 |
 | VUE_APP_REALM     | The authorization realm to use                           | debug                    |
 
 You can invoke environment variables like so:
 
 ```
-VUE_APP_BASEPATH=http://localhost:8000  npm run build
+VUE_APP_API_URL=http://localhost:9000/v1  npm run build
 ```
 
 After building the project one can copy the `dist` folder into the `api` directory. When setting `SERVE_DIST`, it will be displayed as the default.

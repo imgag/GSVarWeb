@@ -14,11 +14,11 @@ def main():
     app.app.json_encoder = encoder.JSONEncoder
     app.add_api('openapi.yaml', arguments={'title': 'ngs-bits'})
     app.app.config['UPLOAD_FOLDER'] = os.path.abspath(
-        os.getenv('NGS_BITS_DATA', os.getcwd()))
+        os.getenv('DATA', os.getcwd()))
     app.app.config['PRODUCTION'] = os.getenv('PRODUCTION', False)
     app.app.config['ALLOWED_EXTENSIONS'] = {'tsv', 'GSvar'}
-    origins = os.getenv('CORS_ORIGINS', os.getenv(
-        'ORIGINS', ['http://localhost:8080']))
+    origins = [app.app.host_url]
+    origins += os.getenv('CORS_ORIGINS', [])
     # enable CORS for all
     CORS(app.app, origins=origins, supports_credentials=True)
 

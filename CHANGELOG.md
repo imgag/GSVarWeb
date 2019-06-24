@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added netlify support
 
 ### Changed
+- Rename REALM -> AUTH_REALM
+- Rename NGS_BITS_BIN -> NGS_BITS
+- Rename MEGSAP_DIR -> MEGSAP
+- Rename VUE_APP_BASEPATH -> VUE_APP_API_URL
+- Rename NGS_BITS_DATA -> DATA
+- Change way of handling origins variable
 - Removed v-data-table with ag-grid
 - Rename GSVar -> GSvar everywhere
 - Split GeneSplicer by &

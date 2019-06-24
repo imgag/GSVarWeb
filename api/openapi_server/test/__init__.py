@@ -15,7 +15,7 @@ class BaseTestCase(TestCase):
         app.app.json_encoder = JSONEncoder
         app.app.config['PRODUCTION'] = False
         app.app.config['UPLOAD_FOLDER'] = os.path.abspath(
-            os.getenv('NGS_BITS_DATA', os.getcwd())
+            os.getenv('DATA', os.getcwd())
         )
         app.add_api('openapi.yaml', pythonic_params=False)
         return app.app

@@ -8,7 +8,7 @@ from werkzeug.exceptions import Unauthorized
 
 AUTH_DOMAIN = os.getenv('AUTH_DOMAIN', 'auth.imgag.de')
 ALGORITHMS = ['RS256']
-REALM = os.getenv('REALM', 'debug')
+REALM = os.getenv('AUTH_REALM', 'debug')
 
 
 def info_from_jwt(token):

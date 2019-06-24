@@ -34,7 +34,7 @@ def variant_filter_annotations_post(variant_filter_request=None, user=None):  # 
             tmpFile.write(lines)
 
         # Run VariantFilterAnnotations
-        bin_folder = os.path.abspath(os.getenv('NGS_BITS_BIN', os.getcwd()))
+        bin_folder = os.path.abspath(os.getenv('NGS_BITS', os.getcwd()))
         command = "./VariantFilterAnnotations -in {} -out {} -filters {}".format(
             abs_in_path, abs_out_path, tmpFile.name)
         full_command = "cd {} && {}".format(bin_folder, command)
@@ -65,7 +65,7 @@ def vcf_check_file_path_get(filePath, user=None):  # noqa: E501
     abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user, filePath)
     if os.path.isfile(abs_file_path):
 
-        bin_folder = os.path.abspath(os.getenv('NGS_BITS_BIN', os.getcwd()))
+        bin_folder = os.path.abspath(os.getenv('NGS_BITS', os.getcwd()))
         command = "./VcfCheck -in {}".format(abs_file_path)
         full_command = "cd {} && {}".format(bin_folder, command)
         current_app.logger.info("Running {}".format(full_command))
