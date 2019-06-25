@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Made ColumnDialog subheadings -> titles
+- Split COSMIC entries by space
 
 ## 0.0.3
 ### Added

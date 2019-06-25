@@ -62,9 +62,9 @@
                 <p>ClinVar: <a :href="`https://www.ncbi.nlm.nih.gov/clinvar/variation/${getID(item.ClinVar)}`" v-if="item.ClinVar" target="_blank">{{ getID(item.ClinVar) }}</a></p>
                 <p>HGMD: <a :href="`https://portal.biobase-international.com/hgmd/pro/mut.php?acc=${getID(item.HGMD)}`" target="_blank">{{ getID(item.HGMD) }}</a></p>
                 <p>OMIM: <a :href="`https://omim.org/entry/${getID(item.OMIM)}`" v-if="item.OMIM" target="_blank">{{ getID(item.OMIM) }}</a></p>
-                <p v-if="item.COSMIC">COSMIC:<br/>
+                <p v-if="item.COSMIC">COSMIC:
                   <span v-for="COSMIC in item.COSMIC.split(',')" v-bind:key="COSMIC">
-                    <a :href="`https://cancer.sanger.ac.uk/cosmic/search?q=${COSMIC}`" target="_blank">{{ COSMIC }}</a><br/>
+                    <a :href="`https://cancer.sanger.ac.uk/cosmic/search?q=${COSMIC}`" target="_blank">{{ COSMIC }}</a>&nbsp;
                   </span>
                 </p>
               </v-flex>
