@@ -17,7 +17,7 @@ def main():
         os.getenv('DATA', os.getcwd()))
     app.app.config['PRODUCTION'] = os.getenv('PRODUCTION', False)
     app.app.config['ALLOWED_EXTENSIONS'] = {'tsv', 'GSvar'}
-    origins = os.getenv('CORS_ORIGINS', []).split(',')
+    origins = os.getenv('CORS_ORIGINS', '').split(',')
     # enable CORS for all
     CORS(app.app, origins=origins, supports_credentials=True)
 
