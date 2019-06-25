@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Made ColumnDialog subheadings -> titles
 - Split COSMIC entries by space
+- Use subprocess to catch errors when filtering
+- Split CORS_ORIGIN env variable
 
 ## 0.0.3
 ### Added

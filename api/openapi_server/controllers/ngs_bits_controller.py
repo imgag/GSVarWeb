@@ -1,6 +1,7 @@
 import os
 import tempfile
 import uuid
+import subprocess
 
 from flask import current_app, abort
 from werkzeug.exceptions import BadRequest
@@ -35,16 +36,15 @@ def variant_filter_annotations_post(variant_filter_request=None, user=None):  # 
 
         # Run VariantFilterAnnotations
         bin_folder = os.path.abspath(os.getenv('NGS_BITS', os.getcwd()))
-        command = "./VariantFilterAnnotations -in {} -out {} -filters {}".format(
-            abs_in_path, abs_out_path, tmpFile.name)
-        full_command = "cd {} && {}".format(bin_folder, command)
-        current_app.logger.info("Running {}".format(full_command))
-
-        status = os.system(full_command)
-        if status == 0:
+        filter_call = subprocess.run([os.path.join(bin_folder, 'VariantFilterAnnotations'), '-in',
+                                      abs_in_path, '-out', abs_out_path, '-filters', tmpFile.name],
+                                     cwd=bin_folder,
+                                     capture_output=True)
+        if filter_call.returncode == 0:
             return "successfull"
         else:
-            raise BadRequest("Could not apply filter.")
+            error = filter_call.stderr.decode('utf-8').split('\n')
+        raise BadRequest(error[1])
     else:
         raise BadRequest("The file {} wasn't found.".format(
             variant_filter_request['in']))
