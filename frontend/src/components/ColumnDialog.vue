@@ -45,7 +45,7 @@
             </v-flex>
             <v-layout>
               <v-flex>
-                <p class="subheading">Splicing</p>
+                <p class="title">Splicing</p>
                 <p>MaxEntScan: {{ item.MaxEntScan }}</p>
                 <p v-if="item.GeneSplicer">GeneSplicer:<br/>
                   <span v-for="splicer in item.GeneSplicer.split('&')" v-bind:key="splicer">
@@ -53,11 +53,11 @@
                   </span>
                 </p>
                 <p>dbscSNV: {{ item.dbscSNV }}</p>
-                <p class="subheading">Regulatory</p>
+                <p class="title">Regulatory</p>
                 <p>Regulatory: {{ item.regulatory.replace('regulatory_region_variant:', '') }}</p>
               </v-flex>
               <v-flex>
-                <p class="subheading">Databases</p>
+                <p class="title">Databases</p>
                 <p>dbSNP: <a :href="`https://www.ncbi.nlm.nih.gov/snp/${item.dbSNP}`" v-if="item.dbSNP" target="_blank">{{ item.dbSNP }}</a></p>
                 <p>ClinVar: <a :href="`https://www.ncbi.nlm.nih.gov/clinvar/variation/${getID(item.ClinVar)}`" v-if="item.ClinVar" target="_blank">{{ getID(item.ClinVar) }}</a></p>
                 <p>HGMD: <a :href="`https://portal.biobase-international.com/hgmd/pro/mut.php?acc=${getID(item.HGMD)}`" target="_blank">{{ getID(item.HGMD) }}</a></p>
@@ -69,7 +69,7 @@
                 </p>
               </v-flex>
               <v-flex>
-                <p class="subheading">Frequencies</p>
+                <p class="title">Frequencies</p>
                 <p>1000g: {{ item['1000g'] }}</p>
                 <p>gnomAD: {{ item.gnomAD }}</p>
                 <p>gnomAD (hom/hem): {{ item.gnomAD_hom_hemi }}</p>
@@ -77,7 +77,7 @@
                 <p>ESP (sub): {{ item.ESP }}</p>
               </v-flex>
               <v-flex>
-                <p class="subheading">Pathogenicity</p>
+                <p class="title">Pathogenicity</p>
                 <p>phyloP: {{ item.phyloP }}</p>
                 <p>Sift: {{ item.Sift }}</p>
                 <p>PolyPhen: {{ item.PolyPhen }} </p>
