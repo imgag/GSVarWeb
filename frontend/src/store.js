@@ -188,32 +188,30 @@ export default new Vuex.Store({
      * @param file
      */
     updateSelectedFile (context, file) {
-      if (context.state.selectedFilePath !== file.value) {
-        let vcf = file.value.endsWith('.vcf') // if VCF annotate and/or convert, annotate first
-        return Promise.resolve(context.commit('toggleFileLoading'))
-          .then(() => context.dispatch('uploadGSvarFile', file))
-          .then(() => {
-            if (vcf) {
-              return context.dispatch('annotateVcf', file.value).then((fileName) => {
-                return context.dispatch('convertVcf', fileName).then((fileName) => Promise.resolve(fileName))
-              }).catch((err) => {
-                throw err
-              })
-            } else {
-              return Promise.resolve(file.value)
-            }
-          })
-          .then((fileName) => {
-            context.dispatch('loadGSvarFileFromPath', fileName)
-            return Promise.resolve(fileName)
-          })
-          .then((fileName) => Promise.resolve(context.commit('updateSelectedFilePath', fileName)))
-          .then(() => context.dispatch('updateLastTotalNumberOfVariants'))
-          .then(() => Promise.resolve(context.commit('toggleFileLoading')))
-          .catch((err) => {
-            throw err
-          })
-      }
+      let vcf = file.value.endsWith('.vcf') // if VCF annotate and/or convert, annotate first
+      return Promise.resolve(context.commit('toggleFileLoading'))
+        .then(() => context.dispatch('uploadGSvarFile', file))
+        .then(() => {
+          if (vcf) {
+            return context.dispatch('annotateVcf', file.value).then((fileName) => {
+              return context.dispatch('convertVcf', fileName).then((fileName) => Promise.resolve(fileName))
+            }).catch((err) => {
+              throw err
+            })
+          } else {
+            return Promise.resolve(file.value)
+          }
+        })
+        .then((fileName) => {
+          context.dispatch('loadGSvarFileFromPath', fileName)
+          return Promise.resolve(fileName)
+        })
+        .then((fileName) => Promise.resolve(context.commit('updateSelectedFilePath', fileName)))
+        .then(() => context.dispatch('updateLastTotalNumberOfVariants'))
+        .then(() => Promise.resolve(context.commit('toggleFileLoading')))
+        .catch((err) => {
+          throw err
+        })
     },
     /**
      * Applies filter with new file path

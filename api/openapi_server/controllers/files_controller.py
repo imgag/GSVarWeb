@@ -112,10 +112,7 @@ def upload_post(uploadedFile=None, user=None):  # noqa: E501
     )
     if not os.path.exists(abs_folder_path):
         os.mkdir(abs_folder_path)
-    if os.path.exists(abs_file_path):
-        pass
-    else:
-        # this will raise a IOError if something goes wrong
-        uploadedFile.save(abs_file_path)
+    # this will raise a IOError if something goes wrong
+    uploadedFile.save(abs_file_path)
 
     return "successfull"

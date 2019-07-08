@@ -19,18 +19,16 @@ def an_vep_file_path_get(filePath, user=None):  # noqa: E501
     abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user, filePath)
     if os.path.isfile(abs_file_path):
         abs_out_path = abs_file_path.replace(".vcf", "_annotated.vcf")
-        if not os.path.isfile(abs_out_path):
-            meg_sap = os.path.abspath(os.getenv('MEGSAP'))
-            meg_sap_command = "php {}/src/NGS/an_vep.php -in {} -out {}".format(
-                meg_sap, abs_file_path, abs_out_path)
-            status = os.system(meg_sap_command)
-            if status == 0:
-                return os.path.basename(abs_out_path)
-            else:
-                raise BadRequest(
-                    "Command exited with status {}".format(status))
-        else:
+        meg_sap = os.path.abspath(os.getenv('MEGSAP', ""))
+        meg_sap_command = "php {}/src/NGS/an_vep.php -in {} -out {}".format(
+            meg_sap, abs_file_path, abs_out_path)
+        status = os.system(meg_sap_command)
+        if status == 0:
             return os.path.basename(abs_out_path)
+        else:
+            raise BadRequest(
+                "Command exited with status {}".format(status))
+        return os.path.basename(abs_out_path)
     else:
         abort(404)
 
@@ -50,17 +48,15 @@ def vcf2gsvar_file_path_get(filePath, user=None):  # noqa: E501
     abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user, filePath)
     if os.path.isfile(abs_file_path):
         abs_gsvar_path = abs_file_path.replace(".vcf", ".GSvar")
-        if not os.path.isfile(abs_gsvar_path):
-            meg_sap = os.path.abspath(os.getenv('MEGSAP'))
-            meg_sap_command = "php {}/src/NGS/vcf2gsvar.php -in {} -out {}".format(
-                meg_sap, abs_file_path, abs_gsvar_path)
-            status = os.system(meg_sap_command)
-            if status == 0:
-                return os.path.basename(abs_gsvar_path)
-            else:
-                raise BadRequest(
-                    "Command failed while producing a GSvar file with status {}".format(status))
-        else:
+        meg_sap = os.path.abspath(os.getenv("MEGSAP", ""))
+        meg_sap_command = "php {}/src/NGS/vcf2gsvar.php -in {} -out {}".format(
+            meg_sap, abs_file_path, abs_gsvar_path)
+        status = os.system(meg_sap_command)
+        if status == 0:
             return os.path.basename(abs_gsvar_path)
+        else:
+            raise BadRequest(
+                "Command failed while producing a GSvar file with status {}".format(status))
+        return os.path.basename(abs_gsvar_path)
     else:
         abort(404)

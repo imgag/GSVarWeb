@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Make snackbars display permanently
+- Remove caching everywhere
 
 ## 0.0.4
 ### Added
