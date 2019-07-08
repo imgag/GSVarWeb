@@ -16,7 +16,7 @@ def main():
     app.app.config['UPLOAD_FOLDER'] = os.path.abspath(
         os.getenv('DATA', os.getcwd()))
     app.app.config['PRODUCTION'] = os.getenv('PRODUCTION', False)
-    app.app.config['ALLOWED_EXTENSIONS'] = {'tsv', 'GSvar'}
+    app.app.config['ALLOWED_EXTENSIONS'] = {'vcf', 'GSvar'}
     origins = os.getenv('CORS_ORIGINS', '').split(',')
     if not app.app.config['PRODUCTION']:
         origins.append('http://localhost:8080')

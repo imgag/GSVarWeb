@@ -2,6 +2,15 @@
   <v-app id="inspire">
     <v-toolbar color="indigo" dark fixed app>
       <v-toolbar-title>GSvarWeb</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn
+          :href="LOGOUT_URL"
+          icon
+        >
+          <v-icon>exit_to_app</v-icon>
+        </v-btn>
+      </v-toolbar-items>
     </v-toolbar>
     <!-- used for error reporting -->
     <v-snackbar
@@ -45,7 +54,7 @@
 import GSvarView from '@/views/GSvarView'
 import FileSelectView from '@/views/FileSelectView'
 import FilterSelectView from '@/views/FilterSelectView'
-import { createOAuthProvider } from '@/utils'
+import { createOAuthProvider, LOGOUT_URL } from '@/utils'
 
 const OAuth = require('@zalando/oauth2-client-js')
 
@@ -54,7 +63,8 @@ export default {
   data () {
     return {
       snackbar: false,
-      text: ''
+      text: '',
+      LOGOUT_URL: LOGOUT_URL
     }
   },
   mounted () {
