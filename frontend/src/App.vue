@@ -14,6 +14,7 @@
     </v-toolbar>
     <!-- used for error reporting -->
     <v-snackbar
+      :timeout="0"
       v-model="snackbar"
       top
     >

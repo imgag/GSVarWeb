@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Google link
 - Added GnomAD link
 
+### Changed
+- Make snackbars display permanently
+
 ## 0.0.4
 ### Added
 - Added logout button
