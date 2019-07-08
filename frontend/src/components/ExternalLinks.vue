@@ -20,7 +20,8 @@ export default {
         { text: 'UCSC Genome Browser', icon: 'UCSC.png', baseURL: 'http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=' },
         { text: 'LOVD', icon: 'LOVD.png', baseURL: 'https://databases.lovd.nl/shared/variants' },
         { text: 'SysID', icon: 'SysID.png', baseURL: 'https://sysid.cmbi.umcn.nl/search?search=' },
-        { text: 'VarSome', icon: 'VarSome.png', baseURL: 'https://varsome.com/variant/hg19/' }
+        { text: 'VarSome', icon: 'VarSome.png', baseURL: 'https://varsome.com/variant/hg19/' },
+        { text: 'Google', icon: 'Google.png', baseURL: 'https://google.com/search?q=' }
       ]
     }
   },
@@ -45,6 +46,8 @@ export default {
           tabURLs.push(`${item.baseURL}${gene.chr}:${gene.start}-${gene.end}`)
         } else if (item.text === 'LOVD') {
           tabURLs.push(`${item.baseURL}#search_chromosome=${gene.chr}&search_VariantOnGenome/DNA=${gene.ref.toLowerCase()}.${gene.start}&page_size=100&page=1`)
+        } else if (item.text === 'Google') {
+          tabURLs.push(`${item.baseURL}${gene.gene}+AND+(${gene.ref}->${gene.obs})`)
         }
 
         return tabURLs
