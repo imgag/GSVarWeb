@@ -5,7 +5,7 @@
         style="width: 100%; height: 80vmin;"
         class="ag-theme-material"
         @rowClicked="openColumnDialog"
-        :columnDefs="mergedColorHeaders(headers)"
+        :columnDefs="columnDefs(headers)"
         :rowData="items.map((column) => reduceColumnToObject(column))"
         :pagination="true"
     />
@@ -54,7 +54,7 @@ export default {
       }, {})
     },
     /// Ported from https://github.com/imgag/ngs-bits/blob/master/src/GSvar/VariantTable.cpp#L114
-    mergedColorHeaders (headers) {
+    columnDefs (headers) {
       headers[this.columnMap['coding_and_splicing']]['cellClassRules'] = {
         'rag-red': (params) => params.value.includes(':HIGH:')
       }

@@ -26,7 +26,8 @@ function produceHeaders (items) {
     return {
       headerName: item,
       field: item,
-      sortable: false
+      sortable: false,
+      cellRenderer: (params) => `<span title="${params.value}" data-toggle="tooltip">${params.value}</span>`
     }
   })
 }
