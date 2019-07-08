@@ -1,4 +1,4 @@
 [build]
   base = "frontend"
   publish = "frontend/dist"
-  command = "VUE_APP_API_URL=https://gsvarweb.imgag.de/v1 VUE_APP_REALM=master npm run build"
+  command = "VUE_APP_API_URL=https://gsvarapi.imgag.de/v1 VUE_APP_REALM=master npm run build"
