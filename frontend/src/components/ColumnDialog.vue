@@ -35,7 +35,8 @@
                     <td>{{ props.item.Exon.replace(/^(exon)/, '') }}</td>
                     <td>{{ props.item.cDNA }}</td>
                     <td>{{ props.item.Protein }}</td>
-                    <td>{{ props.item.Domain }}</td>
+                    <td v-if="props.item.Domain"><a :href="`https://pfam.xfam.org/family/${props.item.Domain}`" target="_blank">{{ props.item.Domain }}</a></td>
+                    <td v-else></td>
                   </template>
                 </v-data-table>
               </v-flex>
