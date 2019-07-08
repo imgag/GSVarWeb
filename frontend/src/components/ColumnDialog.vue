@@ -71,7 +71,7 @@
               <v-flex>
                 <p class="title">Frequencies</p>
                 <p>1000g: {{ item['1000g'] }}</p>
-                <p>gnomAD: {{ item.gnomAD }}</p>
+                <p>gnomAD: <a :href="`https://gnomad.broadinstitute.org/variant/${item.chr}-${item.start}-${item.ref}-${item.obs}`" target="_blank">{{ item.gnomAD }}</a></p>
                 <p>gnomAD (hom/hem): {{ item.gnomAD_hom_hemi }}</p>
                 <p>gnomAD (sub): {{ item.gnomAD_sub }}</p>
                 <p>ESP (sub): {{ item.ESP }}</p>
