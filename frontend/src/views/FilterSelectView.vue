@@ -27,15 +27,26 @@
         Download file
       </v-btn>
     </v-flex>
+
+    <v-flex>
+      <v-btn
+        :href="LOGOUT_URL"
+      >
+        Logout
+      </v-btn>
+    </v-flex>
   </v-layout>
 </template>
 
 <script>
+import { LOGOUT_URL } from '@/utils'
+
 export default {
   name: 'FilterSelectView',
   data () {
     return {
-      selectedFilterName: ''
+      selectedFilterName: '',
+      LOGOUT_URL: LOGOUT_URL
     }
   },
   methods: {

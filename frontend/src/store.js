@@ -18,6 +18,7 @@ if (window.location.hash.startsWith('#state')) {
   try {
     let response = keycloak.parse(window.location.hash)
     accessToken = response.access_token
+    window.history.pushState(null, null, '/')
   } catch (err) {
     console.error(err) // eslint-disable-line no-console
   }

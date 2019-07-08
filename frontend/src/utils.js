@@ -77,4 +77,6 @@ function fileNameFromPath (path) {
     return path.replace(/^.*[\\\/]/, '') // eslint-disable-line
 }
 
-export { createFilterConfig, createOAuthProvider, fileNameFromPath, parseTSV, produceHeaders }
+const LOGOUT_URL = `${AUTHORIZATION_URL.substring(0, AUTHORIZATION_URL.length - 4)}logout?redirect_uri=${encodeURI(window.origin)}`
+
+export { createFilterConfig, createOAuthProvider, fileNameFromPath, parseTSV, produceHeaders, LOGOUT_URL }

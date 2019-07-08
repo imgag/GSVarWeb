@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
+- Add logout button
+- Add development server to default CORS_ORIGIN
 - Made ColumnDialog subheadings -> titles
 - Split COSMIC entries by space
 - Use subprocess to catch errors when filtering
