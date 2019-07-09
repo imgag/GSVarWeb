@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added GnomAD link
 
 ### Changed
+- Fix coloring at least for HGMD and ClinVar
 - Make snackbars display permanently
 - Remove caching everywhere
 
