@@ -60,9 +60,21 @@
               <v-flex>
                 <p class="title">Databases</p>
                 <p>dbSNP: <a :href="`https://www.ncbi.nlm.nih.gov/snp/${item.dbSNP}`" v-if="item.dbSNP" target="_blank">{{ item.dbSNP }}</a></p>
-                <p>ClinVar: <a :href="`https://www.ncbi.nlm.nih.gov/clinvar/variation/${getID(item.ClinVar)}`" v-if="item.ClinVar" target="_blank"><span :title="item.ClinVar" data-toggle="tooltip">{{ getID(item.ClinVar) }}</span></a></p>
-                <p>HGMD: <a :href="`https://portal.biobase-international.com/hgmd/pro/mut.php?acc=${getID(item.HGMD)}`" target="_blank"><span :title="item.HGMD" data-toggle="tooltip">{{ getID(item.HGMD) }}</span></a></p>
-                <p>OMIM: <a :href="`https://omim.org/entry/${getID(item.OMIM)}`" v-if="item.OMIM" target="_blank">{{ getID(item.OMIM) }}</a></p>
+                <p>ClinVar:
+                  <a :href="`https://www.ncbi.nlm.nih.gov/clinvar/variation/${getID(item.ClinVar)}`" v-if="item.ClinVar" target="_blank">
+                    <span :title="item.ClinVar" data-toggle="tooltip" v-bind:style="colors('ClinVar')">{{ getID(item.ClinVar) }}</span>
+                  </a>
+                </p>
+                <p>HGMD:
+                  <a :href="`https://portal.biobase-international.com/hgmd/pro/mut.php?acc=${getID(item.HGMD)}`" target="_blank">
+                    <span :title="item.HGMD" data-toggle="tooltip" v-bind:style="colors('HGMD')">{{ getID(item.HGMD) }}</span>
+                  </a>
+                </p>
+                <p>OMIM:
+                  <a :href="`https://omim.org/entry/${getID(item.OMIM)}`" v-if="item.OMIM" target="_blank">
+                    <span :title="item.OMIM" data-toggle="tooltip">{{ getID(item.OMIM) }}</span>
+                  </a>
+                </p>
                 <p v-if="item.COSMIC">COSMIC:
                   <span v-for="COSMIC in item.COSMIC.split(',')" v-bind:key="COSMIC">
                     <a :href="`https://cancer.sanger.ac.uk/cosmic/search?q=${COSMIC}`" target="_blank">{{ COSMIC }}</a>&nbsp;
@@ -129,6 +141,19 @@ export default {
     }
   },
   methods: {
+    colors (property) {
+      if (property === 'HGMD') {
+        return (this.item.HGMD.includes('CLASS=DM')) ? 'background-color: red;' : ''
+      }
+      if (property === 'ClinVar') {
+        if (this.item.ClinVar.includes('pathogenic') && !this.item.ClinVar.includes('conflicting interpretations of pathogenicity')) {
+          return 'background-color: red;'
+        } else if (this.item.ClinVar.includes('(confirmed)')) {
+          return 'background-color: yellow;'
+        }
+        return ''
+      }
+    },
     parseCodingSplicingInfo (text) {
       return text.split(',').map((e) => e.split(':')).map((item) => {
         return {

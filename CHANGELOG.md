@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Added color for ClinVar and HGMD in ColumnDialog
 - Add tooltip to ClinVar and HGMD
 - Added Google link
 - Added GnomAD link
