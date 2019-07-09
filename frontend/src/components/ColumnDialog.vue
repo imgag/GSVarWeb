@@ -60,8 +60,8 @@
               <v-flex>
                 <p class="title">Databases</p>
                 <p>dbSNP: <a :href="`https://www.ncbi.nlm.nih.gov/snp/${item.dbSNP}`" v-if="item.dbSNP" target="_blank">{{ item.dbSNP }}</a></p>
-                <p>ClinVar: <a :href="`https://www.ncbi.nlm.nih.gov/clinvar/variation/${getID(item.ClinVar)}`" v-if="item.ClinVar" target="_blank">{{ getID(item.ClinVar) }}</a></p>
-                <p>HGMD: <a :href="`https://portal.biobase-international.com/hgmd/pro/mut.php?acc=${getID(item.HGMD)}`" target="_blank">{{ getID(item.HGMD) }}</a></p>
+                <p>ClinVar: <a :href="`https://www.ncbi.nlm.nih.gov/clinvar/variation/${getID(item.ClinVar)}`" v-if="item.ClinVar" target="_blank"><span :title="item.ClinVar" data-toggle="tooltip">{{ getID(item.ClinVar) }}</span></a></p>
+                <p>HGMD: <a :href="`https://portal.biobase-international.com/hgmd/pro/mut.php?acc=${getID(item.HGMD)}`" target="_blank"><span :title="item.HGMD" data-toggle="tooltip">{{ getID(item.HGMD) }}</span></a></p>
                 <p>OMIM: <a :href="`https://omim.org/entry/${getID(item.OMIM)}`" v-if="item.OMIM" target="_blank">{{ getID(item.OMIM) }}</a></p>
                 <p v-if="item.COSMIC">COSMIC:
                   <span v-for="COSMIC in item.COSMIC.split(',')" v-bind:key="COSMIC">
