@@ -1,4 +1,8 @@
 # frontend
+The frontend consists of a [Vue](https://vuejs.org) application.
+
+We use [Vuetify](https://vuetifyjs.com/en/) for ready-made UI components, and [Vuex](https://vuex.vuejs.org) for keeping application logic simple.
+
 
 ## Project setup
 ```
