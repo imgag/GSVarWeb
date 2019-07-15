@@ -61,24 +61,6 @@ export default {
       headers[this.columnMap['HGMD']]['cellClassRules'] = {
         'red': (params) => params.value.includes('CLASS=DM')
       }
-      // TODO: Handle virtual color calculations
-      /* headers[this.columnMap['classification']]['cellClassRules'] = {
-        'orange': (params) => (params.value === '3' || params.value === 'M'),
-        'red': (params) => (params.value === '4' || params.value === '5'),
-        'green': (params) => (params.value === '0' || params.value === '1' || params.value === '2') // non-pathogenic
-      }
-      headers[this.columnMap['validation']]['cellClassRules'] = {
-        'yellow': (params) => params.value.includes('TP')
-      }
-      headers[this.columnMap['comment']]['cellClassRules'] = {
-        'yellow': (params) => params.value !== ''
-      }
-      headers[this.columnMap['NGSD_hom']]['cellClassRules'] = {
-        'yellow': (params) => params.value !== '0'
-      }
-      headers[this.columnMap['NGSD_het']]['cellClassRules'] = {
-        'yellow': (params) => params.value !== '1'
-      } */
       headers[this.columnMap['ClinVar']]['cellClassRules'] = {
         'red': (params) => params.value.includes('pathogenic') && !params.value.includes('conflicting interpretations of pathogenicity'),
         'yellow': (params) => params.value.includes('(confirmed)')
