@@ -9,6 +9,8 @@ info:
     name: MIT
     url: https://opensource.org/licenses/MIT
 tags:
+  - name: rating
+    description: Tools to handle rating of individual files (annotation)
   - name: ngs-bits
     description: Various tools depending on ngs-bits
   - name: megSAP
@@ -174,9 +176,78 @@ paths:
             application/json:
               schema:
                 type: string
+  "/rate/{filePath}/{chr}/{start}/{end}/{rating}":
+    put:
+      description: Rate a file. This uses JWT to verify the user.
+      tags:
+        - rating
+      parameters:
+        - name: filePath
+          in: path
+          description: Path to file
+          required: true
+          schema:
+            type: string
+        - name: chr
+          in: path
+          description: The chromosome to rate for
+          required: true
+          schema:
+            type: string
+        - name: start
+          in: path
+          description: The start position to rate for
+          required: true
+          schema:
+            type: number
+        - name: end
+          in: path
+          description: The end position to annotate for
+          required: true
+          schema:
+            type: number
+        - name: rating
+          in: path
+          description: Which rating this variant should have.
+          required: true
+          schema:
+            type: number
+            maximum: 5
+            minimum: 1
+      responses:
+        "200":
+          description: successfull
+        "400":
+          description: error
+          content:
+            application/json:
+              schema:
+                type: string
+  "/annotated/{filePath}":
+    get:
+      description: Retrieves an annotated version of the file.
+      tags:
+        - rating
+      parameters:
+        - name: filePath
+          in: path
+          description: Path to file
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successfull
+        "400":
+          description: error
+          content:
+            application/json:
+              schema:
+                type: string
+      
 externalDocs:
-  description: Find out more about ngs-bits
-  url: http://github.com/imgag/ngs-bits
+  description: Find out more about GSVarWeb
+  url: https://github.com/imgag/GSvarWeb
 servers:
   - url: /v1
 components:
