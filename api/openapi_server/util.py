@@ -1,6 +1,23 @@
 import datetime
+import os
 
 import six
+from tinydb import TinyDB
+from flask import g
+
+
+def get_db():
+    """Creates a TinyDB instance to query the JSON file.
+
+    See https://flask.palletsprojects.com/en/1.1.x/patterns/sqlite3/ on how to deal with databases in flask
+    and https://tinydb.readthedocs.io/en/latest/ for TinyDB docs.
+
+    :return: TinyDB.
+    """
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = TinyDB(os.path.join(os.getcwd(), os.environ.get('DATABASE_FILE', 'ratings.json')))
+    return db
 
 
 def _deserialize(data, klass):

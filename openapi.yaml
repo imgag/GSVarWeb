@@ -176,38 +176,38 @@ paths:
             application/json:
               schema:
                 type: string
-  "/rate/{filePath}/{chr}/{start}/{end}/{rating}":
+  "/rate/":
     put:
       description: Rate a file. This uses JWT to verify the user.
       tags:
         - rating
       parameters:
         - name: filePath
-          in: path
+          in: query
           description: Path to file
           required: true
           schema:
             type: string
         - name: chr
-          in: path
+          in: query
           description: The chromosome to rate for
           required: true
           schema:
             type: string
         - name: start
-          in: path
+          in: query
           description: The start position to rate for
           required: true
           schema:
             type: number
         - name: end
-          in: path
+          in: query
           description: The end position to annotate for
           required: true
           schema:
             type: number
         - name: rating
-          in: path
+          in: query
           description: Which rating this variant should have.
           required: true
           schema:

@@ -5,7 +5,7 @@ import os
 import connexion
 
 from openapi_server import encoder
-from flask import send_from_directory
+from flask import send_from_directory, g
 from flask_cors import CORS
 
 
@@ -22,6 +22,12 @@ def main():
         origins.append('http://localhost:8080')
     # enable CORS for all
     CORS(app.app, origins=origins, supports_credentials=True)
+
+    @app.app.teardown_appcontext
+    def close_connection(exception):
+        db = getattr(g, '_database', None)
+        if db is not None:
+            db.close()
 
     if not app.app.config['PRODUCTION']:
         @app.app.route('/')

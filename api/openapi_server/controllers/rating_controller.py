@@ -1,10 +1,12 @@
+from flask import request
 import connexion
 import six
+from tinydb import Query
 
 from openapi_server import util
 
 
-def annotated_file_path_get(file_path):  # noqa: E501
+def annotated_file_path_get(file_path, user=None):  # noqa: E501
     """annotated_file_path_get
 
     Retrieves an annotated version of the file. # noqa: E501
@@ -14,10 +16,11 @@ def annotated_file_path_get(file_path):  # noqa: E501
 
     :rtype: None
     """
+
     return 'do some magic!'
 
 
-def rate_file_path_chr_start_end_rating_put(file_path, chr, start, end, rating):  # noqa: E501
+def rate_put(user=None):  # noqa: E501
     """rate_file_path_chr_start_end_rating_put
 
     Rate a file. This uses JWT to verify the user. # noqa: E501
@@ -35,4 +38,16 @@ def rate_file_path_chr_start_end_rating_put(file_path, chr, start, end, rating):
 
     :rtype: None
     """
-    return 'do some magic!'
+    db = util.get_db()
+    file_query = Query()
+    file_path = request.args.get('filePath')
+    db.upsert({
+        'name': file_path,
+        'chr': request.args.get('chr'),
+        'start': request.args.get('start'),
+        'end': request.args.get('end'),
+        'rating': request.args.get('rating'),
+        'user': user
+    }, file_query.name == file_path)
+
+    return 'successful'

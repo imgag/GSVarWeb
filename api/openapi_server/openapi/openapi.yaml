@@ -182,53 +182,53 @@ paths:
       tags:
       - files
       x-openapi-router-controller: openapi_server.controllers.files_controller
-  /rate/{filePath}/{chr}/{start}/{end}/{rating}:
+  /rate/:
     put:
       description: Rate a file. This uses JWT to verify the user.
-      operationId: rate_file_path_chr_start_end_rating_put
+      operationId: rate_put
       parameters:
       - description: Path to file
-        explode: false
-        in: path
+        explode: true
+        in: query
         name: filePath
         required: true
         schema:
           type: string
-        style: simple
+        style: form
       - description: The chromosome to rate for
-        explode: false
-        in: path
+        explode: true
+        in: query
         name: chr
         required: true
         schema:
           type: string
-        style: simple
+        style: form
       - description: The start position to rate for
-        explode: false
-        in: path
+        explode: true
+        in: query
         name: start
         required: true
         schema:
           type: number
-        style: simple
+        style: form
       - description: The end position to annotate for
-        explode: false
-        in: path
+        explode: true
+        in: query
         name: end
         required: true
         schema:
           type: number
-        style: simple
+        style: form
       - description: Which rating this variant should have.
-        explode: false
-        in: path
+        explode: true
+        in: query
         name: rating
         required: true
         schema:
           maximum: 5
           minimum: 1
           type: number
-        style: simple
+        style: form
       responses:
         200:
           description: successfull
