@@ -19,7 +19,8 @@ def annotated_file_path_get(filePath, user=None):  # noqa: E501
     :rtype: None
     """
 
-    abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user, filePath)
+    abs_file_path = os.path.join(
+        current_app.config['UPLOAD_FOLDER'], user, filePath)
     if os.path.exists(abs_file_path):
         content = []  # this is memory inefficient but okay for small files.
         lines = connexion.request.headers['Lines'] if 'lines' in connexion.request.headers else None
@@ -44,7 +45,9 @@ def annotated_file_path_get(filePath, user=None):  # noqa: E501
                 if lines and ln == limit:
                     break
                 if ln == 4:
-                    content.append('##DESCRIPTION=gchboc=Annotations by the gchboc task force, seperated using semicolon.\n') # append definition
+                    # append definition
+                    content.append(
+                        '##DESCRIPTION=gchboc=Annotations by the gchboc task force, seperated using semicolon.\n')
                 if line.startswith('#') and not line.startswith('##'):
                     line = line.rstrip() + '\tgchboc\n'  # append header
                 elif line.startswith('##'):
@@ -55,9 +58,9 @@ def annotated_file_path_get(filePath, user=None):  # noqa: E501
                     partition = partition[2].partition('\t')
                     start = int(partition[0])
                     end = int(partition[2].partition('\t')[0])
-                    ratings = db.search((file_query.name == filePath) & (file_query.chr == chromosome)
-                                        & (file_query.start == start) & (file_query.end == end))
-                    annotation = ';'.join(map(lambda rating: "{}:{}".format(rating["user"], rating["rating"]), ratings)) if len(ratings) else '.'
+                    ratings = db.search((file_query.name == filePath) & (file_query.chr == chromosome) & (file_query.start == start) & (file_query.end == end))
+                    annotation = ';'.join(map(lambda rating: "{}:{}".format(
+                        rating["user"], rating["rating"]), ratings)) if len(ratings) else '.'
                     line = line.rstrip() + "\t{}\n".format(annotation)
                 content.append(line)
         return send_file(io.BytesIO(''.join(content).encode()),
