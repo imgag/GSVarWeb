@@ -156,7 +156,9 @@ export default {
         chr: this.item.chr,
         start: this.item.start,
         end: this.item.end
-      })
+      }).then(() => {
+        this.$store.dispatch('loadGSvarFileFromPath', this.$store.state.selectedFilePath)
+      }).catch((err) => console.error(err)) // eslint-disable-line no-console
     },
     formatRating (rating) {
       let components = rating.split(':')

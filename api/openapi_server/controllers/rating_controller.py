@@ -38,7 +38,7 @@ def annotated_file_path_get(filePath, user=None):  # noqa: E501
         with open(abs_file_path, 'r') as file:
             db = util.get_db()
             file_query = Query()
-            limit = int(lines[1])
+            limit = int(lines[1]) if lines else None
 
             for ln, line in enumerate(file):
                 if lines and ln == limit:

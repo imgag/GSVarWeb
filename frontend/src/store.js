@@ -246,7 +246,7 @@ export default new Vuex.Store({
     },
     downloadFile (context) {
       let fileName = fileNameFromPath(context.state.selectedFilePath)
-      let file = `${$basePath}/download/${fileName}`
+      let file = `${$basePath}/annotated/${fileName}`
       apiFetch(file).then((response) => response.blob()).then((blobby) => {
         let anchor = document.createElement('a')
         let objectURL = window.URL.createObjectURL(blobby)
@@ -272,7 +272,9 @@ export default new Vuex.Store({
     updateRating (context, payload) {
       payload.filePath = fileNameFromPath(context.state.selectedFilePath)
       return apiFetch(`${$basePath}/rate/?${new URLSearchParams(payload).toString()}`, { method: 'PUT' }).then((response) => {
-        if (response.status !== 200) {
+        if (response.status === 200) {
+          return response.json()
+        } else {
           throw (new Error(response.statusText))
         }
       })

@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-toolbar color="indigo" dark fixed app>
-      <v-toolbar-title>GSvarWeb</v-toolbar-title>
+      <v-toolbar-title>GSvarWeb for GCHBOC</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn
