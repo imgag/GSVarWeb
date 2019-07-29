@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Display gchboc rating in table
+
+## 0.0.5 - 29.07.2019
+### Added
 - Added controllers for rating variants.
 - Added color for ClinVar and HGMD in ColumnDialog
 - Add tooltip to ClinVar and HGMD

@@ -2,8 +2,9 @@ import os
 import io
 
 from flask import current_app, abort, send_file
+from werkzeug.exceptions import BadRequest
 from tinydb import Query
-
+import connexion
 from openapi_server import util
 
 
@@ -20,29 +21,46 @@ def annotated_file_path_get(filePath, user=None):  # noqa: E501
 
     abs_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], user, filePath)
     if os.path.exists(abs_file_path):
-        db = util.get_db()
-        file_query = Query()
-        lines = [] # this is memory inefficient but okay for small files.
+        content = []  # this is memory inefficient but okay for small files.
+        lines = connexion.request.headers['Lines'] if 'lines' in connexion.request.headers else None
+        if lines:
+            lines = lines.split('-')
+            if len(lines) != 2:
+                raise BadRequest(
+                    "Lines should contain two elements, not {}".format(len(lines)))
+            elif not len(lines[0]):
+                raise BadRequest("You cannot specify a negative number here..")
+            elif lines[0] > lines[1]:
+                raise BadRequest("Lines should be formatted like start-end")
+            elif int(lines[0]) < 1:
+                raise BadRequest("Line start cannot be smaller than one")
 
         with open(abs_file_path, 'r') as file:
+            db = util.get_db()
+            file_query = Query()
+            limit = int(lines[1])
+
             for ln, line in enumerate(file):
+                if lines and ln == limit:
+                    break
                 if ln == 4:
-                    lines.append('##DESCRIPTION=gchboc=Annotations by the gchboc task force, seperated using semicolon.\n') # append definition
+                    content.append('##DESCRIPTION=gchboc=Annotations by the gchboc task force, seperated using semicolon.\n') # append definition
                 if line.startswith('#') and not line.startswith('##'):
-                    line = line.rstrip() + '\tgchboc\n' # append header
+                    line = line.rstrip() + '\tgchboc\n'  # append header
+                elif line.startswith('##'):
+                    pass
                 else:
                     partition = line.partition('\t')
                     chromosome = partition[0]
                     partition = partition[2].partition('\t')
-                    start = partition[0]
-                    end = partition[2].partition('\t')[0]
+                    start = int(partition[0])
+                    end = int(partition[2].partition('\t')[0])
                     ratings = db.search((file_query.name == filePath) & (file_query.chr == chromosome)
                                         & (file_query.start == start) & (file_query.end == end))
-                    annotation = ';'.join(map(lambda rating: rating['rating'], ratings)) if len(ratings) else '.'
+                    annotation = ';'.join(map(lambda rating: str(rating['rating']), ratings)) if len(ratings) else '.'
                     line = line.rstrip() + "\t{}\n".format(annotation)
-                lines.append(line)
-
-        return send_file(io.BytesIO(''.join(lines).encode()),
+                content.append(line)
+        return send_file(io.BytesIO(''.join(content).encode()),
                          attachment_filename=filePath,
                          as_attachment=True)
     else:

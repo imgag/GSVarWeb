@@ -235,6 +235,12 @@ paths:
           required: true
           schema:
             type: string
+        - name: Lines
+          in: header
+          description: The lines to serve represented as from-to e.g 1-100 starting at 1
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: successfull

@@ -113,6 +113,15 @@ paths:
         schema:
           type: string
         style: simple
+      - description: The lines to serve represented as from-to e.g 1-100 starting
+          at 1
+        explode: false
+        in: header
+        name: Lines
+        required: false
+        schema:
+          type: string
+        style: simple
       responses:
         200:
           description: successfull

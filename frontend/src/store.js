@@ -164,9 +164,9 @@ export default new Vuex.Store({
     loadGSvarFileFromPath (context, path) {
       return new Promise((resolve, reject) => {
         let fileName = fileNameFromPath(path)
-        apiFetch(`${$basePath}/download/${fileName}`, {
+        apiFetch(`${$basePath}/annotated/${fileName}`, {
           headers: {
-            'Lines': '1-500'
+            'Lines': '1-100'
           }
         }).then((response) => {
           if (response.status === 200) {
