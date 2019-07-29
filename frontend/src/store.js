@@ -166,7 +166,7 @@ export default new Vuex.Store({
         let fileName = fileNameFromPath(path)
         apiFetch(`${$basePath}/annotated/${fileName}`, {
           headers: {
-            'Lines': '1-100'
+            'Lines': '1-250'
           }
         }).then((response) => {
           if (response.status === 200) {
