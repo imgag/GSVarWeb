@@ -268,6 +268,14 @@ export default new Vuex.Store({
           throw (new Error(response.statusText))
         }
       })
+    },
+    updateRating (context, payload) {
+      payload.filePath = fileNameFromPath(context.state.selectedFilePath)
+      return apiFetch(`${$basePath}/rate/?${new URLSearchParams(payload).toString()}`, { method: 'PUT' }).then((response) => {
+        if (response.status !== 200) {
+          throw (new Error(response.statusText))
+        }
+      })
     }
   }
 })

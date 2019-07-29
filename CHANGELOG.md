@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Make it possible to rate variants yourself in the frontend
 - Display gchboc rating in table
+
+### Changed
+- Correctly insert records so they will not be overriden if they arent the same
 
 ## 0.0.5 - 29.07.2019
 ### Added

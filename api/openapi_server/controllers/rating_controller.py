@@ -57,7 +57,7 @@ def annotated_file_path_get(filePath, user=None):  # noqa: E501
                     end = int(partition[2].partition('\t')[0])
                     ratings = db.search((file_query.name == filePath) & (file_query.chr == chromosome)
                                         & (file_query.start == start) & (file_query.end == end))
-                    annotation = ';'.join(map(lambda rating: str(rating['rating']), ratings)) if len(ratings) else '.'
+                    annotation = ';'.join(map(lambda rating: "{}:{}".format(rating["user"], rating["rating"]), ratings)) if len(ratings) else '.'
                     line = line.rstrip() + "\t{}\n".format(annotation)
                 content.append(line)
         return send_file(io.BytesIO(''.join(content).encode()),
@@ -94,6 +94,6 @@ def rate_put(filePath, chr, start, end, rating, user=None):  # noqa: E501
         'end': end,
         'rating': rating,
         'user': user
-    }, file_query.name == filePath)
+    }, (file_query.name == filePath) & (file_query.chr == chr) & (file_query.start == start) & (file_query.end == end))
 
     return 'successful'

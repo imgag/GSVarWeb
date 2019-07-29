@@ -98,6 +98,15 @@
                 <p>CADD: {{ item.CADD }}</p>
                 <p>REVEL: {{ item.REVEL }}</p>
               </v-flex>
+              <v-flex>
+                <p class="title">Rating</p>
+                <div v-if="item.gchboc !== '.'">
+                  <p class="subheading mt-1">Previous ratings</p>
+                  <p v-for="rating in item.gchboc.split(',')" :key="rating">{{ formatRating(rating) }}</p>
+                </div>
+                <p class="subheading mt-auto">Rate yourself</p>
+                <v-rating @input="rate" small></v-rating>
+              </v-flex>
             </v-layout>
           </v-layout>
         </v-card-text>
@@ -141,6 +150,18 @@ export default {
     }
   },
   methods: {
+    rate (rating) {
+      this.$store.dispatch('updateRating', {
+        rating: rating,
+        chr: this.item.chr,
+        start: this.item.start,
+        end: this.item.end
+      })
+    },
+    formatRating (rating) {
+      let components = rating.split(':')
+      return `${components[0]} rated this variant with ${components[1]}`
+    },
     colors (property) {
       if (property === 'HGMD') {
         return (this.item.HGMD.includes('CLASS=DM')) ? 'background-color: red;' : ''
