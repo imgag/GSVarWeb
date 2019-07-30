@@ -100,9 +100,9 @@
               </v-flex>
               <v-flex>
                 <p class="title">Rating</p>
-                <div v-if="item.gchboc !== '.'">
+                <div v-if="item.classification !== undefined && item.classification !== '.'">
                   <p class="subheading mt-1">Previous ratings</p>
-                  <p v-for="rating in item.gchboc.split(',')" :key="rating">{{ formatRating(rating) }}</p>
+                  <p v-for="rating in item.classification.split(',')" :key="rating">{{ formatRating(rating) }}</p>
                 </div>
                 <p class="subheading mt-auto">Rate yourself</p>
                 <v-rating @input="rate" small></v-rating>

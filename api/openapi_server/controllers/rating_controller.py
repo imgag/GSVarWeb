@@ -47,9 +47,9 @@ def annotated_file_path_get(filePath, user=None):  # noqa: E501
                 if ln == 4:
                     # append definition
                     content.append(
-                        '##DESCRIPTION=gchboc=Annotations by the gchboc task force, seperated using semicolon.\n')
+                        '##DESCRIPTION=classification=Classifications by the gchboc task force, seperated using semicolon.\n')
                 if line.startswith('#') and not line.startswith('##'):
-                    line = line.rstrip() + '\tgchboc\n'  # append header
+                    line = line.rstrip() + '\tclassification\n'  # append header
                 elif line.startswith('##'):
                     pass
                 else:
