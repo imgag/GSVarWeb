@@ -49,7 +49,7 @@ def annotated_file_path_get(filePath, user=None):  # noqa: E501
                     content.append(
                         '##DESCRIPTION=classification=Classifications by the gchboc task force, seperated using semicolon.\n')
                 if line.startswith('#') and not line.startswith('##'):
-                    line = line.rstrip() + '\tclassification\n'  # append header
+                    line = line.replace('\n', '\tclassification\n')  # append header
                 elif line.startswith('##'):
                     pass
                 else:
@@ -61,7 +61,7 @@ def annotated_file_path_get(filePath, user=None):  # noqa: E501
                     ratings = db.search((file_query.name == filePath) & (file_query.chr == chromosome) & (file_query.start == start) & (file_query.end == end))
                     annotation = ';'.join(map(lambda rating: "{}:{}".format(
                         rating["user"], rating["rating"]), ratings)) if len(ratings) else '.'
-                    line = line.rstrip() + "\t{}\n".format(annotation)
+                    line = line.replace('\n', "\t{}\n".format(annotation))
                 content.append(line)
         return send_file(io.BytesIO(''.join(content).encode()),
                          attachment_filename=filePath,
