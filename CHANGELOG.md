@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Display gchboc rating in table
 
 ### Changed
+- Dont use ratings - use classifications @marc-sturm
 - Changed title to GSVarWeb for GCHBOC
 - Correctly insert records so they will not be overriden if they arent the same
 - Automatically reload annotated file when rating

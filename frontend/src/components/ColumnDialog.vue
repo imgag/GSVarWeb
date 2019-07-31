@@ -99,13 +99,13 @@
                 <p>REVEL: {{ item.REVEL }}</p>
               </v-flex>
               <v-flex>
-                <p class="title">Rating</p>
+                <p class="title">Classification</p>
                 <div v-if="item.classification !== undefined && item.classification !== '.'">
-                  <p class="subheading mt-1">Previous ratings</p>
-                  <p v-for="rating in item.classification.split(',')" :key="rating">{{ formatRating(rating) }}</p>
+                  <p class="subheading mt-1">Previous classifications</p>
+                  <p v-for="classification in item.classification.split(',')" :key="classification">{{ formatClassification(classification) }}</p>
                 </div>
-                <p class="subheading mt-auto">Rate yourself</p>
-                <v-rating @input="rate" small></v-rating>
+                <p class="subheading mt-auto">Classificate yourself</p>
+                <v-select :items="classifications" @input="classificate" outline></v-select>
               </v-flex>
             </v-layout>
           </v-layout>
@@ -135,6 +135,13 @@ export default {
   },
   data () {
     return {
+      classifications: [
+        'benign',
+        'likely benign',
+        'variant of unknown significance',
+        'likely pathogenic',
+        'pathogenic'
+      ],
       dialog: true,
       codingSplicingRowsPerPage: [15, 25, { 'text': '$vuetify.dataIterator.rowsPerPageAll', 'value': -1 }],
       codingSplicingHeaders: [
@@ -150,9 +157,9 @@ export default {
     }
   },
   methods: {
-    rate (rating) {
+    classificate (classification) {
       this.$store.dispatch('updateRating', {
-        rating: rating,
+        rating: this.classifications.indexOf(classification) + 1,
         chr: this.item.chr,
         start: this.item.start,
         end: this.item.end
@@ -160,9 +167,10 @@ export default {
         this.$store.dispatch('loadGSvarFileFromPath', this.$store.state.selectedFilePath)
       }).catch((err) => console.error(err)) // eslint-disable-line no-console
     },
-    formatRating (rating) {
-      let components = rating.split(':')
-      return `${components[0]} rated this variant with ${components[1]}`
+    formatClassification (classification) {
+      let components = classification.split(':')
+      classification = this.classifications[parseInt(components[1] - 1)]
+      return `${components[0]} rated this variant with ${classification}`
     },
     colors (property) {
       if (property === 'HGMD') {
