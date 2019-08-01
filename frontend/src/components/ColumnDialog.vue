@@ -102,7 +102,7 @@
                 <p class="title">Classification</p>
                 <div v-if="item.classification !== undefined && item.classification !== '.'">
                   <p class="subheading mt-1">Previous classifications</p>
-                  <p v-for="classification in item.classification.split(',')" :key="classification">{{ formatClassification(classification) }}</p>
+                  <p v-for="classification in item.classification.split(';')" :key="classification">{{ formatClassification(classification) }}</p>
                 </div>
                 <p class="subheading mt-auto">Classificate yourself</p>
                 <v-select :items="classifications" @input="classificate" outline></v-select>
@@ -170,7 +170,8 @@ export default {
     formatClassification (classification) {
       let components = classification.split(':')
       classification = this.classifications[parseInt(components[1] - 1)]
-      return `${components[0]} rated this variant with ${classification}`
+      let date = new Date(components[2] * 1000)
+      return `${components[0]} rated this variant with ${classification} at ${date.toLocaleDateString()}`
     },
     colors (property) {
       if (property === 'HGMD') {
